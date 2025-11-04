@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7460779485419172610
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4553494166167120249}
+  - component: {fileID: 2455202858873172190}
+  - component: {fileID: 6609665844575438271}
+  m_Layer: 0
+  m_Name: Player2Lobby
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4553494166167120249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7460779485419172610}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2455202858873172190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7460779485419172610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ec0593e23f1294c9f0f1c801b1c2b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerSign: {fileID: 0}
+  _contentScroll: {fileID: 0}
+  _currentEmojiData: {fileID: 11400000, guid: d461605546b33e34a86648e35035e66c, type: 2}
+--- !u!114 &6609665844575438271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7460779485419172610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73d17fbb1fe93b49aa3af06a203d1f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmojiDataSetter
+  _currentData: {fileID: 11400000, guid: d461605546b33e34a86648e35035e66c, type: 2}
+  _emojiDataByColor:
+  - {fileID: 11400000, guid: 6b6c84d126464c040bbed916feba2efe, type: 2}
+  - {fileID: 11400000, guid: 3651e23b5c62b054081d0b4ab62ddf78, type: 2}
+  - {fileID: 11400000, guid: 598f39a16aece63438901d8d79a6facc, type: 2}
+  - {fileID: 11400000, guid: 1146512a3974f414096273dd8d448e9c, type: 2}
+  - {fileID: 11400000, guid: 3ea32681becfc3847a0e43021d36c4d1, type: 2}
+  - {fileID: 11400000, guid: a9d8ed788f4fa324ea37a1d430a311be, type: 2}
+  - {fileID: 11400000, guid: d461605546b33e34a86648e35035e66c, type: 2}
+  - {fileID: 11400000, guid: 3e51d83b789c126498e5febe8c445ab4, type: 2}
+  - {fileID: 11400000, guid: e940a4f66e5c46f40bd623b63019a1ec, type: 2}

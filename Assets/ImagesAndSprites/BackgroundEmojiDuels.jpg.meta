@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9d9542a48b705d24aa7fd9526b996c55
+guid: 41fb2e7a1696dab4cb5994f5163eeaf5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6744388186957445549
-    second: BackgroundUITickTackToe_0
+      213: -7357613491296183088
+    second: BackgroundEmojiDuels_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,12 +37,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BackgroundUITickTackToe_0
+      name: BackgroundEmojiDuels_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 661
-        height: 1018
+        width: 1200
+        height: 750
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: da970fe9251e89d50800000000000000
-      internalID: 6744388186957445549
+      spriteID: 0dc5ba0138184e990800000000000000
+      internalID: -7357613491296183088
       vertices: []
       indices: 
       edges: []
@@ -164,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      BackgroundUITickTackToe_0: 6744388186957445549
+      BackgroundEmojiDuels_0: -7357613491296183088
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
