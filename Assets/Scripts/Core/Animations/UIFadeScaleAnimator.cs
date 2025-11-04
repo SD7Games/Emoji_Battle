@@ -23,6 +23,7 @@ public class UIFadeScaleAnimator : MonoBehaviour
 
     [Header("Scale Settings")]
     [SerializeField] private bool _useScale = true;
+    [SerializeField] private bool _startFromZero = false;
     [SerializeField] private float _scaleDuration = 0.5f;
     [SerializeField] private float _targetScale = 1f;
     [SerializeField] private Ease _scaleEase = Ease.OutBack;
@@ -46,7 +47,8 @@ public class UIFadeScaleAnimator : MonoBehaviour
         {
             if (_useFade)
                 SetAlpha(0f);
-            if (_useScale)
+
+            if (_useScale && _startFromZero)
                 transform.localScale = Vector3.zero;
         }
 
@@ -73,7 +75,12 @@ public class UIFadeScaleAnimator : MonoBehaviour
             PlayFade(1f, _fadeDuration, _fadeEase, _fadeLoop, _fadeLoopType);
 
         if (_useScale)
-            PlayScale(_originalScale * _targetScale, _scaleDuration, _scaleEase, _scaleLoop, _scaleLoopType);
+        {
+            Vector3 start = _startFromZero ? Vector3.zero : _originalScale;
+            Vector3 target = _originalScale * _targetScale;
+            transform.localScale = start;
+            PlayScale(target, _scaleDuration, _scaleEase, _scaleLoop, _scaleLoopType);
+        }
     }
 
     private void AnimateOut(Action onComplete = null)
@@ -94,7 +101,8 @@ public class UIFadeScaleAnimator : MonoBehaviour
         if (_useScale)
         {
             activeTweens++;
-            PlayScale(Vector3.zero, _scaleDuration, _scaleEase, false, LoopType.Restart)
+            Vector3 endScale = _startFromZero ? Vector3.zero : _originalScale;
+            PlayScale(endScale, _scaleDuration, _scaleEase, false, LoopType.Restart)
                 .OnComplete(() =>
                 {
                     if (--activeTweens == 0)

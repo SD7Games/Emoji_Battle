@@ -27,13 +27,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1983655488327540943}
-  m_LocalRotation: {x: -0, y: -0, z: 0.20175421, w: 0.9794362}
+  m_LocalRotation: {x: 0, y: 0, z: 0.19936788, w: 0.97992474}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4243544559912352126}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 23.279}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 23}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 415, y: 270}
@@ -99,6 +99,7 @@ MonoBehaviour:
   _fadeLoop: 0
   _fadeLoopType: 0
   _useScale: 1
+  _startFromZero: 1
   _scaleDuration: 5.5
   _targetScale: 1
   _scaleEase: 1
@@ -116,8 +117,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703b5e5ced2bae948ad10a7452d0d15a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EmojiIdleAnimation
-  _scaleAmplitude: 0.05
-  _scaleDuration: 1.6
+  _enableBreathing: 0
+  _enableTilting: 1
+  _scaleAmplitude: 0
+  _scaleDuration: 0
   _tiltAngle: 8
   _tiltDuration: 2.2
 --- !u!1 &2049142184241376446
@@ -283,6 +286,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703b5e5ced2bae948ad10a7452d0d15a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EmojiIdleAnimation
+  _enableBreathing: 1
+  _enableTilting: 1
   _scaleAmplitude: 0.05
   _scaleDuration: 1.6
   _tiltAngle: 8
@@ -408,7 +413,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slider: {fileID: 0}
-  _progressImage: {fileID: 0}
   _progressText: {fileID: 0}
 --- !u!1 &6935373453358560133
 GameObject:
@@ -498,6 +502,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703b5e5ced2bae948ad10a7452d0d15a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EmojiIdleAnimation
+  _enableBreathing: 1
+  _enableTilting: 1
   _scaleAmplitude: 0.05
   _scaleDuration: 1.6
   _tiltAngle: 8
@@ -665,6 +671,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703b5e5ced2bae948ad10a7452d0d15a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EmojiIdleAnimation
+  _enableBreathing: 1
+  _enableTilting: 1
   _scaleAmplitude: 0.05
   _scaleDuration: 1.2
   _tiltAngle: 7

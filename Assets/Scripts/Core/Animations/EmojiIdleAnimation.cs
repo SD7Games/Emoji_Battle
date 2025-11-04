@@ -4,6 +4,10 @@ using DG.Tweening;
 [RequireComponent(typeof(RectTransform))]
 public class EmojiIdleAnimation : MonoBehaviour
 {
+    [Header("Enable / Disable")]
+    [SerializeField] private bool _enableBreathing = true;
+    [SerializeField] private bool _enableTilting = true;
+
     [Header("Breathing / Scaling")]
     [SerializeField] private float _scaleAmplitude = 0.05f;
     [SerializeField] private float _scaleDuration = 1.6f;
@@ -28,8 +32,12 @@ public class EmojiIdleAnimation : MonoBehaviour
     private void OnEnable()
     {
         ResetToStart();
-        AnimateScale();
-        AnimateTilt();
+
+        if (_enableBreathing)
+            AnimateScale();
+
+        if (_enableTilting)
+            AnimateTilt();
     }
 
     private void OnDisable()
@@ -59,7 +67,6 @@ public class EmojiIdleAnimation : MonoBehaviour
     private void AnimateTilt()
     {
         float angle = _tiltAngle * (Random.value > 0.5f ? 1 : -1);
-
         Vector3 targetRotation = _startRotationEuler + new Vector3(0f, 0f, angle);
 
         _tiltTween = _rect.DOLocalRotate(

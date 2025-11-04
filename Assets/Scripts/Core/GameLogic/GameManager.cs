@@ -17,12 +17,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text _playerName;
     [SerializeField] private TMP_Text _aiRivalName;
     [SerializeField] private Button _backToLobbyButton;
-    [SerializeField] private Image _sceneFaderImage;
 
     [Header("Emoji Data (all colors)")]
     [SerializeField] private List<EmojiData> _emojiDataByColor;
-
-    private float _fadeDuration = 1.5f;
 
     private Sprite _playerSprite;
     private Sprite _aiRivalSprite;
@@ -104,19 +101,11 @@ public class GameManager : MonoBehaviour
         _aiRivalController.StopAllCoroutines();
         _input.AllowInput();
 
-        SceneFader();
         _board.Reset();
         _turnManager.Reset();
         _boardView.HideAllLines();
 
         _uiView.ShowCurrentPlayer(_turnManager.CurrentName());
-    }
-
-    private void SceneFader()
-    {
-        _sceneFaderImage.canvasRenderer.SetAlpha(1f);
-        _sceneFaderImage.gameObject.SetActive(true);
-        _sceneFaderImage.CrossFadeAlpha(0f, _fadeDuration, false);
     }
 
     private void OnCellClicked(int index)

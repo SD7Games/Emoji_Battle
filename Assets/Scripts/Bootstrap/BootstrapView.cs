@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class BootstrapView : MonoBehaviour
 {
     [SerializeField] private Slider _slider;
-    [SerializeField] private Image _progressImage;
     [SerializeField] private TMP_Text _progressText;
 
     private int _currentProgress = 0;

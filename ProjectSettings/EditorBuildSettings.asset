@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Splesh.unity
+    guid: d343634d7639c4443a00ab5d6f247ba2
+  - enabled: 1
     path: Assets/Scenes/Bootstrap.unity
     guid: 21be140c7eb888d41a414353fcbaf476
   - enabled: 1
