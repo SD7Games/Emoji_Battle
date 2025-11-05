@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     [Header("Board Elements")]
     [SerializeField] private List<Button> _buttons;
-    [SerializeField] private SettingsPopupView _uiView;
+    [SerializeField] private RestartButton _uiView;
     [SerializeField] private WinLineView _boardView;
     [SerializeField] private AIRivalMoveController _aiRivalController;
 

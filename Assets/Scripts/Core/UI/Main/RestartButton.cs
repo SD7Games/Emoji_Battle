@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class SettingsPopupView : MonoBehaviour
+public class RestartButton : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text _titleText;
