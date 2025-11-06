@@ -6,29 +6,57 @@ public class LobbyMenuController : MonoBehaviour
 {
     private const string MainSceneTag = "Main";
 
+    [Header("Start Reference")]
     [SerializeField] private Button _startButton;
+
+    [Header("Mode references")]
     [SerializeField] private Button _modeButton;
+    [SerializeField] private Button _playerVS_AI;
+    [SerializeField] private Button _playerVS_Player;
+    [SerializeField] private GameObject _modePopup;
+
+    [Header("Settings References")]
     [SerializeField] private Button _settingsButton;
 
     private void Start()
     {
         _startButton.onClick.AddListener(LoadMainScene);
-        _modeButton.onClick.AddListener(OpenModeSelection);
+        _modeButton.onClick.AddListener(OpenModePopup);
         _settingsButton.onClick.AddListener(OpenSettings);
+        _playerVS_AI.onClick.AddListener(OnPlayerVsAI);
+        _playerVS_Player.onClick.AddListener(OnPlayerVsPlayer);
     }
 
-    private void LoadMainScene()
+    private void OnDestroy()
     {
-        SceneManager.LoadScene(MainSceneTag);
+        _startButton.onClick.RemoveListener(LoadMainScene);
+        _modeButton.onClick.RemoveListener(OpenModePopup);
+        _settingsButton.onClick.RemoveListener(OpenSettings);
+        _playerVS_AI.onClick.RemoveListener(OnPlayerVsAI);
+        _playerVS_Player.onClick.RemoveListener(OnPlayerVsPlayer);
     }
 
-    private void OpenModeSelection()
+    private void OnPlayerVsAI() => SetGameMode(GameMode.PVE);
+    private void OnPlayerVsPlayer() => SetGameMode(GameMode.PVP);
+
+
+    private void OpenModePopup()
     {
-        // TODO: открыть popup выбора режима
+        _modePopup.gameObject.SetActive(true);
+    }
+
+    private void SetGameMode(GameMode mode)
+    {
+        AISettingManager.SetGameMode(mode);
+        _modePopup.gameObject.SetActive(false);
     }
 
     private void OpenSettings()
     {
-        // TODO: открыть popup настроек
+        // TODO: open to popup settings
+    }
+    private void LoadMainScene()
+    {
+        SceneManager.LoadScene(MainSceneTag);
     }
 }

@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum GameMode
+{
+    PVE,// Player VS AI
+    PVP // Player VS Player
+}
+
 [DisallowMultipleComponent]
 public class GameManager : MonoBehaviour
 {
@@ -32,19 +38,31 @@ public class GameManager : MonoBehaviour
 
     private const string LobbyScene = "Lobby";
 
+    private GameMode _currentMode;
+
     private void Start()
     {
         SetSpriteReferences();
         UpdatePlayerNames();
         InitializeGameLogic();
         InitializeInput();
-
-        _aiRivalController.Initialize(_input, _board);
+        GetCurrentGameMode();
 
         _uiView.OnRestartClicked += RestartGame;
         _backToLobbyButton.onClick.AddListener(LoadLobbyScene);
 
         RestartGame();
+    }
+
+    private void GetCurrentGameMode()
+    {
+        _currentMode = AISettingManager.GetGameMode();
+
+        if (_currentMode == GameMode.PVE)
+            _aiRivalController.Initialize(_input, _board);
+
+        if (_currentMode == GameMode.PVP)
+            _aiRivalController.enabled = false;
     }
 
     private void OnDestroy()
@@ -140,7 +158,7 @@ public class GameManager : MonoBehaviour
             _turnManager.NextTurn();
             _uiView.ShowCurrentPlayer(_turnManager.CurrentName());
 
-            if (_turnManager.CurrentState() == CellState.AI)
+            if (_currentMode == GameMode.PVE && _turnManager.CurrentState() == CellState.AI)
                 _aiRivalController.MakeMove();
         }
     }

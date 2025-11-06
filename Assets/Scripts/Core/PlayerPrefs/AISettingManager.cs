@@ -1,7 +1,19 @@
+using System;
 using UnityEngine;
 
 public static class AISettingManager
 {
+    public static void SetGameMode(GameMode mode)
+    {
+        PlayerPrefs.SetString("GameMode", mode.ToString());
+    }
+
+    public static GameMode GetGameMode()
+    {
+        string modeString = PlayerPrefs.GetString("GameMode", GameMode.PVE.ToString());
+        return (GameMode) Enum.Parse(typeof(GameMode), modeString);
+    }
+
     public static class Player
     {
         public static void SetName(string name) => PlayerPrefs.SetString("PlayerName", name);
