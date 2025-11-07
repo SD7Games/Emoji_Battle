@@ -511,17 +511,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
---- !u!114 &841263255 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1978764855818142961, guid: 63348ebf7cce73543a05da8edaab0fa0, type: 3}
-  m_PrefabInstance: {fileID: 6136292687096197089}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &1352036290
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -728,17 +717,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81da38bfc79c42e4882182c010fb434c, type: 3}
---- !u!114 &2128658918 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3637590563604936885, guid: 63348ebf7cce73543a05da8edaab0fa0, type: 3}
-  m_PrefabInstance: {fileID: 6136292687096197089}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &779476604433070941
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -750,7 +728,7 @@ PrefabInstance:
     - target: {fileID: 2455202858873172190, guid: 6502c8b0a8ec28047a494dbcaf983d08, type: 3}
       propertyPath: _playerSign
       value: 
-      objectReference: {fileID: 5932995981778098031}
+      objectReference: {fileID: 815444463}
     - target: {fileID: 2455202858873172190, guid: 6502c8b0a8ec28047a494dbcaf983d08, type: 3}
       propertyPath: _contentScroll
       value: 
@@ -801,7 +779,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7460779485419172610, guid: 6502c8b0a8ec28047a494dbcaf983d08, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -857,22 +835,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 805856047}
-    - target: {fileID: 4508160427473369849, guid: 63348ebf7cce73543a05da8edaab0fa0, type: 3}
-      propertyPath: _modeButton
-      value: 
-      objectReference: {fileID: 2128658918}
-    - target: {fileID: 4508160427473369849, guid: 63348ebf7cce73543a05da8edaab0fa0, type: 3}
-      propertyPath: _settingsButton
-      value: 
-      objectReference: {fileID: 841263255}
     - target: {fileID: 6720350770260328478, guid: 63348ebf7cce73543a05da8edaab0fa0, type: 3}
       propertyPath: _playerLobby
       value: 
       objectReference: {fileID: 2056865268}
-    - target: {fileID: 7289147028407349202, guid: 63348ebf7cce73543a05da8edaab0fa0, type: 3}
-      propertyPath: m_Name
-      value: ModeButton
-      objectReference: {fileID: 0}
     - target: {fileID: 8181660537536085022, guid: 63348ebf7cce73543a05da8edaab0fa0, type: 3}
       propertyPath: m_Pivot.x
       value: 0
