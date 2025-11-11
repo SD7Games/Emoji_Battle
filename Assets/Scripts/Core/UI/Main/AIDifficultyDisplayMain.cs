@@ -15,7 +15,7 @@ public class AIDifficultyDisplayUI : MonoBehaviour
 
     private void Start()
     {
-        string diff = AISettingManager.AI.GetStrategy();
+        string diff = GD.AI.Strategy;
 
         if (_difficultyColors.TryGetValue(diff, out var color))
         {

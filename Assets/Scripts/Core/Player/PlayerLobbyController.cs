@@ -26,13 +26,15 @@ public class PlayerLobbyController : MonoBehaviour
 
         _currentEmojiData = newData;
 
-        AISettingManager.Player.SetEmojiColor(_currentEmojiData.ColorName);
-        AISettingManager.Save();
+        GD.Player.EmojiColor = _currentEmojiData.ColorName;
+
+        int idx = Mathf.Clamp(GD.Player.EmojiIndex, 0, _currentEmojiData.EmojiSprites.Count - 1);
+        GD.Player.EmojiIndex = idx;
+
+        GD.Save();
 
         _contentScroll.SetEmojiData(_currentEmojiData);
 
-        int idx = Mathf.Clamp(AISettingManager.Player.GetEmojiIndex(), 0,
-                              _currentEmojiData.EmojiSprites.Count - 1);
         if (_playerSign != null && _currentEmojiData.EmojiSprites.Count > 0)
             _playerSign.sprite = _currentEmojiData.EmojiSprites[idx];
 

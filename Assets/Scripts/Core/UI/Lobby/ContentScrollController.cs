@@ -13,7 +13,8 @@ public class ContentScrollController : MonoBehaviour
 
     public void SetEmojiData(EmojiData emojiData)
     {
-        if (emojiData == null || emojiData.EmojiSprites == null) return;
+        if (emojiData == null || emojiData.EmojiSprites == null)
+            return;
 
         foreach (Transform child in _contentParent)
             Destroy(child.gameObject);
@@ -27,9 +28,12 @@ public class ContentScrollController : MonoBehaviour
             var button = buttonGO.GetComponent<Button>();
             button.onClick.AddListener(() =>
             {
+                int index = emojiData.EmojiSprites.IndexOf(sprite);
+
+                GD.Player.EmojiIndex = index;
+                GD.Save();
+
                 OnEmojiSelected?.Invoke(sprite);
-                AISettingManager.Player.SetEmojiIndex(emojiData.EmojiSprites.IndexOf(sprite));
-                AISettingManager.Save();
             });
         }
 

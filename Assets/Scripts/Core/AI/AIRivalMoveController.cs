@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class AIRivalMoveController : MonoBehaviour
 {
     private IAIStrategy _strategy;
@@ -17,18 +18,22 @@ public class AIRivalMoveController : MonoBehaviour
 
     private void LoadStrategy()
     {
-        string strategyName = AISettingManager.AI.GetStrategy();
+        string strategyName = GD.AI.Strategy;
+
         switch (strategyName)
         {
             case "Easy":
                 _strategy = new EasyStrategy();
                 break;
+
             case "Normal":
                 _strategy = new NormalStrategy();
                 break;
+
             case "Hard":
                 _strategy = new HardStrategy();
                 break;
+
             default:
                 _strategy = new EasyStrategy();
                 break;

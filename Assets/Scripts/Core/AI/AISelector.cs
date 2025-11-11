@@ -1,17 +1,17 @@
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class AISelector : MonoBehaviour
 {
-    [SerializeField]
-    private AIComlexityLobbyUI _ui;
+    [SerializeField] private AIComlexityLobbyUI _ui;
 
     private void Start()
     {
         if (_ui != null)
             _ui.OnDifficultyChanged += HandleDifficultyChange;
 
-        string saved = AISettingManager.AI.GetStrategy();
-        HandleDifficultyChange(saved);
+        string savedStrategy = GD.AI.Strategy;
+        HandleDifficultyChange(savedStrategy);
     }
 
     private void OnDestroy()
@@ -22,7 +22,7 @@ public class AISelector : MonoBehaviour
 
     private void HandleDifficultyChange(string difficulty)
     {
-        AISettingManager.AI.SetStrategy(difficulty);
-        AISettingManager.Save();
+        GD.AI.Strategy = difficulty;
+        GD.Save();
     }
 }

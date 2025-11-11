@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
 public class LobbyMenuController : MonoBehaviour
 {
     private const string MainSceneTag = "Main";
@@ -9,7 +10,7 @@ public class LobbyMenuController : MonoBehaviour
     [Header("Start Reference")]
     [SerializeField] private Button _startButton;
 
-    [Header("Mode references")]
+    [Header("Mode References")]
     [SerializeField] private Button _modeButton;
     [SerializeField] private Button _playerVS_AI;
     [SerializeField] private Button _playerVS_Player;
@@ -38,34 +39,28 @@ public class LobbyMenuController : MonoBehaviour
         _settingsButton.onClick.RemoveListener(OpenSettings);
         _playerVS_AI.onClick.RemoveListener(OnPlayerVsAI);
         _playerVS_Player.onClick.RemoveListener(OnPlayerVsPlayer);
-        _closePopupBackgroundButton.onClick.AddListener(CloseModePopup);
-        _closeButton.onClick.AddListener(CloseModePopup);
+        _closePopupBackgroundButton.onClick.RemoveListener(CloseModePopup);
+        _closeButton.onClick.RemoveListener(CloseModePopup);
     }
 
-    private void OnPlayerVsAI() => SetGameMode(GameMode.PVE);
+    private void OnPlayerVsAI() => SetGameMode(GameMode.PvE);
+    private void OnPlayerVsPlayer() => SetGameMode(GameMode.PvP);
 
-    private void OnPlayerVsPlayer() => SetGameMode(GameMode.PVP);
-
-
-    private void OpenModePopup()
-    {
-        _modePopup.gameObject.SetActive(true);
-    }
+    private void OpenModePopup() => _modePopup.gameObject.SetActive(true);
 
     private void SetGameMode(GameMode mode)
     {
-        AISettingManager.SetGameMode(mode);
+        GD.Mode = mode;
+        GD.Save();
+
         CloseModePopup();
     }
 
-    private void CloseModePopup()
-    {
-        _modePopup.gameObject.SetActive(false);
-    }
+    private void CloseModePopup() => _modePopup.gameObject.SetActive(false);
 
     private void OpenSettings()
     {
-        // TODO: open to popup settings
+        // TODO: open to settings popup
     }
 
     private void LoadMainScene()

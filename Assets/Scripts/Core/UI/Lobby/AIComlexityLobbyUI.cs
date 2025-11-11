@@ -5,24 +5,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
 public class AIComlexityLobbyUI : MonoBehaviour
 {
-    [SerializeField]
-    private Button _mainButton;
-    [SerializeField]
-    private Button _opt1Button;
-    [SerializeField]
-    private Button _opt2Button;
-    [SerializeField]
-    private CanvasGroup _opt1CanvasGroup;
-    [SerializeField]
-    private CanvasGroup _opt2CanvasGroup;
-    [SerializeField]
-    private RectTransform _mainRT;
-    [SerializeField]
-    private RectTransform _opt1RT;
-    [SerializeField]
-    private RectTransform _opt2RT;
+    [SerializeField] private Button _mainButton;
+    [SerializeField] private Button _opt1Button;
+    [SerializeField] private Button _opt2Button;
+    [SerializeField] private CanvasGroup _opt1CanvasGroup;
+    [SerializeField] private CanvasGroup _opt2CanvasGroup;
+    [SerializeField] private RectTransform _mainRT;
+    [SerializeField] private RectTransform _opt1RT;
+    [SerializeField] private RectTransform _opt2RT;
 
     private Vector2 _opt1Pos, _opt2Pos;
     private string _currentDifficulty;
@@ -47,8 +40,7 @@ public class AIComlexityLobbyUI : MonoBehaviour
         _opt1Pos = _opt1RT.anchoredPosition;
         _opt2Pos = _opt2RT.anchoredPosition;
 
-        _currentDifficulty = AISettingManager.AI.GetStrategy();
-
+        _currentDifficulty = GD.AI.Strategy;
         UpdateMainButton(_currentDifficulty);
         HideOptionsInstant();
 
@@ -60,6 +52,7 @@ public class AIComlexityLobbyUI : MonoBehaviour
     }
 
     private void OnDisable() => StopAllTweens();
+
     private void OnDestroy() => StopAllTweens();
 
     private void ToggleOptions()
@@ -75,8 +68,8 @@ public class AIComlexityLobbyUI : MonoBehaviour
         string newDiff = selectedButton.GetComponentInChildren<TMP_Text>().text;
         _currentDifficulty = newDiff;
 
-        AISettingManager.AI.SetStrategy(_currentDifficulty);
-        AISettingManager.Save();
+        GD.AI.Strategy = _currentDifficulty;
+        GD.Save();
 
         UpdateMainButton(_currentDifficulty);
         HideOptionsAnimated();

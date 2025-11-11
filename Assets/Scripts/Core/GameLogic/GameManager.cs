@@ -4,12 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum GameMode
-{
-    PVE,// Player VS AI
-    PVP // Player VS Player
-}
-
 [DisallowMultipleComponent]
 public class GameManager : MonoBehaviour
 {
@@ -56,12 +50,11 @@ public class GameManager : MonoBehaviour
 
     private void GetCurrentGameMode()
     {
-        _currentMode = AISettingManager.GetGameMode();
+        _currentMode = GD.Mode;
 
-        if (_currentMode == GameMode.PVE)
+        if (_currentMode == GameMode.PvE)
             _aiRivalController.Initialize(_input, _board);
-
-        if (_currentMode == GameMode.PVP)
+        else if (_currentMode == GameMode.PvP)
             _aiRivalController.enabled = false;
     }
 
@@ -78,10 +71,10 @@ public class GameManager : MonoBehaviour
     {
         _defaultSprite = _buttons[0].GetComponent<Image>().sprite;
 
-        string playerColor = AISettingManager.Player.GetEmojiColor();
-        int playerIndex = AISettingManager.Player.GetEmojiIndex();
-        string aiColor = AISettingManager.AI.GetEmojiAIColor();
-        int aiIndex = AISettingManager.AI.GetEmojiAIIndex();
+        string playerColor = GD.Player.EmojiColor;
+        int playerIndex = GD.Player.EmojiIndex;
+        string aiColor = GD.AI.EmojiColor;
+        int aiIndex = GD.AI.EmojiIndex;
 
         EmojiData playerData = _emojiDataByColor.Find(colorData => colorData.ColorName == playerColor);
         EmojiData aiData = _emojiDataByColor.Find(colorData => colorData.ColorName == aiColor);
@@ -95,8 +88,8 @@ public class GameManager : MonoBehaviour
 
     private void UpdatePlayerNames()
     {
-        _playerName.text = AISettingManager.Player.GetName();
-        _aiRivalName.text = "AI";
+        _playerName.text = GD.Player.Name;
+        _aiRivalName.text = _currentMode == GameMode.PvE ? "AI" : GD.Player2.Name;
     }
 
     private void InitializeGameLogic()
@@ -158,7 +151,7 @@ public class GameManager : MonoBehaviour
             _turnManager.NextTurn();
             _uiView.ShowCurrentPlayer(_turnManager.CurrentName());
 
-            if (_currentMode == GameMode.PVE && _turnManager.CurrentState() == CellState.AI)
+            if (_currentMode == GameMode.PvE && _turnManager.CurrentState() == CellState.AI)
                 _aiRivalController.MakeMove();
         }
     }

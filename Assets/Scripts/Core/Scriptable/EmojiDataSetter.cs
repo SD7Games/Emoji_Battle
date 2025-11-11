@@ -22,8 +22,10 @@ public class EmojiDataSetter : MonoBehaviour
         if (newData == null) return;
 
         _currentData = newData;
-        AISettingManager.Player.SetEmojiColor(_currentData.ColorName);
-        AISettingManager.Save();
+
+        GD.Player.EmojiColor = _currentData.ColorName;
+
+        GD.Save();
     }
 
     public Sprite GetEmojiByIndex(int index)

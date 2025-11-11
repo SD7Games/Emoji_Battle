@@ -22,10 +22,10 @@ public class BoardController
     {
         if (emojiDataByColor == null || emojiDataByColor.Count == 0) return;
 
-        string playerColor = AISettingManager.Player.GetEmojiColor();
-        int playerIndex = AISettingManager.Player.GetEmojiIndex();
-        string aiColor = AISettingManager.AI.GetEmojiAIColor();
-        int aiIndex = AISettingManager.AI.GetEmojiAIIndex();
+        string playerColor = GD.Player.EmojiColor;
+        int playerIndex = GD.Player.EmojiIndex;
+        string aiColor = GD.AI.EmojiColor;
+        int aiIndex = GD.AI.EmojiIndex;
 
         EmojiData playerData = emojiDataByColor.Find(colorData => colorData.ColorName == playerColor);
         EmojiData aiData = emojiDataByColor.Find(colorData => colorData.ColorName == aiColor);

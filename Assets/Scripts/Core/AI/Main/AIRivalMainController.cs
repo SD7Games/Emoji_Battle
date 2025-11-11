@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+[DisallowMultipleComponent]
 public class AIRivalMainController : MonoBehaviour
 {
     [SerializeField] private Image _aiSign;
@@ -14,11 +15,10 @@ public class AIRivalMainController : MonoBehaviour
 
     private void LoadAIData()
     {
-        string colorName = AISettingManager.AI.GetEmojiAIColor();
-        int emojiIndex = AISettingManager.AI.GetEmojiAIIndex();
+        string colorName = GD.AI.EmojiColor;
+        int emojiIndex = GD.AI.EmojiIndex;
 
-        EmojiData colorData = _emojiDataByColor.Find(colorData => colorData.ColorName == colorName);
-
+        EmojiData colorData = _emojiDataByColor.Find(d => d.ColorName == colorName);
         if (colorData == null) return;
 
         if (emojiIndex >= 0 && emojiIndex < colorData.EmojiSprites.Count)

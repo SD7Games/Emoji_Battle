@@ -22,7 +22,6 @@ public class AIRivalLobbyController : MonoBehaviour
     private void Start()
     {
         _playerLobbyController.OnCheckMatchAISign += HandlePlayerColorChange;
-
         InitializeAIEmoji();
     }
 
@@ -33,11 +32,12 @@ public class AIRivalLobbyController : MonoBehaviour
 
     private void InitializeAIEmoji()
     {
-        if (_emojiDataByColor == null || _emojiDataByColor.Count == 0) return;
+        if (_emojiDataByColor == null || _emojiDataByColor.Count == 0)
+            return;
 
-        string playerColor = AISettingManager.Player.GetEmojiColor();
-        string aiColor = AISettingManager.AI.GetEmojiAIColor();
-        int aiIndex = AISettingManager.AI.GetEmojiAIIndex();
+        string playerColor = GD.Player.EmojiColor;
+        string aiColor = GD.AI.EmojiColor;
+        int aiIndex = GD.AI.EmojiIndex;
 
         EmojiData playerData = _emojiDataByColor.Find(d => d.ColorName == playerColor);
         EmojiData aiData = _emojiDataByColor.Find(d => d.ColorName == aiColor);
@@ -50,41 +50,42 @@ public class AIRivalLobbyController : MonoBehaviour
 
         _currentColorData = aiData;
         _currentEmojiIndex = Mathf.Clamp(aiIndex, 0, _currentColorData.EmojiSprites.Count - 1);
+
         _aiSign.sprite = _currentColorData.EmojiSprites[_currentEmojiIndex];
         _dissolve?.PlayDissolve();
     }
 
     private void ChooseNewColorAndEmoji(EmojiData playerColorData)
     {
-        if (_emojiDataByColor == null || _emojiDataByColor.Count == 0) return;
+        if (_emojiDataByColor == null || _emojiDataByColor.Count == 0)
+            return;
 
         List<EmojiData> available = new List<EmojiData>(_emojiDataByColor);
 
         if (playerColorData != null)
             available.Remove(playerColorData);
 
-        if (available.Count == 0) return;
+        if (available.Count == 0)
+            return;
 
         _currentColorData = available[Random.Range(0, available.Count)];
 
         if (_currentColorData.EmojiSprites == null || _currentColorData.EmojiSprites.Count == 0)
-        {
             return;
-        }
 
         _currentEmojiIndex = Random.Range(0, _currentColorData.EmojiSprites.Count);
 
         _aiSign.sprite = _currentColorData.EmojiSprites[_currentEmojiIndex];
         _dissolve?.PlayDissolve();
 
-        AISettingManager.AI.SetEmojiAIColor(_currentColorData.ColorName);
-        AISettingManager.AI.SetEmojiAIIndex(_currentEmojiIndex);
-        AISettingManager.Save();
+        GD.AI.EmojiColor = _currentColorData.ColorName;
+        GD.AI.EmojiIndex = _currentEmojiIndex;
+        GD.Save();
     }
 
     private void HandlePlayerColorChange()
     {
-        string playerColor = AISettingManager.Player.GetEmojiColor();
+        string playerColor = GD.Player.EmojiColor;
         EmojiData playerData = _emojiDataByColor.Find(colorData => colorData.ColorName == playerColor);
 
         if (_currentColorData == null || _currentColorData.ColorName == playerColor)

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+[DisallowMultipleComponent]
 public class PlayerMainController : MonoBehaviour
 {
     [SerializeField] private TMP_Text _playerName;
@@ -16,13 +17,12 @@ public class PlayerMainController : MonoBehaviour
 
     private void LoadPlayerData()
     {
-        _playerName.text = AISettingManager.Player.GetName();
+        _playerName.text = GD.Player.Name;
 
-        string colorName = AISettingManager.Player.GetEmojiColor();
-        int emojiIndex = AISettingManager.Player.GetEmojiIndex();
+        string colorName = GD.Player.EmojiColor;
+        int emojiIndex = GD.Player.EmojiIndex;
 
-        EmojiData colorData = _emojiDataByColor.Find(colorData => colorData.ColorName == colorName);
-
+        EmojiData colorData = _emojiDataByColor.Find(data => data.ColorName == colorName);
         if (colorData == null) return;
 
         if (emojiIndex >= 0 && emojiIndex < colorData.EmojiSprites.Count)
