@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BoardController
+public class Board
 {
     private readonly CellState[,] _board = new CellState[3, 3];
     private readonly List<Button> _buttons;
@@ -11,7 +11,7 @@ public class BoardController
     private Sprite _playerEmoji;
     private Sprite _aiEmoji;
 
-    public BoardController(List<Button> buttons, Sprite defaultSprite)
+    public Board(List<Button> buttons, Sprite defaultSprite)
     {
         _buttons = buttons;
         _defaultSprite = defaultSprite;

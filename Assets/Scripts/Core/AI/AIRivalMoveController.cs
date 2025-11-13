@@ -6,9 +6,9 @@ public class AIRivalMoveController : MonoBehaviour
 {
     private IAIStrategy _strategy;
     private InputController _input;
-    private BoardController _board;
+    private Board _board;
 
-    public void Initialize(InputController input, BoardController board)
+    public void Initialize(InputController input, Board board)
     {
         _input = input;
         _board = board;

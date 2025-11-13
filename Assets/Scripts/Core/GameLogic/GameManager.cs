@@ -26,13 +26,11 @@ public class GameManager : MonoBehaviour
     private Sprite _defaultSprite;
 
     private InputController _input;
-    private BoardController _board;
+    private Board _board;
     private TurnManager _turnManager;
     private WinChecker _winChecker;
 
     private const string LobbyScene = "Lobby";
-
-    private GameMode _currentMode;
 
     private void Start()
     {
@@ -40,22 +38,13 @@ public class GameManager : MonoBehaviour
         UpdatePlayerNames();
         InitializeGameLogic();
         InitializeInput();
-        GetCurrentGameMode();
+
+        _aiRivalController.Initialize(_input, _board);
 
         _uiView.OnRestartClicked += RestartGame;
         _backToLobbyButton.onClick.AddListener(LoadLobbyScene);
 
         RestartGame();
-    }
-
-    private void GetCurrentGameMode()
-    {
-        _currentMode = GD.Mode;
-
-        if (_currentMode == GameMode.PvE)
-            _aiRivalController.Initialize(_input, _board);
-        else if (_currentMode == GameMode.PvP)
-            _aiRivalController.enabled = false;
     }
 
     private void OnDestroy()
@@ -76,8 +65,8 @@ public class GameManager : MonoBehaviour
         string aiColor = GD.AI.EmojiColor;
         int aiIndex = GD.AI.EmojiIndex;
 
-        EmojiData playerData = _emojiDataByColor.Find(colorData => colorData.ColorName == playerColor);
-        EmojiData aiData = _emojiDataByColor.Find(colorData => colorData.ColorName == aiColor);
+        EmojiData playerData = _emojiDataByColor.Find(c => c.ColorName == playerColor);
+        EmojiData aiData = _emojiDataByColor.Find(c => c.ColorName == aiColor);
 
         if (playerData != null && playerData.EmojiSprites.Count > 0)
             _playerSprite = playerData.GetEmojiByIndex(playerIndex);
@@ -89,12 +78,12 @@ public class GameManager : MonoBehaviour
     private void UpdatePlayerNames()
     {
         _playerName.text = GD.Player.Name;
-        _aiRivalName.text = _currentMode == GameMode.PvE ? "AI" : GD.Player2.Name;
+        _aiRivalName.text = "AI";
     }
 
     private void InitializeGameLogic()
     {
-        _board = new BoardController(_buttons, _defaultSprite);
+        _board = new Board(_buttons, _defaultSprite);
         _board.LoadEmojis(_emojiDataByColor);
 
         _turnManager = new TurnManager(_playerSprite, _aiRivalSprite, _playerName, _aiRivalName);
@@ -151,7 +140,7 @@ public class GameManager : MonoBehaviour
             _turnManager.NextTurn();
             _uiView.ShowCurrentPlayer(_turnManager.CurrentName());
 
-            if (_currentMode == GameMode.PvE && _turnManager.CurrentState() == CellState.AI)
+            if (_turnManager.CurrentState() == CellState.AI)
                 _aiRivalController.MakeMove();
         }
     }
