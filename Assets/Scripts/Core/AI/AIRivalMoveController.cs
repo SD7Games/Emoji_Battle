@@ -7,11 +7,14 @@ public class AIRivalMoveController : MonoBehaviour
     private IAIStrategy _strategy;
     private InputController _input;
     private Board _board;
+    private WinChecker _winChecker;
 
     public void Initialize(InputController input, Board board)
     {
         _input = input;
         _board = board;
+
+        _winChecker = new WinChecker();
 
         LoadStrategy();
     }
@@ -41,7 +44,13 @@ public class AIRivalMoveController : MonoBehaviour
     }
 
     public void MakeMove()
-    {
+    {        
+        CellState[,] boardState = _board.GetBoardState();
+        if (_winChecker.IsGameOver(boardState, out _, out _))
+        {
+            return;
+        }
+
         StartCoroutine(MakeMoveRoutine());
     }
 
