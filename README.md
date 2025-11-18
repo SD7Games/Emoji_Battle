@@ -76,7 +76,7 @@ Inspired by classic tic-tac-toe, but expanded with emoji customization, AI oppon
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="SplеshScene.png" width="260" />
+  <img src="SpleshScene.png" width="260" />
   <img src="BootstrapScene.png" width="260" />  
 </p>
 
