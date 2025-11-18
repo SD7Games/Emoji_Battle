@@ -45,15 +45,15 @@ Inspired by classic tic-tac-toe, but expanded with emoji customization, AI oppon
 
 ## 📂 Project Structure  
 /Assets
-/Scripts
-/Core
-/AI
-/Board
-/UI
-/Progress
-/SO (ScriptableObjects)
-/Sprites
-/Prefabs
+    /Scripts
+        /Core
+        /AI
+        /Board
+        /UI
+        /Progress
+    /SO (ScriptableObjects)
+    /Sprites
+    /Prefabs
 
 ---
 
