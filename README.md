@@ -43,7 +43,8 @@ Inspired by classic tic-tac-toe, but expanded with emoji customization, AI oppon
 
 ---
 
-## 📂 Project Structure  
+## 📂 Project Structure
+```
 /Assets
     /Scripts
         /Core
@@ -55,7 +56,7 @@ Inspired by classic tic-tac-toe, but expanded with emoji customization, AI oppon
     /Sprites
     /Prefabs
 
----
+```
 
 ## 🚀 How to Build / Run  
 1. Install Unity 6 (latest available version).  
