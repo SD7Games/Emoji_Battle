@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 [DisallowMultipleComponent]
 public class ContentScrollController : MonoBehaviour
@@ -11,7 +12,7 @@ public class ContentScrollController : MonoBehaviour
     public event Action<Sprite> OnEmojiSelected;
     public event Action OnGenerationComplete;
 
-    public void SetEmojiData(EmojiData emojiData)
+    public void SetEmojiData(EmojiData emojiData, PlayerProgress playerProgress, Action<int> onEmojiSelected)
     {
         if (emojiData == null || emojiData.EmojiSprites == null)
             return;
@@ -19,20 +20,33 @@ public class ContentScrollController : MonoBehaviour
         foreach (Transform child in _contentParent)
             Destroy(child.gameObject);
 
-        foreach (var sprite in emojiData.EmojiSprites)
+        int total = emojiData.EmojiSprites.Count;
+        var sortedIndexes = playerProgress.GetSortedEmojiIndexes(emojiData.ColorId, total);
+
+        foreach (int emojiIndex in sortedIndexes)
         {
+            bool unlocked = playerProgress.IsEmojiUnlocked(emojiData.ColorId, emojiIndex);
+            Sprite sprite = emojiData.EmojiSprites[emojiIndex];
+
             var buttonGO = Instantiate(_emojiButtonPrefab, _contentParent);
+
             var image = buttonGO.GetComponentInChildren<Image>();
             image.sprite = sprite;
 
+            var lockedText = buttonGO.GetComponentInChildren<TMP_Text>(true);
+
             var button = buttonGO.GetComponent<Button>();
+           
+            lockedText.gameObject.SetActive(!unlocked);
+            button.interactable = unlocked;
+
+            int safeIndex = emojiIndex;
+
             button.onClick.AddListener(() =>
             {
-                int index = emojiData.EmojiSprites.IndexOf(sprite);
+                if (!unlocked) return;
 
-                GD.Player.EmojiIndex = index;
-                GD.Save();
-
+                onEmojiSelected?.Invoke(safeIndex);
                 OnEmojiSelected?.Invoke(sprite);
             });
         }

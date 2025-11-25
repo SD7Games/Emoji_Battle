@@ -738,6 +738,10 @@ PrefabInstance:
       propertyPath: _contentScroll
       value: 
       objectReference: {fileID: 3385362666612963243}
+    - target: {fileID: 6863368328980441272, guid: 81da38bfc79c42e4882182c010fb434c, type: 3}
+      propertyPath: _unlockNextButton
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8788772741477665887, guid: 81da38bfc79c42e4882182c010fb434c, type: 3}
       propertyPath: m_Name
       value: PlayerLobby

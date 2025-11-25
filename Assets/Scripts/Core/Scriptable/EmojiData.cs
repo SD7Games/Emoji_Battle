@@ -5,7 +5,7 @@ using UnityEngine;
 public class EmojiData : ScriptableObject
 {
     [Header("Color info")]
-    public string ColorName;
+    public int ColorId;
 
     [Header("Emoji list of this color")]
     public List<Sprite> EmojiSprites;

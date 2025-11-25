@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9f821b898935d4f965e7b69ed0edfb, type: 3}
   m_Name: EmojiYellowData
   m_EditorClassIdentifier: 
-  ColorName: Yellow
+  ColorId: 9
   EmojiSprites:
   - {fileID: 21300000, guid: 306ac2a41eac7994a8ec0162ee85ca73, type: 3}
   - {fileID: 21300000, guid: 4c8c3494af2a53540ad0f1fa5678a569, type: 3}

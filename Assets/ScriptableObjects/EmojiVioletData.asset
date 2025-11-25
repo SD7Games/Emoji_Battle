@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9f821b898935d4f965e7b69ed0edfb, type: 3}
   m_Name: EmojiVioletData
   m_EditorClassIdentifier: 
-  ColorName: Violet
+  ColorId: 7
   EmojiSprites:
   - {fileID: 21300000, guid: 01ca6135e9648ae4d874ae0a3fa98d35, type: 3}
   - {fileID: 21300000, guid: 8169720fad2050349a6b3031571b1c0d, type: 3}

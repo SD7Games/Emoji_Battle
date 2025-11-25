@@ -35,12 +35,12 @@ public class AIRivalLobbyController : MonoBehaviour
         if (_emojiDataByColor == null || _emojiDataByColor.Count == 0)
             return;
 
-        string playerColor = GD.Player.EmojiColor;
-        string aiColor = GD.AI.EmojiColor;
+        int playerColor = GD.Player.EmojiColor;
+        int aiColor = GD.AI.EmojiColor;
         int aiIndex = GD.AI.EmojiIndex;
 
-        EmojiData playerData = _emojiDataByColor.Find(d => d.ColorName == playerColor);
-        EmojiData aiData = _emojiDataByColor.Find(d => d.ColorName == aiColor);
+        EmojiData playerData = _emojiDataByColor.Find(d => d.ColorId == playerColor);
+        EmojiData aiData = _emojiDataByColor.Find(d => d.ColorId == aiColor);
 
         if (aiData == null || aiData == playerData)
         {
@@ -78,17 +78,17 @@ public class AIRivalLobbyController : MonoBehaviour
         _aiSign.sprite = _currentColorData.EmojiSprites[_currentEmojiIndex];
         _dissolve?.PlayDissolve();
 
-        GD.AI.EmojiColor = _currentColorData.ColorName;
+        GD.AI.EmojiColor = _currentColorData.ColorId;
         GD.AI.EmojiIndex = _currentEmojiIndex;
         GD.Save();
     }
 
     private void HandlePlayerColorChange()
     {
-        string playerColor = GD.Player.EmojiColor;
-        EmojiData playerData = _emojiDataByColor.Find(colorData => colorData.ColorName == playerColor);
+        int playerColor = GD.Player.EmojiColor;
+        EmojiData playerData = _emojiDataByColor.Find(colorData => colorData.ColorId == playerColor);
 
-        if (_currentColorData == null || _currentColorData.ColorName == playerColor)
+        if (_currentColorData == null || _currentColorData.ColorId == playerColor)
         {
             ChooseNewColorAndEmoji(playerData);
         }

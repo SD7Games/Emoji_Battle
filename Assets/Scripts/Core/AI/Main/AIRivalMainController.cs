@@ -15,15 +15,14 @@ public class AIRivalMainController : MonoBehaviour
 
     private void LoadAIData()
     {
-        string colorName = GD.AI.EmojiColor;
+        int colorId = GD.AI.EmojiColor;
         int emojiIndex = GD.AI.EmojiIndex;
 
-        EmojiData colorData = _emojiDataByColor.Find(d => d.ColorName == colorName);
-        if (colorData == null) return;
+        EmojiData colorData = _emojiDataByColor.Find(d => d.ColorId == colorId);
+        if (colorData == null || colorData.EmojiSprites.Count == 0)
+            return;
 
-        if (emojiIndex >= 0 && emojiIndex < colorData.EmojiSprites.Count)
-        {
-            _aiSign.sprite = colorData.EmojiSprites[emojiIndex];
-        }
+        int safeIndex = Mathf.Clamp(emojiIndex, 0, colorData.EmojiSprites.Count - 1);
+        _aiSign.sprite = colorData.EmojiSprites[safeIndex];
     }
 }

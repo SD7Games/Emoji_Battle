@@ -23,28 +23,17 @@ public class AIRivalMoveController : MonoBehaviour
     {
         string strategyName = GD.AI.Strategy;
 
-        switch (strategyName)
+        _strategy = strategyName switch
         {
-            case "Easy":
-                _strategy = new EasyStrategy();
-                break;
-
-            case "Normal":
-                _strategy = new NormalStrategy();
-                break;
-
-            case "Hard":
-                _strategy = new HardStrategy();
-                break;
-
-            default:
-                _strategy = new EasyStrategy();
-                break;
-        }
+            "Easy" => new EasyStrategy(),
+            "Normal" => new NormalStrategy(),
+            "Hard" => new HardStrategy(),
+            _ => new EasyStrategy(),
+        };
     }
 
     public void MakeMove()
-    {        
+    {
         CellState[,] boardState = _board.GetBoardState();
         if (_winChecker.IsGameOver(boardState, out _, out _))
         {

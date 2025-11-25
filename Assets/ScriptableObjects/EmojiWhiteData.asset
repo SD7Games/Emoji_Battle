@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9f821b898935d4f965e7b69ed0edfb, type: 3}
   m_Name: EmojiWhiteData
   m_EditorClassIdentifier: 
-  ColorName: White
+  ColorId: 8
   EmojiSprites:
   - {fileID: 21300000, guid: d054652c7db112c47a2ee2f6c2929da6, type: 3}
   - {fileID: 21300000, guid: c1b2f865874a10e45aeb3ffb530fecf8, type: 3}

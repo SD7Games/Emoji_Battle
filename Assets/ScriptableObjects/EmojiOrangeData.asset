@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9f821b898935d4f965e7b69ed0edfb, type: 3}
   m_Name: EmojiOrangeData
   m_EditorClassIdentifier: 
-  ColorName: Orange
+  ColorId: 4
   EmojiSprites:
   - {fileID: 21300000, guid: a00d310d4e4202243afcf8d00c793a4b, type: 3}
   - {fileID: 21300000, guid: e4518fe90b05efd45a7030939effa80d, type: 3}

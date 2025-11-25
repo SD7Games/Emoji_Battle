@@ -22,13 +22,13 @@ public class Board
     {
         if (emojiDataByColor == null || emojiDataByColor.Count == 0) return;
 
-        string playerColor = GD.Player.EmojiColor;
+        int playerColor = GD.Player.EmojiColor;
         int playerIndex = GD.Player.EmojiIndex;
-        string aiColor = GD.AI.EmojiColor;
+        int aiColor = GD.AI.EmojiColor;
         int aiIndex = GD.AI.EmojiIndex;
 
-        EmojiData playerData = emojiDataByColor.Find(colorData => colorData.ColorName == playerColor);
-        EmojiData aiData = emojiDataByColor.Find(colorData => colorData.ColorName == aiColor);
+        EmojiData playerData = emojiDataByColor.Find(colorData => colorData.ColorId == playerColor);
+        EmojiData aiData = emojiDataByColor.Find(colorData => colorData.ColorId == aiColor);
 
         if (playerData != null && playerData.EmojiSprites.Count > 0)
             _playerEmoji = playerData.EmojiSprites[Mathf.Clamp(playerIndex, 0, playerData.EmojiSprites.Count - 1)];

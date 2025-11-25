@@ -60,13 +60,13 @@ public class GameManager : MonoBehaviour
     {
         _defaultSprite = _buttons[0].GetComponent<Image>().sprite;
 
-        string playerColor = GD.Player.EmojiColor;
+        int playerColor = GD.Player.EmojiColor;
         int playerIndex = GD.Player.EmojiIndex;
-        string aiColor = GD.AI.EmojiColor;
+        int aiColor = GD.AI.EmojiColor;
         int aiIndex = GD.AI.EmojiIndex;
 
-        EmojiData playerData = _emojiDataByColor.Find(c => c.ColorName == playerColor);
-        EmojiData aiData = _emojiDataByColor.Find(c => c.ColorName == aiColor);
+        EmojiData playerData = _emojiDataByColor.Find(c => c.ColorId == playerColor);
+        EmojiData aiData = _emojiDataByColor.Find(c => c.ColorId == aiColor);
 
         if (playerData != null && playerData.EmojiSprites.Count > 0)
             _playerSprite = playerData.GetEmojiByIndex(playerIndex);
@@ -127,6 +127,14 @@ public class GameManager : MonoBehaviour
 
                 string winnerName = GetNameByState(winner);
                 _uiView.ShowResult($"\n{winnerName} wins!");
+
+                if (winner == CellState.Player)
+                {
+                    if (GD.PlayerProgress.UnlockNextGlobal(_emojiDataByColor))
+                    {
+                        GD.SaveProgress();
+                    }
+                }
             }
             else
             {
@@ -143,6 +151,7 @@ public class GameManager : MonoBehaviour
             if (_turnManager.CurrentState() == CellState.AI)
                 _aiRivalController.MakeMove();
         }
+
     }
 
     private string GetNameByState(CellState state)

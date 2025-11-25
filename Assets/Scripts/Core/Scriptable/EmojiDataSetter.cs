@@ -23,7 +23,7 @@ public class EmojiDataSetter : MonoBehaviour
 
         _currentData = newData;
 
-        GD.Player.EmojiColor = _currentData.ColorName;
+        GD.Player.EmojiColor = _currentData.ColorId;
 
         GD.Save();
     }

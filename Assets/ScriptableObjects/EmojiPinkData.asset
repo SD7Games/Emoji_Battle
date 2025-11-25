@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9f821b898935d4f965e7b69ed0edfb, type: 3}
   m_Name: EmojiPinkData
   m_EditorClassIdentifier: 
-  ColorName: Pink
+  ColorId: 5
   EmojiSprites:
   - {fileID: 21300000, guid: 4994016131f0711489afcd61afa800c6, type: 3}
   - {fileID: 21300000, guid: c17329412b2acc34c9283faaa6402857, type: 3}

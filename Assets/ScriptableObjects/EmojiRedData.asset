@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9f821b898935d4f965e7b69ed0edfb, type: 3}
   m_Name: EmojiRedData
   m_EditorClassIdentifier: 
-  ColorName: Red
+  ColorId: 6
   EmojiSprites:
   - {fileID: 21300000, guid: 587ec58990b7feb488fe2b61980765e3, type: 3}
   - {fileID: 21300000, guid: 71688bee1edf23645a5a8f5ab71a6031, type: 3}
