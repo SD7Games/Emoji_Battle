@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
                     _boardView.ShowWinLine(winLine.Value);
 
                 string winnerName = GetNameByState(winner);
-                _uiView.ShowResult($"\n{winnerName} wins!");
+                // Show WinPopup or LoossePopup
 
                 if (winner == CellState.Player)
                 {
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                _uiView.ShowResult("Draw!");
+                //show Draw Popup
             }
 
             _board.DisableAll(boardState);
