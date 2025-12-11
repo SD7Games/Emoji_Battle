@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6363238716708591599
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2732754323735259927}
+  - component: {fileID: 745501417015648733}
+  - component: {fileID: 316598601210307784}
+  - component: {fileID: 6340134050003887928}
+  m_Layer: 0
+  m_Name: MainInstaller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2732754323735259927
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6363238716708591599}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &745501417015648733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6363238716708591599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af333527f216e4f44a8a0e8c64ae1572, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainInstaller
+  uiView: {fileID: 3439371357921701588, guid: 5151394c9c934a745901ea04fa791d2f, type: 3}
+  signView: {fileID: 8149363389101675636, guid: 5151394c9c934a745901ea04fa791d2f, type: 3}
+  turnState: {fileID: 316598601210307784}
+  aiController: {fileID: 6340134050003887928}
+  winLines: {fileID: 1994585269952937927, guid: 5151394c9c934a745901ea04fa791d2f, type: 3}
+  emojiSets:
+  - {fileID: 11400000, guid: 6b6c84d126464c040bbed916feba2efe, type: 2}
+  - {fileID: 11400000, guid: 3651e23b5c62b054081d0b4ab62ddf78, type: 2}
+  - {fileID: 11400000, guid: 598f39a16aece63438901d8d79a6facc, type: 2}
+  - {fileID: 11400000, guid: 1146512a3974f414096273dd8d448e9c, type: 2}
+  - {fileID: 11400000, guid: 3ea32681becfc3847a0e43021d36c4d1, type: 2}
+  - {fileID: 11400000, guid: a9d8ed788f4fa324ea37a1d430a311be, type: 2}
+  - {fileID: 11400000, guid: d461605546b33e34a86648e35035e66c, type: 2}
+  - {fileID: 11400000, guid: 3e51d83b789c126498e5febe8c445ab4, type: 2}
+  - {fileID: 11400000, guid: e940a4f66e5c46f40bd623b63019a1ec, type: 2}
+--- !u!114 &316598601210307784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6363238716708591599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 422060e558644eb4a8f6f8e1aae6af1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurnState
+--- !u!114 &6340134050003887928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6363238716708591599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 240aae15fa4e3164eb52301480c532ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AIRivalMoveController
