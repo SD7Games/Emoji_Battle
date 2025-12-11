@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-
 
 namespace TMPro.Examples
 {
@@ -18,14 +16,13 @@ namespace TMPro.Examples
         //private TextMeshProFloatingText floatingText_Script;
         //public Material material;
 
-
-        void Start()
+        private void Start()
         {
             m_Transform = transform;
 
             float lineHeight = 0;
             float orthoSize = Camera.main.orthographicSize = Screen.height / 2;
-            float ratio = (float)Screen.width / Screen.height;
+            float ratio = (float) Screen.width / Screen.height;
 
             for (int i = MinPointSize; i <= MaxPointSize; i += Steps)
             {

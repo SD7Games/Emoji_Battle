@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-
 
 namespace TMPro.Examples
 {
@@ -14,13 +12,11 @@ namespace TMPro.Examples
         public bool IsTextObjectScaleStatic;
         private TextMeshProFloatingText floatingText_Script;
 
-
-        void Start()
+        private void Start()
         {
 
             for (int i = 0; i < NumberOfNPC; i++)
             {
-
 
                 if (SpawnType == 0)
                 {
@@ -88,8 +84,6 @@ namespace TMPro.Examples
                     floatingText_Script = go.AddComponent<TextMeshProFloatingText>();
                     floatingText_Script.SpawnType = 0;
                 }
-
-
 
             }
         }

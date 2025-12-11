@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-
 
 namespace TMPro.Examples
 {
@@ -11,7 +9,8 @@ namespace TMPro.Examples
         private float m_LastInterval = 0;
         private int m_Frames = 0;
 
-        public enum FpsCounterAnchorPositions { TopLeft, BottomLeft, TopRight, BottomRight };
+        public enum FpsCounterAnchorPositions
+        { TopLeft, BottomLeft, TopRight, BottomRight };
 
         public FpsCounterAnchorPositions AnchorPosition = FpsCounterAnchorPositions.TopRight;
 
@@ -23,7 +22,7 @@ namespace TMPro.Examples
 
         private FpsCounterAnchorPositions last_AnchorPosition;
 
-        void Awake()
+        private void Awake()
         {
             if (!enabled)
                 return;
@@ -48,15 +47,13 @@ namespace TMPro.Examples
             last_AnchorPosition = AnchorPosition;
         }
 
-
-        void Start()
+        private void Start()
         {
             m_LastInterval = Time.realtimeSinceStartup;
             m_Frames = 0;
         }
 
-
-        void Update()
+        private void Update()
         {
             if (AnchorPosition != last_AnchorPosition)
                 Set_FrameCounter_Position(AnchorPosition);
@@ -86,8 +83,7 @@ namespace TMPro.Examples
             }
         }
 
-
-        void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position)
+        private void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position)
         {
             switch (anchor_position)
             {
@@ -98,6 +94,7 @@ namespace TMPro.Examples
                     m_frameCounter_transform.anchorMax = new Vector2(0.01f, 0.99f);
                     m_frameCounter_transform.anchoredPosition = new Vector2(0, 1);
                     break;
+
                 case FpsCounterAnchorPositions.BottomLeft:
                     m_TextMeshPro.alignment = TextAlignmentOptions.BottomLeft;
                     m_frameCounter_transform.pivot = new Vector2(0, 0);
@@ -105,6 +102,7 @@ namespace TMPro.Examples
                     m_frameCounter_transform.anchorMax = new Vector2(0.01f, 0.01f);
                     m_frameCounter_transform.anchoredPosition = new Vector2(0, 0);
                     break;
+
                 case FpsCounterAnchorPositions.TopRight:
                     m_TextMeshPro.alignment = TextAlignmentOptions.TopRight;
                     m_frameCounter_transform.pivot = new Vector2(1, 1);
@@ -112,6 +110,7 @@ namespace TMPro.Examples
                     m_frameCounter_transform.anchorMax = new Vector2(0.99f, 0.99f);
                     m_frameCounter_transform.anchoredPosition = new Vector2(1, 1);
                     break;
+
                 case FpsCounterAnchorPositions.BottomRight:
                     m_TextMeshPro.alignment = TextAlignmentOptions.BottomRight;
                     m_frameCounter_transform.pivot = new Vector2(1, 0);

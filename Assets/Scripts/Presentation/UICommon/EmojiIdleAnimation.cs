@@ -1,5 +1,5 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 [RequireComponent(typeof(RectTransform))]
 public class EmojiIdleAnimation : MonoBehaviour

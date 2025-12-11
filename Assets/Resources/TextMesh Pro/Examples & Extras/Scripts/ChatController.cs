@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
-public class ChatController : MonoBehaviour {
-
+public class ChatController : MonoBehaviour
+{
 
     public TMP_InputField ChatInputField;
 
@@ -11,18 +11,17 @@ public class ChatController : MonoBehaviour {
 
     public Scrollbar ChatScrollbar;
 
-    void OnEnable()
+    private void OnEnable()
     {
         ChatInputField.onSubmit.AddListener(AddToChatOutput);
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         ChatInputField.onSubmit.RemoveListener(AddToChatOutput);
     }
 
-
-    void AddToChatOutput(string newText)
+    private void AddToChatOutput(string newText)
     {
         // Clear Input Field
         ChatInputField.text = string.Empty;
