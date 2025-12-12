@@ -86,6 +86,8 @@ Inspired by classic tic-tac-toe, expanded with emoji customization, AI opponents
 
 ## 📂 Project Structure
 
+## 📂 Project Structure
+
 ```text
 Assets/
   Scripts/
@@ -93,7 +95,6 @@ Assets/
     Domain/          # Pure game logic (board, AI, progression)
     Infrastructure/  # Data models, saving, profiles
     Presentation/    # UI views and visual logic
-  SO/                # ScriptableObjects (emoji data/configs)
   Sprites/
   Prefabs/
 
