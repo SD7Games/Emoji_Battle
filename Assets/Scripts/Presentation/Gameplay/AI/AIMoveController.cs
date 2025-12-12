@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class AIMoveController : MonoBehaviour
 {
-    private IAIStrategy strategy;
-    private GameFlow flow;
-    private float delay = 0.6f;
+    private IAIStrategy _strategy;
+    private GameFlow _flow;
+    private float _delay = 0.6f;
 
     public void Init(GameFlow flow, float delay = 0.6f)
     {
-        this.flow = flow;
-        this.delay = delay;
+        this._flow = flow;
+        this._delay = delay;
 
         LoadStrategyFromSave();
     }
@@ -18,7 +18,7 @@ public class AIMoveController : MonoBehaviour
     private void LoadStrategyFromSave()
     {
         var ai = GameDataService.I.Data.AI;
-        strategy = AIStrategyFactory.Create(ai.Strategy);
+        _strategy = AIStrategyFactory.Create(ai.Strategy);
     }
 
     public void MakeMove(int[] boardState)
@@ -28,11 +28,11 @@ public class AIMoveController : MonoBehaviour
 
     private IEnumerator AIMoveRoutine(int[] board)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(_delay);
 
-        int index = strategy.TryGetMove(board);
+        int index = _strategy.TryGetMove(board);
 
         if (index >= 0)
-            flow.ProcessMove(index);
+            _flow.ProcessMove(index);
     }
 }

@@ -2,9 +2,9 @@ using System;
 
 public class GameFlow
 {
-    private readonly BoardState state;
-    private readonly TurnState turn;
-    private readonly WinChecker checker;
+    private readonly BoardState _state;
+    private readonly TurnState _turn;
+    private readonly WinChecker _checker;
 
     public event Action<int, CellState> OnMoveApplied;
 
@@ -14,24 +14,24 @@ public class GameFlow
 
     public GameFlow(BoardState state, TurnState turn, WinChecker checker)
     {
-        this.state = state;
-        this.turn = turn;
-        this.checker = checker;
+        _state = state;
+        _turn = turn;
+        _checker = checker;
     }
 
     public void ProcessMove(int index)
     {
-        if (!state.IsEmpty(index))
+        if (!_state.IsEmpty(index))
         {
             return;
         }
 
-        var mark = turn.Current;
+        var mark = _turn.Current;
 
-        state.Set(index, mark);
+        _state.Set(index, mark);
         OnMoveApplied?.Invoke(index, mark);
 
-        var result = checker.Check(state.Data);
+        var result = _checker.Check(_state.Data);
 
         if (result.IsGameOver)
         {
@@ -40,19 +40,19 @@ public class GameFlow
                 ? (WinLineView.WinLineType?) result.WinLineIndex.Value
                 : null;
 
-            OnGameOver?.Invoke(result.Winner, line, state.Data);
+            OnGameOver?.Invoke(result.Winner, line, _state.Data);
             return;
         }
 
-        turn.Next();
+        _turn.Next();
 
-        OnTurnChanged?.Invoke(turn.IsPlayerTurn);
+        OnTurnChanged?.Invoke(_turn.IsPlayerTurn);
     }
 
     public void Reset()
     {
-        state.Reset();
-        turn.Reset();
+        _state.Reset();
+        _turn.Reset();
         OnTurnChanged?.Invoke(true);
     }
 }

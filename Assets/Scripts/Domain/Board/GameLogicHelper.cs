@@ -2,16 +2,16 @@ using System.Collections.Generic;
 
 public static class GameLogicHelper
 {
-    private static readonly int[][] Wins = WinChecker.Lines;
+    private static readonly int[][] _wins = WinChecker.Lines;
 
     public static CellState[,] To2DBoard(int[] board)
     {
-        CellState[,] b = new CellState[BoardState.Size, BoardState.Size];
+        CellState[,] b = new CellState[BoardState.SIZE, BoardState.SIZE];
 
         for (int i = 0; i < board.Length; i++)
         {
             int value = board[i];
-            b[i / BoardState.Size, i % BoardState.Size] = value switch
+            b[i / BoardState.SIZE, i % BoardState.SIZE] = value switch
             {
                 1 => CellState.Player,
                 2 => CellState.AI,
@@ -27,9 +27,9 @@ public static class GameLogicHelper
         winner = CellState.Empty;
         winLineIndex = null;
 
-        for (int i = 0; i < Wins.Length; i++)
+        for (int i = 0; i < _wins.Length; i++)
         {
-            int a = Wins[i][0], b = Wins[i][1], c = Wins[i][2];
+            int a = _wins[i][0], b = _wins[i][1], c = _wins[i][2];
 
             var A = board[a / 3, a % 3];
             var B = board[b / 3, b % 3];
@@ -53,14 +53,14 @@ public static class GameLogicHelper
 
     public static int FindWinningMove(int[] board, int mark)
     {
-        for (int i = 0; i < Wins.Length; i++)
+        for (int i = 0; i < _wins.Length; i++)
         {
             int emptyIndex = -1;
             int countMark = 0;
 
             for (int j = 0; j < 3; j++)
             {
-                int idx = Wins[i][j];
+                int idx = _wins[i][j];
                 if (board[idx] == mark)
                     countMark++;
                 else if (board[idx] == 0)

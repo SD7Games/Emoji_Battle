@@ -5,14 +5,14 @@ using UnityEngine.UI;
 public class MainUIView : MonoBehaviour
 {
     [Header("Buttons")]
-    [SerializeField] private Button restartButton;
+    [SerializeField] private Button _restartButton;
 
-    [SerializeField] private Button backButton;
+    [SerializeField] private Button _backButton;
 
     [Header("Board")]
-    [SerializeField] private BoardView boardView;
+    [SerializeField] private BoardView _boardView;
 
-    public BoardView BoardView => boardView;
+    public BoardView BoardView => _boardView;
 
     public event Action OnRestartClicked;
 
@@ -22,14 +22,14 @@ public class MainUIView : MonoBehaviour
 
     private void Awake()
     {
-        restartButton.onClick.AddListener(() => OnRestartClicked?.Invoke());
-        backButton.onClick.AddListener(() => OnBackClicked?.Invoke());
+        _restartButton.onClick.AddListener(() => OnRestartClicked?.Invoke());
+        _backButton.onClick.AddListener(() => OnBackClicked?.Invoke());
 
-        boardView.OnCellPressed += index => OnCellClicked?.Invoke(index);
+        _boardView.OnCellPressed += index => OnCellClicked?.Invoke(index);
     }
 
     public void InitBoardSprites(Sprite player, Sprite ai)
     {
-        boardView.AssignSprites(player, ai);
+        _boardView.AssignSprites(player, ai);
     }
 }

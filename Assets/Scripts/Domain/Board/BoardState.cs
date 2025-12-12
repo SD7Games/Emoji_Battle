@@ -2,15 +2,15 @@ using System;
 
 public class BoardState
 {
-    public const int Size = 3;
+    public const int SIZE = 3;
 
-    private readonly CellState[,] _data = new CellState[Size, Size];
+    private readonly CellState[,] _data = new CellState[SIZE, SIZE];
 
     public CellState[,] Data => (CellState[,]) _data.Clone();
 
     public bool IsEmpty(int index)
     {
-        if (index < 0 || index >= Size * Size)
+        if (index < 0 || index >= SIZE * SIZE)
             throw new ArgumentOutOfRangeException(nameof(index));
 
         var (x, y) = IndexToCoord(index);
@@ -19,7 +19,7 @@ public class BoardState
 
     public bool TrySet(int index, CellState state)
     {
-        if (index < 0 || index >= Size * Size)
+        if (index < 0 || index >= SIZE * SIZE)
             throw new ArgumentOutOfRangeException(nameof(index));
 
         var (x, y) = IndexToCoord(index);
@@ -33,7 +33,7 @@ public class BoardState
 
     public void Set(int index, CellState state)
     {
-        if (index < 0 || index >= Size * Size)
+        if (index < 0 || index >= SIZE * SIZE)
             throw new ArgumentOutOfRangeException(nameof(index));
 
         var (x, y) = IndexToCoord(index);
@@ -42,14 +42,14 @@ public class BoardState
 
     public void Reset()
     {
-        for (int x = 0; x < Size; x++)
-            for (int y = 0; y < Size; y++)
+        for (int x = 0; x < SIZE; x++)
+            for (int y = 0; y < SIZE; y++)
                 _data[x, y] = CellState.Empty;
     }
 
     public int[] AsIntArray()
     {
-        int[] arr = new int[Size * Size];
+        int[] arr = new int[SIZE * SIZE];
 
         for (int i = 0; i < arr.Length; i++)
         {
@@ -61,5 +61,5 @@ public class BoardState
     }
 
     public static (int x, int y) IndexToCoord(int index)
-        => (index / Size, index % Size);
+        => (index / SIZE, index % SIZE);
 }

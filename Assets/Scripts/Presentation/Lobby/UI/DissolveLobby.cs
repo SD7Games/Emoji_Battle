@@ -13,7 +13,7 @@ public class DissolveLobby : MonoBehaviour
 
     private Image _image;
     private Material _material;
-    private static readonly int DissolveAmount = Shader.PropertyToID("_DissolveAmount");
+    private static readonly int _dissolveAmount = Shader.PropertyToID("_DissolveAmount");
     private Coroutine _routine;
 
     private void Awake()
@@ -61,16 +61,16 @@ public class DissolveLobby : MonoBehaviour
     private IEnumerator DissolveRoutine()
     {
         float t = 0f;
-        _material.SetFloat(DissolveAmount, 1.1f);
+        _material.SetFloat(_dissolveAmount, 1.1f);
 
         while (t < _dissolveTime)
         {
             t += Time.deltaTime;
             float v = Mathf.Lerp(1.1f, 0f, t / _dissolveTime);
-            _material.SetFloat(DissolveAmount, v);
+            _material.SetFloat(_dissolveAmount, v);
             yield return null;
         }
 
-        _material.SetFloat(DissolveAmount, 0f);
+        _material.SetFloat(_dissolveAmount, 0f);
     }
 }

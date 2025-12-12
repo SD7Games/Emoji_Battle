@@ -11,10 +11,10 @@ public class DissolveMain : MonoBehaviour
     private Material _material;
     private Coroutine _routine;
 
-    private static readonly int DissolveAmount = Shader.PropertyToID("_DissolveAmount");
+    private static readonly int _dissolveAmount = Shader.PropertyToID("_DissolveAmount");
 
-    private const float StartValue = 1.1f;
-    private const float EndValue = 0f;
+    private const float START_VALUE = 1.1f;
+    private const float END_VALUE = 0f;
 
     private bool _initialized = false;
 
@@ -61,25 +61,25 @@ public class DissolveMain : MonoBehaviour
         if (_routine != null)
             StopCoroutine(_routine);
 
-        _material.SetFloat(DissolveAmount, StartValue);
+        _material.SetFloat(_dissolveAmount, START_VALUE);
     }
 
     private IEnumerator DissolveRoutine()
     {
         float elapsed = 0f;
 
-        _material.SetFloat(DissolveAmount, StartValue);
+        _material.SetFloat(_dissolveAmount, START_VALUE);
 
         while (elapsed < _dissolveTime)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / _dissolveTime;
 
-            _material.SetFloat(DissolveAmount, Mathf.Lerp(StartValue, EndValue, t));
+            _material.SetFloat(_dissolveAmount, Mathf.Lerp(START_VALUE, END_VALUE, t));
 
             yield return null;
         }
 
-        _material.SetFloat(DissolveAmount, EndValue);
+        _material.SetFloat(_dissolveAmount, END_VALUE);
     }
 }

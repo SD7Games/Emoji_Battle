@@ -1,24 +1,24 @@
 public class GameSession
 {
-    private readonly GameFlow flow;
-    private readonly TurnState turn;
-    private readonly WinLineView lines;
-    private readonly BoardView board;
+    private readonly GameFlow _flow;
+    private readonly TurnState _turn;
+    private readonly WinLineView _lines;
+    private readonly BoardView _board;
 
     public GameSession(GameFlow flow, TurnState turn, WinLineView lines, BoardView board)
     {
-        this.flow = flow;
-        this.turn = turn;
-        this.lines = lines;
-        this.board = board;
+        _flow = flow;
+        _turn = turn;
+        _lines = lines;
+        _board = board;
     }
 
     public void Restart()
     {
-        flow.Reset();
-        turn.Reset();
-        lines.HideAllLines();
-        board.ResetView();
-        board.SetInteractable(true);
+        _flow.Reset();
+        _turn.Reset();
+        _lines.HideAllLines();
+        _board.ResetView();
+        _board.SetInteractable(true);
     }
 }

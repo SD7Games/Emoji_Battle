@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class BootstrapController
 {
-    private const string LobbySceneTag = "Lobby";
+    private const string LOBBY_SCENE = "Lobby";
 
     private readonly BootstrapView _bootstrapView;
 
@@ -18,7 +18,7 @@ public class BootstrapController
 
     public async Task StartAsynk()
     {
-        _loadOperation = SceneManager.LoadSceneAsync(LobbySceneTag);
+        _loadOperation = SceneManager.LoadSceneAsync(LOBBY_SCENE);
         _loadOperation.allowSceneActivation = false;
 
         await Task.Delay(1000);

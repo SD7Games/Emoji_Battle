@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public class GameProgress
 {
-    public List<EmojiProgress> All = new List<EmojiProgress>();
+    public List<EmojiProgress> AllEmoji = new List<EmojiProgress>();
 
     [NonSerialized]
     private Dictionary<(int color, int id), EmojiProgress> _cache;
@@ -20,7 +20,7 @@ public class GameProgress
 
         _cache = new Dictionary<(int color, int id), EmojiProgress>();
 
-        foreach (var i in All)
+        foreach (var i in AllEmoji)
         {
             var key = (i.ColorId, i.EmojiId);
             _cache[key] = i;
@@ -38,7 +38,7 @@ public class GameProgress
 
         progress = new EmojiProgress(colorId, emojiId, false);
         _cache[key] = progress;
-        All.Add(progress);
+        AllEmoji.Add(progress);
 
         return progress;
     }
@@ -188,6 +188,6 @@ public class GameProgress
 
     public bool HasAnyProgress()
     {
-        return All.Count > 0;
+        return AllEmoji.Count > 0;
     }
 }

@@ -5,83 +5,83 @@ using UnityEngine.SceneManagement;
 public class MainInstaller : MonoBehaviour
 {
     [Header("Views")]
-    [SerializeField] private MainUIView uiView;
+    [SerializeField] private MainUIView _uiView;
 
-    [SerializeField] private MainSignView signView;
-    [SerializeField] private TurnState turnState;
-    [SerializeField] private AIMoveController aiController;
-    [SerializeField] private WinLineView winLines;
+    [SerializeField] private MainSignView _signView;
+    [SerializeField] private TurnState _turnState;
+    [SerializeField] private AIMoveController _aiController;
+    [SerializeField] private WinLineView _winLines;
 
     [Header("Emoji Sets")]
-    [SerializeField] private List<EmojiData> emojiSets;
+    [SerializeField] private List<EmojiData> _emojiSets;
 
-    private InputController input;
-    private EmojiResolver resolver;
-    private BoardState board;
-    private WinChecker checker;
-    private GameFlow flow;
-    private GameSession session;
+    private InputController _input;
+    private EmojiResolver _resolver;
+    private BoardState _board;
+    private WinChecker _checker;
+    private GameFlow _flow;
+    private GameSession _session;
 
-    private GameResultUI resultUI;
-    private GameRewardService rewardService;
+    private GameResultUI _resultUI;
+    private GameRewardService _rewardService;
 
     private void Awake()
     {
         var save = GameDataService.I.Data;
 
-        resolver = new EmojiResolver(emojiSets);
+        _resolver = new EmojiResolver(_emojiSets);
 
-        Sprite player = resolver.Get(save.Player.EmojiColor, save.Player.EmojiIndex);
-        Sprite ai = resolver.Get(save.AI.EmojiColor, save.AI.EmojiIndex);
+        Sprite player = _resolver.Get(save.Player.EmojiColor, save.Player.EmojiIndex);
+        Sprite ai = _resolver.Get(save.AI.EmojiColor, save.AI.EmojiIndex);
 
-        signView.SetPlayer(player, save.Player.Name);
-        signView.SetAI(ai, save.AI.Name);
+        _signView.SetPlayer(player, save.Player.Name);
+        _signView.SetAI(ai, save.AI.Name);
 
-        board = new BoardState();
-        checker = new WinChecker();
+        _board = new BoardState();
+        _checker = new WinChecker();
 
-        flow = new GameFlow(board, turnState, checker);
+        _flow = new GameFlow(_board, _turnState, _checker);
 
-        input = new InputController(uiView.BoardView.Buttons);
-        input.OnCellClicked += index =>
+        _input = new InputController(_uiView.BoardView.Buttons);
+        _input.OnCellClicked += index =>
         {
-            flow.ProcessMove(index);
+            _flow.ProcessMove(index);
         };
 
-        uiView.InitBoardSprites(player, ai);
-        uiView.BoardView.ResetView();
-        uiView.BoardView.SetInteractable(true);
+        _uiView.InitBoardSprites(player, ai);
+        _uiView.BoardView.ResetView();
+        _uiView.BoardView.SetInteractable(true);
 
-        flow.OnMoveApplied += uiView.BoardView.OnMoveApplied;
+        _flow.OnMoveApplied += _uiView.BoardView.OnMoveApplied;
 
-        aiController.Init(flow);
+        _aiController.Init(_flow);
 
-        flow.OnTurnChanged += isPlayerTurn =>
+        _flow.OnTurnChanged += isPlayerTurn =>
         {
-            uiView.BoardView.SetInteractable(isPlayerTurn);
+            _uiView.BoardView.SetInteractable(isPlayerTurn);
 
             if (!isPlayerTurn)
-                aiController.MakeMove(board.AsIntArray());
+                _aiController.MakeMove(_board.AsIntArray());
         };
 
-        resultUI = new GameResultUI(winLines, uiView.BoardView);
-        rewardService = new GameRewardService(emojiSets);
+        _resultUI = new GameResultUI(_winLines, _uiView.BoardView);
+        _rewardService = new GameRewardService(_emojiSets);
 
-        flow.OnGameOver += (winner, line, finalBoard) =>
+        _flow.OnGameOver += (winner, line, finalBoard) =>
         {
-            resultUI.Show(winner, line, finalBoard);
-            rewardService.OnWin(winner);
-            uiView.BoardView.DisableAfterGameOver(finalBoard);
+            _resultUI.Show(winner, line, finalBoard);
+            _rewardService.OnWin(winner);
+            _uiView.BoardView.DisableAfterGameOver(finalBoard);
         };
 
-        session = new GameSession(flow, turnState, winLines, uiView.BoardView);
-        uiView.OnRestartClicked += session.Restart;
+        _session = new GameSession(_flow, _turnState, _winLines, _uiView.BoardView);
+        _uiView.OnRestartClicked += _session.Restart;
 
-        uiView.OnBackClicked += () => SceneManager.LoadScene("Lobby");
+        _uiView.OnBackClicked += () => SceneManager.LoadScene("Lobby");
     }
 
     private void Start()
     {
-        signView.PlayIntroDissolve();
+        _signView.PlayIntroDissolve();
     }
 }

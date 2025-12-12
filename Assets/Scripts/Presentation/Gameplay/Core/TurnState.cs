@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class TurnState : MonoBehaviour
 {
-    private bool isPlayerTurn = true;
+    private bool _isPlayerTurn = true;
 
-    public bool IsPlayerTurn => isPlayerTurn;
-    public CellState Current => isPlayerTurn ? CellState.Player : CellState.AI;
+    public bool IsPlayerTurn => _isPlayerTurn;
+    public CellState Current => _isPlayerTurn ? CellState.Player : CellState.AI;
 
-    public void Next() => isPlayerTurn = !isPlayerTurn;
+    public void Next() => _isPlayerTurn = !_isPlayerTurn;
 
-    public void Reset() => isPlayerTurn = true;
+    public void Reset() => _isPlayerTurn = true;
 }

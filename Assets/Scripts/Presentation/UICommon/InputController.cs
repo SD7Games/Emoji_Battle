@@ -4,14 +4,14 @@ using UnityEngine.UI;
 
 public class InputController
 {
-    private readonly IReadOnlyList<Button> buttons;
-    private bool isBlocked;
+    private readonly IReadOnlyList<Button> _buttons;
+    private bool _isBlocked;
 
     public event Action<int> OnCellClicked;
 
     public InputController(IReadOnlyList<Button> buttons)
     {
-        this.buttons = buttons ?? throw new ArgumentNullException(nameof(buttons));
+        this._buttons = buttons ?? throw new ArgumentNullException(nameof(buttons));
 
         for (int i = 0; i < buttons.Count; i++)
         {
@@ -23,12 +23,12 @@ public class InputController
 
     private void OnButtonClick(int index)
     {
-        if (isBlocked)
+        if (_isBlocked)
         {
             return;
         }
 
-        var button = buttons[index];
+        var button = _buttons[index];
         if (button == null || !button.interactable)
         {
             return;
