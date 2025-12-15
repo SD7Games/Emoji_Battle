@@ -3108,9 +3108,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9d40fdb26e7af458d510db58f67db4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainUIView
-  restartButton: {fileID: 2077101452571519114}
-  backButton: {fileID: 1448902817324408029}
-  boardView: {fileID: 3778065128468187642}
+  _restartButton: {fileID: 2077101452571519114}
+  _backButton: {fileID: 1448902817324408029}
+  _boardView: {fileID: 3778065128468187642}
 --- !u!114 &3778065128468187642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3123,7 +3123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a936bc0cb8f8e4c8d8c3119ffe72e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardView
-  buttons:
+  _buttons:
   - {fileID: 8049927547723800092}
   - {fileID: 2525129294840571205}
   - {fileID: 2160022788368890011}

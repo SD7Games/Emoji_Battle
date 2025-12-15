@@ -46,12 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af333527f216e4f44a8a0e8c64ae1572, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainInstaller
-  uiView: {fileID: 3439371357921701588, guid: 5151394c9c934a745901ea04fa791d2f, type: 3}
-  signView: {fileID: 8149363389101675636, guid: 5151394c9c934a745901ea04fa791d2f, type: 3}
-  turnState: {fileID: 316598601210307784}
-  aiController: {fileID: 6340134050003887928}
-  winLines: {fileID: 1994585269952937927, guid: 5151394c9c934a745901ea04fa791d2f, type: 3}
-  emojiSets:
+  _uiView: {fileID: 0}
+  _signView: {fileID: 0}
+  _turnState: {fileID: 316598601210307784}
+  _aiController: {fileID: 6340134050003887928}
+  _winLines: {fileID: 0}
+  _emojiSets:
   - {fileID: 11400000, guid: 6b6c84d126464c040bbed916feba2efe, type: 2}
   - {fileID: 11400000, guid: 3651e23b5c62b054081d0b4ab62ddf78, type: 2}
   - {fileID: 11400000, guid: 598f39a16aece63438901d8d79a6facc, type: 2}

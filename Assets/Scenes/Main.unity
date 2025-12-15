@@ -628,15 +628,15 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 745501417015648733, guid: e357b2b6ff605d4409a01e3cfdf5bd45, type: 3}
-      propertyPath: uiView
+      propertyPath: _uiView
       value: 
       objectReference: {fileID: 1937782742}
     - target: {fileID: 745501417015648733, guid: e357b2b6ff605d4409a01e3cfdf5bd45, type: 3}
-      propertyPath: signView
+      propertyPath: _signView
       value: 
       objectReference: {fileID: 1937782741}
     - target: {fileID: 745501417015648733, guid: e357b2b6ff605d4409a01e3cfdf5bd45, type: 3}
-      propertyPath: winLines
+      propertyPath: _winLines
       value: 
       objectReference: {fileID: 1937782718}
     - target: {fileID: 2732754323735259927, guid: e357b2b6ff605d4409a01e3cfdf5bd45, type: 3}
