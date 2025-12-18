@@ -12,13 +12,14 @@ GameObject:
   - component: {fileID: 1663368868976249341}
   - component: {fileID: 7662645012769610222}
   - component: {fileID: 8428447655186529409}
+  - component: {fileID: 1648576762189444133}
   m_Layer: 5
   m_Name: WinPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1053903576227645791
 RectTransform:
   m_ObjectHideFlags: 0
@@ -94,6 +95,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 937726ae5c911d84e9feda97b5c764d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VictoryPopup
+--- !u!114 &1648576762189444133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342970678341212339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b7811cb1816a624d89533b062ce64d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PopupCloseButton
+  _button: {fileID: 1136822989732320560}
 --- !u!1 &466043886983319335
 GameObject:
   m_ObjectHideFlags: 0
