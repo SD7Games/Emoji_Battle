@@ -1,16 +1,23 @@
+using System.Collections;
+using UnityEngine;
 
 public sealed class GameResultController
 {
     private readonly WinLineView _lines;
     private readonly GameRewardService _rewards;
+    private readonly MonoBehaviour _coroutineRunner;
+
+    private const float DRAW_DELAY = 0.8f;
 
     public GameResultController(
         WinLineView lines,
-        GameRewardService rewards
+        GameRewardService rewards,
+        MonoBehaviour coroutineRunner
     )
     {
         _lines = lines;
         _rewards = rewards;
+        _coroutineRunner = coroutineRunner;
     }
 
     public void HandleGameOver(
@@ -29,8 +36,14 @@ public sealed class GameResultController
         }
         else
         {
-            ShowResultPopup(winner);
+            _coroutineRunner.StartCoroutine(ShowDrawDelayed(winner));
         }
+    }
+
+    private IEnumerator ShowDrawDelayed(CellState winner)
+    {
+        yield return new WaitForSeconds(DRAW_DELAY);
+        ShowResultPopup(winner);
     }
 
     private void ShowResultPopup(CellState winner)
