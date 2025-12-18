@@ -1,16 +1,4 @@
-using UnityEngine;
-
-public class VictoryPopup : MonoBehaviour
+public sealed class VictoryPopup : ResultPopup
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public override PopupId Id => PopupId.Victory;
 }

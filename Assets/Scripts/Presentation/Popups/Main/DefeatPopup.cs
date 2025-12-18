@@ -1,16 +1,4 @@
-using UnityEngine;
-
-public class DefeatPopup : MonoBehaviour
+public sealed class DefeatPopup : ResultPopup
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public override PopupId Id => PopupId.Defeat;
 }

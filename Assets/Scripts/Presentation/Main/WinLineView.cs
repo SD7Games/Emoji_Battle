@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,7 @@ public class WinLineView : MonoBehaviour
 
     [SerializeField] private float _fillDuration = 0.7f;
 
-    public void ShowWinLine(WinLineType lineType)
+    public void ShowWinLine(WinLineType lineType, Action onCompleted = null)
     {
         HideAllLines();
 
@@ -24,7 +25,8 @@ public class WinLineView : MonoBehaviour
 
         target.fillAmount = 0;
         target.DOFillAmount(1f, _fillDuration)
-              .SetEase(Ease.OutQuad);
+              .SetEase(Ease.OutQuad)
+              .OnComplete(() => onCompleted?.Invoke());
     }
 
     public void HideAllLines()

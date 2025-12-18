@@ -27,8 +27,8 @@ public sealed class MainInstaller : MonoBehaviour
     private GameFlow _flow;
     private GameSession _session;
 
-    private GameResultUI _resultUI;
     private GameRewardService _rewardService;
+    private GameResultController _resultController;
 
     private void Awake()
     {
@@ -36,6 +36,7 @@ public sealed class MainInstaller : MonoBehaviour
         InitHeaderSigns();
         InitGameFlow();
         BindUI();
+        BindResultPopups();
         SubscribeNameUpdates();
     }
 
@@ -47,6 +48,7 @@ public sealed class MainInstaller : MonoBehaviour
     private void OnDestroy()
     {
         UnsubscribeNameUpdates();
+        UnbindResultPopups();
 
         if (_uiView != null)
         {
@@ -57,6 +59,9 @@ public sealed class MainInstaller : MonoBehaviour
 
         if (_input != null)
             _input.OnCellClicked -= OnCellClicked;
+
+        if (_flow != null)
+            _flow.OnGameOver -= OnGameOver;
     }
 
     private void InitPopups()
@@ -65,17 +70,6 @@ public sealed class MainInstaller : MonoBehaviour
         {
             Debug.LogError("PopupService not initialized");
             return;
-        }
-
-        if (_popupCanvas == null)
-        {
-            Debug.LogError("PopupCanvas is NULL");
-            return;
-        }
-
-        if (_scenePopups == null || _scenePopups.Length == 0)
-        {
-            Debug.LogWarning("No scene popups assigned");
         }
 
         PopupService.I.SetContext(_popupCanvas, _scenePopups);
@@ -98,7 +92,6 @@ public sealed class MainInstaller : MonoBehaviour
     {
         _board = new BoardState();
         _checker = new WinChecker();
-
         _flow = new GameFlow(_board, _turnState, _checker);
 
         _input = new InputController(_uiView.BoardView.Buttons);
@@ -125,15 +118,10 @@ public sealed class MainInstaller : MonoBehaviour
                 _aiController.MakeMove(_board.AsIntArray());
         };
 
-        _resultUI = new GameResultUI(_winLines, _uiView.BoardView);
         _rewardService = new GameRewardService(_emojiSets);
+        _resultController = new GameResultController(_winLines, _rewardService);
 
-        _flow.OnGameOver += (winner, line, finalBoard) =>
-        {
-            _resultUI.Show(winner, line, finalBoard);
-            _rewardService.OnWin(winner);
-            _uiView.BoardView.DisableAfterGameOver(finalBoard);
-        };
+        _flow.OnGameOver += OnGameOver;
 
         _session = new GameSession(_flow, _turnState, _winLines, _uiView.BoardView);
     }
@@ -145,9 +133,46 @@ public sealed class MainInstaller : MonoBehaviour
         _uiView.OnSettingsClicked += OnOpenSettings;
     }
 
+    private void BindResultPopups()
+    {
+        foreach (var popup in _scenePopups)
+        {
+            if (popup is ResultPopup resultPopup)
+            {
+                resultPopup.Closed += OnResultPopupClosed;
+            }
+        }
+    }
+
+    private void UnbindResultPopups()
+    {
+        foreach (var popup in _scenePopups)
+        {
+            if (popup is ResultPopup resultPopup)
+            {
+                resultPopup.Closed -= OnResultPopupClosed;
+            }
+        }
+    }
+
     private void OnCellClicked(int index)
     {
         _flow.ProcessMove(index);
+    }
+
+    private void OnGameOver(
+        CellState winner,
+        WinLineView.WinLineType? line,
+        CellState[,] finalBoard
+    )
+    {
+        _uiView.BoardView.DisableAfterGameOver(finalBoard);
+        _resultController.HandleGameOver(winner, line);
+    }
+
+    private void OnResultPopupClosed()
+    {
+        _session.Restart();
     }
 
     private void OnBackToLobby()

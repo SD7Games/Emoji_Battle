@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 5839083210191923114}
   - component: {fileID: 4521074142102050426}
   - component: {fileID: 1591618145491515290}
-  - component: {fileID: 2605611941780462916}
+  - component: {fileID: 8364477591686168212}
   m_Layer: 5
   m_Name: PopupCanvas
   m_TagString: Untagged
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2605611941780462916
+--- !u!114 &8364477591686168212
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

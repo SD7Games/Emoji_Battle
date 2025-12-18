@@ -172,7 +172,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f0d9fed2bc754041bb932f9b0c7d4b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a649b0ea27d3fa4ea860b8469066e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PopupCanvasController
 --- !u!1 &519420028
@@ -320,77 +320,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1191838077}
     m_Modifications:
-    - target: {fileID: 529248753238669769, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_TextWrappingMode
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 529248753238669769, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_ActiveFontFeatures.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 529248753238669769, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[1]'
-      value: 1818847073
-      objectReference: {fileID: 0}
-    - target: {fileID: 2017120141185165520, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_CaretWidth
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2017120141185165520, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_CaretColor.a
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2017120141185165520, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_CaretColor.b
-      value: 0.48247975
-      objectReference: {fileID: 0}
-    - target: {fileID: 2017120141185165520, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_CaretColor.g
-      value: 0.48247975
-      objectReference: {fileID: 0}
-    - target: {fileID: 2017120141185165520, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_CaretColor.r
-      value: 0.48247975
-      objectReference: {fileID: 0}
-    - target: {fileID: 2017120141185165520, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_CustomCaretColor
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2017120141185165520, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_SelectionColor.a
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2017120141185165520, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_SelectionColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2017120141185165520, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_SelectionColor.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2710102486701877591, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.476
       objectReference: {fileID: 0}
     - target: {fileID: 2710102486701877591, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2710102486701877591, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.476
       objectReference: {fileID: 0}
     - target: {fileID: 5577167284278193464, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.476
       objectReference: {fileID: 0}
     - target: {fileID: 5577167284278193464, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5577167284278193464, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.476
       objectReference: {fileID: 0}
     - target: {fileID: 5809461802969278626, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_Name
@@ -398,7 +350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5809461802969278626, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6106036781743056636, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_Pivot.x
@@ -480,29 +432,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6242168203613235363, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_text
-      value: Enter name
-      objectReference: {fileID: 0}
     - target: {fileID: 6414701930081143143, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.476
       objectReference: {fileID: 0}
     - target: {fileID: 6414701930081143143, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7475733231018414940, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.476
       objectReference: {fileID: 0}
     - target: {fileID: 7475733231018414940, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9146529288163540241, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
-      propertyPath: m_Padding.z
-      value: -8
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -809,10 +753,6 @@ PrefabInstance:
     - target: {fileID: 342970678341212339, guid: cae53194831f0f240a3693774804f551, type: 3}
       propertyPath: m_Name
       value: WinPopup
-      objectReference: {fileID: 0}
-    - target: {fileID: 342970678341212339, guid: cae53194831f0f240a3693774804f551, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1053903576227645791, guid: cae53194831f0f240a3693774804f551, type: 3}
       propertyPath: m_Pivot.x
