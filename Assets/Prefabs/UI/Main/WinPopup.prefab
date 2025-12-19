@@ -99,6 +99,8 @@ MonoBehaviour:
   _hideDuration: 0.2
   _showEase: 27
   _hideEase: 26
+  _emojiImage: {fileID: 7569229890805802850}
+  _previewColorId: 0
 --- !u!114 &1648576762189444133
 MonoBehaviour:
   m_ObjectHideFlags: 0

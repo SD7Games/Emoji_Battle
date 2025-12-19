@@ -13,6 +13,8 @@ public class GameProgress
     public int Wins = 0;
     public int LootBoxes = 0;
 
+    public int LastUnlockedGlobalIndex { get; private set; } = -1;
+
     private void EnsureCache()
     {
         if (_cache != null)
@@ -104,7 +106,10 @@ public class GameProgress
             }
 
             if (any)
+            {
+                LastUnlockedGlobalIndex = i;
                 return true;
+            }
         }
 
         return false;

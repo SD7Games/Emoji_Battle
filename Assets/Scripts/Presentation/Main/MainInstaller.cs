@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,9 +36,23 @@ public sealed class MainInstaller : MonoBehaviour
         InitPopups();
         InitHeaderSigns();
         InitGameFlow();
+        InjectPopupDependencies();
         BindUI();
         BindResultPopups();
         SubscribeNameUpdates();
+    }
+
+    private void InjectPopupDependencies()
+    {
+        _resolver = new EmojiResolver(_emojiSets);
+
+        foreach (var popup in _scenePopups)
+        {
+            if (popup is IEmojiResolverConsumer consumer)
+            {
+                consumer.Construct(_resolver);
+            }
+        }
     }
 
     private void Start()
