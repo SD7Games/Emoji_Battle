@@ -10,62 +10,54 @@ public sealed class EmojiScrollView : MonoBehaviour
     public event Action<int> OnEmojiClicked;
 
     private readonly List<EmojiButtonView> _buttons = new();
-    private bool _initialized = false;
+    private bool _initialized;
 
-    private const int MAX_COUNT = 87;
-
-    public void Fill(EmojiViewData[] items)
+    public void Fill(
+        List<EmojiProgress> items,
+        EmojiResolver resolver
+    )
     {
         if (!_initialized)
         {
-            CreateButtons();
+            CreateButtons(items.Count);
             _initialized = true;
         }
 
-        UpdateButtons(items);
+        UpdateButtons(items, resolver);
     }
 
-    private void CreateButtons()
+    private void CreateButtons(int count)
     {
-        for (int i = 0; i < MAX_COUNT; i++)
+        for (int i = 0; i < count; i++)
         {
-            EmojiButtonView btn = Instantiate(_buttonPrefab, _contentParent);
+            var btn = Instantiate(_buttonPrefab, _contentParent);
 
-            int index = i;
             btn.Button.onClick.AddListener(() =>
             {
-                OnEmojiClicked?.Invoke(index);
+                OnEmojiClicked?.Invoke(btn.EmojiIndex);
             });
 
             _buttons.Add(btn);
         }
     }
 
-    private void UpdateButtons(EmojiViewData[] items)
+    private void UpdateButtons(
+        List<EmojiProgress> items,
+        EmojiResolver resolver
+    )
     {
-        int count = items.Length;
-
-        for (int i = 0; i < MAX_COUNT; i++)
+        for (int i = 0; i < _buttons.Count; i++)
         {
             var btn = _buttons[i];
-
-            if (i >= count)
-            {
-                btn.gameObject.SetActive(false);
-                continue;
-            }
-
-            btn.gameObject.SetActive(true);
-
             var data = items[i];
 
-            btn.Icon.sprite = data.Sprite != null ? data.Sprite : null;
+            btn.gameObject.SetActive(true);
+            btn.Bind(data.EmojiId);
+            btn.Icon.sprite = resolver.Get(data.ColorId, data.EmojiId);
 
-            bool unlocked = data.Unlocked;
-
-            btn.LockedOverlay.SetActive(!unlocked);
-            btn.LockIcon.SetActive(!unlocked);
-            btn.Button.interactable = unlocked;
+            btn.LockedOverlay.SetActive(!data.IsUnlocked);
+            btn.LockIcon.SetActive(!data.IsUnlocked);
+            btn.Button.interactable = data.IsUnlocked;
         }
     }
 }

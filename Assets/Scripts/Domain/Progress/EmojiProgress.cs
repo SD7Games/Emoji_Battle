@@ -6,14 +6,13 @@ public class EmojiProgress
     public int ColorId;
     public int EmojiId;
     public bool IsUnlocked;
+    public int UnlockOrder;
 
-    public EmojiProgress()
-    { }
-
-    public EmojiProgress(int colorId, int emojiId, bool unlocked = false)
+    public EmojiProgress(int colorId, int emojiId)
     {
         ColorId = colorId;
         EmojiId = emojiId;
-        IsUnlocked = unlocked;
+        IsUnlocked = false;
+        UnlockOrder = -1;
     }
 }

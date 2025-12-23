@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -73,9 +73,9 @@ public sealed class LobbyView : MonoBehaviour
         _aiNameText.text = value;
     }
 
-    private void UpdateEmojiList(EmojiViewData[] items)
+    private void UpdateEmojiList(List<EmojiProgress> items)
     {
-        _emojiView.Fill(items);
+        _emojiView.Fill(items, _controller.Resolver);
     }
 
     private void UpdatePlayerAvatar(Sprite sprite)

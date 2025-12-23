@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public sealed class MainInstaller : MonoBehaviour
@@ -33,6 +33,8 @@ public sealed class MainInstaller : MonoBehaviour
 
     private void Awake()
     {
+        _resolver = new EmojiResolver(_emojiSets);
+
         InitPopups();
         InitHeaderSigns();
         InitGameFlow();
@@ -44,14 +46,10 @@ public sealed class MainInstaller : MonoBehaviour
 
     private void InjectPopupDependencies()
     {
-        _resolver = new EmojiResolver(_emojiSets);
-
         foreach (var popup in _scenePopups)
         {
             if (popup is IEmojiResolverConsumer consumer)
-            {
                 consumer.Construct(_resolver);
-            }
         }
     }
 
@@ -59,6 +57,31 @@ public sealed class MainInstaller : MonoBehaviour
     {
         _signView.PlayIntroDissolve();
     }
+
+    public void OpenLootBox()
+    {
+        var result = _rewardService.OnLootBoxOpened();
+
+        if (result.AllEmojisUnlocked)
+            PopupService.I.Show(PopupId.Complete);
+        else if (result.EmojiUnlocked)
+            PopupService.I.Show(PopupId.LootBox);
+        else
+            PopupService.I.Show(PopupId.Complete);
+    }
+
+#if UNITY_EDITOR
+
+    private void Update()
+    {
+        if (Keyboard.current == null)
+            return;
+
+        if (Keyboard.current.lKey.wasPressedThisFrame)
+            OpenLootBox();
+    }
+
+#endif
 
     private void OnDestroy()
     {
@@ -94,8 +117,6 @@ public sealed class MainInstaller : MonoBehaviour
     {
         var save = GameDataService.I.Data;
 
-        _resolver = new EmojiResolver(_emojiSets);
-
         Sprite player = _resolver.Get(save.Player.EmojiColor, save.Player.EmojiIndex);
         Sprite ai = _resolver.Get(save.AI.EmojiColor, save.AI.EmojiIndex);
 
@@ -105,6 +126,7 @@ public sealed class MainInstaller : MonoBehaviour
 
     private void InitGameFlow()
     {
+        PlayerPrefs.DeleteAll();
         _board = new BoardState();
         _checker = new WinChecker();
         _flow = new GameFlow(_board, _turnState, _checker);

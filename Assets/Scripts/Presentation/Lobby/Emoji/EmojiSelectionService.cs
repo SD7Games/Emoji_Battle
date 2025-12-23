@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class EmojiSelectionService
@@ -15,27 +14,23 @@ public sealed class EmojiSelectionService
 
     public EmojiViewData[] BuildEmojiList(int colorId)
     {
-        EmojiData emojiData = _resolver.GetData(colorId);
+        var data = _resolver.GetData(colorId);
+        if (data == null) return Array.Empty<EmojiViewData>();
 
-        if (emojiData == null || emojiData.EmojiSprites == null)
-            return Array.Empty<EmojiViewData>();
-
-        GameProgress progress = _data.Data.Progress;
-
-        int total = emojiData.EmojiSprites.Count;
-        List<int> sorted = progress.GetSortedEmojiIndexes(colorId, total);
+        var progress = _data.Data.Progress;
+        var sorted = progress.GetSortedForView(colorId, data.EmojiSprites.Count);
 
         var result = new EmojiViewData[sorted.Count];
 
         for (int i = 0; i < sorted.Count; i++)
         {
-            int emojiIndex = sorted[i];
+            var p = sorted[i];
 
             result[i] = new EmojiViewData
             {
-                EmojiIndex = emojiIndex,
-                Sprite = emojiData.EmojiSprites[emojiIndex],
-                Unlocked = progress.IsEmojiUnlocked(colorId, emojiIndex)
+                EmojiIndex = p.EmojiId,
+                Sprite = data.EmojiSprites[p.EmojiId],
+                Unlocked = p.IsUnlocked
             };
         }
 

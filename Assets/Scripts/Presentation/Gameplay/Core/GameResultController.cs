@@ -9,52 +9,62 @@ public sealed class GameResultController
 
     private const float DRAW_DELAY = 0.8f;
 
-    public GameResultController(
-        WinLineView lines,
-        GameRewardService rewards,
-        MonoBehaviour coroutineRunner
-    )
+    public GameResultController(WinLineView lines, GameRewardService rewards, MonoBehaviour coroutineRunner)
     {
         _lines = lines;
         _rewards = rewards;
         _coroutineRunner = coroutineRunner;
     }
 
-    public void HandleGameOver(
-        CellState winner,
-        WinLineView.WinLineType? line
-    )
+    public void HandleGameOver(CellState winner, WinLineView.WinLineType? line)
     {
-        _rewards.OnWin(winner);
+        GameRewardResult reward = _rewards.OnWin(winner);
 
         if (line.HasValue)
         {
             _lines.ShowWinLine(
                 line.Value,
-                () => ShowResultPopup(winner)
+                () => ShowResultPopup(winner, reward)
             );
         }
         else
         {
-            _coroutineRunner.StartCoroutine(ShowDrawDelayed(winner));
+            _coroutineRunner.StartCoroutine(ShowDrawDelayed(winner, reward));
         }
     }
 
-    private IEnumerator ShowDrawDelayed(CellState winner)
+    private IEnumerator ShowDrawDelayed(CellState winner, GameRewardResult reward)
     {
         yield return new WaitForSeconds(DRAW_DELAY);
-        ShowResultPopup(winner);
+        ShowResultPopup(winner, reward);
     }
 
-    private void ShowResultPopup(CellState winner)
+    private void ShowResultPopup(CellState winner, GameRewardResult reward)
     {
-        PopupId id = winner switch
+        if (winner == CellState.Player)
         {
-            CellState.Player => PopupId.Victory,
-            CellState.AI => PopupId.Defeat,
-            _ => PopupId.Draw
-        };
+            if (reward.AllEmojisUnlocked)
+            {
+                PopupService.I.Show(PopupId.Complete);
+                return;
+            }
 
-        PopupService.I.Show(id);
+            if (reward.EmojiUnlocked)
+            {
+                PopupService.I.Show(PopupId.Victory);
+                return;
+            }
+
+            PopupService.I.Show(PopupId.Complete);
+            return;
+        }
+
+        if (winner == CellState.AI)
+        {
+            PopupService.I.Show(PopupId.Defeat);
+            return;
+        }
+
+        PopupService.I.Show(PopupId.Draw);
     }
 }

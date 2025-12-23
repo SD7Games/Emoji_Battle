@@ -7,6 +7,7 @@ public sealed class VictoryPopup : ResultPopup, IEmojiResolverConsumer
 
     [SerializeField] private Image _emojiImage;
     [SerializeField] private int _previewColorId = 0;
+    [SerializeField] private ParticleSystem _poofFx;
 
     private EmojiResolver _resolver;
 
@@ -18,6 +19,8 @@ public sealed class VictoryPopup : ResultPopup, IEmojiResolverConsumer
     public override void Show()
     {
         base.Show();
+        _poofFx.Clear();
+        _poofFx.Play();
         UpdateEmojiPreview();
     }
 

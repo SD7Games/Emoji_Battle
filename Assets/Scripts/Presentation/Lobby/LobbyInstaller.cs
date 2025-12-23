@@ -53,8 +53,7 @@ public sealed class LobbyInstaller : MonoBehaviour
             if (set == null)
                 continue;
 
-            int count = set.EmojiSprites?.Count ?? 0;
-            total[set.ColorId] = count;
+            total[set.ColorId] = set.EmojiSprites?.Count ?? 0;
         }
 
         data.Progress.UnlockFirstNAllColors(total, firstN);
@@ -67,11 +66,15 @@ public sealed class LobbyInstaller : MonoBehaviour
         var data = dataService.Data;
 
         var resolver = new EmojiResolver(_emojiSets);
+
         var emojiService = new EmojiSelectionService(dataService, resolver);
         var aiService = new AISelectionService(dataService, _emojiSets);
         var lobbyService = new LobbyService(emojiService, aiService);
 
-        var controller = new LobbyController(lobbyService);
+        var controller = new LobbyController(
+            lobbyService,
+            resolver
+        );
 
         return new LobbyContext(
             controller,
@@ -103,11 +106,13 @@ public sealed class LobbyInstaller : MonoBehaviour
     {
         var data = GameDataService.I.Data;
 
-        Sprite savedPlayer =
-            resolver.Get(data.Player.EmojiColor, data.Player.EmojiIndex);
+        Sprite sprite = resolver.Get(
+            data.Player.EmojiColor,
+            data.Player.EmojiIndex
+        );
 
-        if (savedPlayer != null)
-            _view.ForceSetPlayerAvatar(savedPlayer);
+        if (sprite != null)
+            _view.ForceSetPlayerAvatar(sprite);
     }
 
     private readonly struct LobbyContext

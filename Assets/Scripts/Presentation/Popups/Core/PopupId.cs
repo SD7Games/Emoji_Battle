@@ -4,5 +4,6 @@ public enum PopupId
     Victory,
     Defeat,
     Draw,
-    LootBox
+    LootBox,
+    Complete
 }
