@@ -1,21 +1,29 @@
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class EntryPointBootstrap : MonoBehaviour
+public sealed class EntryPointBootstrap : MonoBehaviour
 {
-    [SerializeField]
-    private BootstrapView _bootstrapView;
+    [Header("View")]
+    [SerializeField] private BootstrapView _bootstrapView;
 
-    [SerializeField]
-    private PopupService _popupServicePrefab;
+    [Header("Service Prefabs")]
+    [SerializeField] private PopupService _popupServicePrefab;
+
+    [SerializeField] private AudioService _audioServicePrefab;
+
+    [Header("Audio")]
+    [SerializeField] private MusicDefinition _lobbyMusic;
+
+    [SerializeField] private float _musicFadeIn = 0.5f;
 
     private BootstrapController _controller;
 
     private void Awake()
     {
-        if (PopupService.I == null)
-            Instantiate(_popupServicePrefab);
+        EnsureServices();
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         _controller = new BootstrapController(_bootstrapView);
     }
@@ -23,6 +31,11 @@ public class EntryPointBootstrap : MonoBehaviour
     private void Start()
     {
         _ = RunAsync();
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private async Task RunAsync()
@@ -35,5 +48,32 @@ public class EntryPointBootstrap : MonoBehaviour
         {
             Debug.LogException(e);
         }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name != "Lobby")
+            return;
+
+        StartLobbyMusic();
+
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void EnsureServices()
+    {
+        if (PopupService.I == null)
+            Instantiate(_popupServicePrefab);
+
+        if (AudioService.I == null)
+            Instantiate(_audioServicePrefab);
+    }
+
+    private void StartLobbyMusic()
+    {
+        if (_lobbyMusic == null)
+            return;
+
+        AudioService.I.FadeToMusic(_lobbyMusic, _musicFadeIn);
     }
 }

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e06bd667c138974b9be20898aa237f0, type: 3}
+  m_Name: ColorSelect
+  m_EditorClassIdentifier: Assembly-CSharp::SoundDefinition
+  Channel: 0
+  Clips:
+  - {fileID: 8300000, guid: f9e1d1af33b05424d951a03d92ae2118, type: 3}
+  Volume: 0.8
+  PitchRange: {x: 1, y: 1}

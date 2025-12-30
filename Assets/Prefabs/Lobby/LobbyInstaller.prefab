@@ -56,6 +56,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d461605546b33e34a86648e35035e66c, type: 2}
   - {fileID: 11400000, guid: 3e51d83b789c126498e5febe8c445ab4, type: 2}
   - {fileID: 11400000, guid: e940a4f66e5c46f40bd623b63019a1ec, type: 2}
+  _emojiChooseSound: {fileID: 11400000, guid: b706a8674245d3a4db055bdd063a3fc0, type: 2}
+  _colorSelectSound: {fileID: 11400000, guid: 4611cab4a1a241b45b4fe5f00164580b, type: 2}
   _popupCanvas: {fileID: 0}
   _scenePopups:
   - {fileID: 0}

@@ -6,7 +6,11 @@ using UnityEngine.SceneManagement;
 public sealed class LobbyController : IDisposable
 {
     private readonly LobbyService _service;
+    private readonly SoundDefinition _emojiSelectSound;
+    private readonly SoundDefinition _colorChangeSound;
+
     private int _currentColor;
+    private int _currentEmojiId = -1;
 
     public EmojiResolver Resolver { get; }
 
@@ -22,18 +26,25 @@ public sealed class LobbyController : IDisposable
 
     public LobbyController(
         LobbyService service,
-        EmojiResolver resolver
+        EmojiResolver resolver,
+        SoundDefinition emojiChooseSound,
+        SoundDefinition colorChangeSound
     )
     {
         _service = service;
         Resolver = resolver;
+        _emojiSelectSound = emojiChooseSound;
+        _colorChangeSound = colorChangeSound;
 
         SettingsService.PlayerNameChanged += OnPlayerNameChanged;
     }
 
     public void Initialize()
     {
-        PlayerNameChanged?.Invoke(GetPlayerName());
+        var player = GameDataService.I.Data.Player;
+        _currentEmojiId = player.EmojiIndex;
+
+        PlayerNameChanged?.Invoke(player.Name);
     }
 
     public void Dispose()
@@ -47,8 +58,7 @@ public sealed class LobbyController : IDisposable
         data.AI.Strategy = type;
         GameDataService.I.Save();
 
-        string newName = _service.GenerateAIName();
-        AINameChanged?.Invoke(newName);
+        AINameChanged?.Invoke(_service.GenerateAIName());
     }
 
     public void SetInitialColor(int colorId)
@@ -60,28 +70,56 @@ public sealed class LobbyController : IDisposable
         if (ai != null)
             AIAvatarChanged?.Invoke(ai);
 
-        string aiName = _service.GetAIName();
-        if (string.IsNullOrEmpty(aiName))
-            aiName = _service.GenerateAIName();
-
-        AINameChanged?.Invoke(aiName);
+        AINameChanged?.Invoke(
+            string.IsNullOrEmpty(_service.GetAIName())
+                ? _service.GenerateAIName()
+                : _service.GetAIName()
+        );
     }
 
     public void OnColorChanged(int colorId)
     {
+        if (_currentColor == colorId)
+            return;
+
         _currentColor = colorId;
         UpdateEmojiList();
+        PlayColorChangeSound();
     }
 
     public void OnEmojiSelected(int emojiId)
     {
+        if (_currentEmojiId == emojiId)
+            return;
+
+        _currentEmojiId = emojiId;
+
         var player = _service.SelectPlayerEmoji(_currentColor, emojiId);
         if (player != null)
+        {
             PlayerAvatarChanged?.Invoke(player);
+            PlayEmojiSelectSound();
+        }
 
         var ai = _service.EnsureValidAIEmoji();
         if (ai != null)
             AIAvatarChanged?.Invoke(ai);
+    }
+
+    private void PlayEmojiSelectSound()
+    {
+        if (_emojiSelectSound == null)
+            return;
+
+        AudioService.I.Play(_emojiSelectSound);
+    }
+
+    private void PlayColorChangeSound()
+    {
+        if (_colorChangeSound == null)
+            return;
+
+        AudioService.I.Play(_colorChangeSound);
     }
 
     public void OnStartPressed()
@@ -97,21 +135,16 @@ public sealed class LobbyController : IDisposable
         if (data == null)
             return;
 
-        var list = progress.GetSortedForView(
-            _currentColor,
-            data.EmojiSprites.Count
+        EmojiListChanged?.Invoke(
+            progress.GetSortedForView(
+                _currentColor,
+                data.EmojiSprites.Count
+            )
         );
-
-        EmojiListChanged?.Invoke(list);
     }
 
     private void OnPlayerNameChanged(string name)
     {
         PlayerNameChanged?.Invoke(name);
-    }
-
-    private string GetPlayerName()
-    {
-        return GameDataService.I.Data.Player.Name;
     }
 }

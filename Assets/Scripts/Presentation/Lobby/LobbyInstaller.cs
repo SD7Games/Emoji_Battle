@@ -3,10 +3,22 @@ using UnityEngine;
 
 public sealed class LobbyInstaller : MonoBehaviour
 {
+    [Header("View")]
     [SerializeField] private LobbyView _view;
+
     [SerializeField] private AIComplexityView _aiComplexityView;
+
+    [Header("Data")]
     [SerializeField] private List<EmojiData> _emojiSets;
+
+    [Header("Audio")]
+    [SerializeField] private SoundDefinition _emojiChooseSound;
+
+    [SerializeField] private SoundDefinition _colorSelectSound;
+
+    [Header("Popups")]
     [SerializeField] private PopupCanvasController _popupCanvas;
+
     [SerializeField] private PopupBase[] _scenePopups;
 
     private LobbyController _controller;
@@ -16,17 +28,16 @@ public sealed class LobbyInstaller : MonoBehaviour
     {
         InitProgress();
 
-        var context = CreateLobbyContext();
+        var context = CreateContext();
         _controller = context.Controller;
 
         InitPopups();
         InitAIComplexity();
-        InitView();
+        InitView(context);
+        InitPlayerAvatar(context.Resolver);
 
         _controller.Initialize();
         _controller.SetInitialColor(context.SavedColor);
-
-        InitPlayerAvatar(context.Resolver);
     }
 
     private void OnDestroy()
@@ -35,6 +46,31 @@ public sealed class LobbyInstaller : MonoBehaviour
 
         if (_aiComplexityController != null)
             _aiComplexityController.OnDifficultyChanged -= _controller.OnAIStrategyChanged;
+    }
+
+    private LobbyContext CreateContext()
+    {
+        var dataService = GameDataService.I;
+        var data = dataService.Data;
+
+        var resolver = new EmojiResolver(_emojiSets);
+
+        var emojiService = new EmojiSelectionService(dataService, resolver);
+        var aiService = new AISelectionService(dataService, _emojiSets);
+        var lobbyService = new LobbyService(emojiService, aiService);
+
+        var controller = new LobbyController(
+            lobbyService,
+            resolver,
+            _emojiChooseSound,
+            _colorSelectSound
+        );
+
+        return new LobbyContext(
+            controller,
+            resolver,
+            data.Player.EmojiColor
+        );
     }
 
     private void InitProgress()
@@ -60,29 +96,6 @@ public sealed class LobbyInstaller : MonoBehaviour
         dataService.Save();
     }
 
-    private LobbyContext CreateLobbyContext()
-    {
-        var dataService = GameDataService.I;
-        var data = dataService.Data;
-
-        var resolver = new EmojiResolver(_emojiSets);
-
-        var emojiService = new EmojiSelectionService(dataService, resolver);
-        var aiService = new AISelectionService(dataService, _emojiSets);
-        var lobbyService = new LobbyService(emojiService, aiService);
-
-        var controller = new LobbyController(
-            lobbyService,
-            resolver
-        );
-
-        return new LobbyContext(
-            controller,
-            resolver,
-            data.Player.EmojiColor
-        );
-    }
-
     private void InitPopups()
     {
         PopupService.I.SetContext(_popupCanvas, _scenePopups);
@@ -97,9 +110,9 @@ public sealed class LobbyInstaller : MonoBehaviour
         _aiComplexityController.OnDifficultyChanged += _controller.OnAIStrategyChanged;
     }
 
-    private void InitView()
+    private void InitView(LobbyContext context)
     {
-        _view.Construct(_controller);
+        _view.Construct(context.Controller);
     }
 
     private void InitPlayerAvatar(EmojiResolver resolver)
