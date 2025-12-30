@@ -34,6 +34,8 @@ public sealed class BootstrapController
             if (sceneReady && minTimePassed)
             {
                 _view.SetProgress(100);
+
+                await Task.Delay(100);
                 operation.allowSceneActivation = true;
             }
 

@@ -5,13 +5,11 @@ public sealed class AudioService : MonoBehaviour
 {
     public static AudioService I { get; private set; }
 
-    [Header("Sources")]
-    [SerializeField] private AudioSource _music;
-
-    [SerializeField] private AudioSource _sfx;
-    [SerializeField] private AudioSource _ui;
+    [SerializeField] private AudioSource _musicSource;
+    [SerializeField] private AudioSource _sfxSource;
 
     private Coroutine _musicFadeRoutine;
+    private float _musicBaseVolume = 1f;
 
     private void Awake()
     {
@@ -23,41 +21,17 @@ public sealed class AudioService : MonoBehaviour
 
         I = this;
         DontDestroyOnLoad(gameObject);
+
+        _musicSource.volume = 0f;
+        _sfxSource.volume = 1f;
+
+        SettingsService.MusicChanged += RefreshMusicVolume;
     }
 
-    public void Play(SoundDefinition sound)
+    private void OnDestroy()
     {
-        if (sound == null)
-            return;
-
-        var clip = sound.GetClip();
-        if (clip == null)
-            return;
-
-        var source = sound.Channel == AudioChannel.Ui ? _ui : _sfx;
-
-        source.pitch = sound.PitchRange == Vector2.one
-            ? 1f
-            : Random.Range(sound.PitchRange.x, sound.PitchRange.y);
-
-        source.PlayOneShot(clip, sound.Volume);
-    }
-
-    public void PlayMusic(AudioClip clip, float volume = 0.4f, bool loop = true)
-    {
-        if (clip == null)
-            return;
-
-        if (_music.clip == clip && _music.isPlaying)
-            return;
-
-        StopFade();
-
-        _music.clip = clip;
-        _music.volume = volume;
-        _music.loop = loop;
-        _music.pitch = 1f;
-        _music.Play();
+        if (I == this)
+            SettingsService.MusicChanged -= RefreshMusicVolume;
     }
 
     public void PlayMusic(MusicDefinition music)
@@ -65,78 +39,103 @@ public sealed class AudioService : MonoBehaviour
         if (music == null || music.Clip == null)
             return;
 
-        PlayMusic(music.Clip, music.Volume, music.Loop);
+        StopFade();
+
+        _musicBaseVolume = music.Volume;
+
+        _musicSource.clip = music.Clip;
+        _musicSource.loop = music.Loop;
+        _musicSource.pitch = 1f;
+
+        RefreshMusicVolume();
+        _musicSource.Play();
     }
 
-    public void FadeToMusic(MusicDefinition music, float fadeDuration = 0.5f)
+    public void FadeToMusic(MusicDefinition music, float duration)
     {
         if (music == null || music.Clip == null)
             return;
 
         StopFade();
-        _musicFadeRoutine = StartCoroutine(FadeRoutine(music, fadeDuration));
+        _musicFadeRoutine = StartCoroutine(FadeRoutine(music, duration));
     }
 
-    public void StopMusic(float fadeDuration = 0f)
+    public void StopMusic()
     {
         StopFade();
+        _musicSource.Stop();
+        _musicSource.clip = null;
+    }
 
-        if (fadeDuration <= 0f)
-        {
-            _music.Stop();
-            _music.clip = null;
-        }
-        else
-        {
-            _musicFadeRoutine = StartCoroutine(FadeOutRoutine(fadeDuration));
-        }
+    public void RefreshMusicVolume()
+    {
+        if (_musicSource.clip == null)
+            return;
+
+        var data = SettingsService.I.Data;
+
+        _musicSource.volume = data.MusicEnabled
+            ? _musicBaseVolume * data.MusicVolume
+            : 0f;
+    }
+
+    public void Play(SoundDefinition sound)
+    {
+        if (sound == null)
+            return;
+
+        var data = SettingsService.I.Data;
+
+        if (!data.SfxEnabled)
+            return;
+
+        var clip = sound.GetClip();
+        if (clip == null)
+            return;
+
+        _sfxSource.pitch = sound.PitchRange == Vector2.one
+            ? 1f
+            : Random.Range(sound.PitchRange.x, sound.PitchRange.y);
+
+        _sfxSource.PlayOneShot(clip, sound.Volume * data.SfxVolume);
     }
 
     private IEnumerator FadeRoutine(MusicDefinition music, float duration)
     {
-        float startVolume = _music.isPlaying ? _music.volume : 0f;
+        _musicBaseVolume = music.Volume;
 
-        if (_music.clip != music.Clip)
+        float start = _musicSource.isPlaying ? _musicSource.volume : 0f;
+
+        if (_musicSource.clip != music.Clip)
         {
-            _music.clip = music.Clip;
-            _music.loop = music.Loop;
-            _music.volume = 0f;
-            _music.Play();
+            _musicSource.clip = music.Clip;
+            _musicSource.loop = music.Loop;
+            _musicSource.pitch = 1f;
+            _musicSource.volume = 0f;
+            _musicSource.Play();
         }
+
+        float target = SettingsService.I.Data.MusicEnabled
+            ? _musicBaseVolume * SettingsService.I.Data.MusicVolume
+            : 0f;
 
         float t = 0f;
         while (t < duration)
         {
             t += Time.unscaledDeltaTime;
-            _music.volume = Mathf.Lerp(startVolume, music.Volume, t / duration);
+            _musicSource.volume = Mathf.Lerp(start, target, t / duration);
             yield return null;
         }
 
-        _music.volume = music.Volume;
-    }
-
-    private IEnumerator FadeOutRoutine(float duration)
-    {
-        float startVolume = _music.volume;
-        float t = 0f;
-
-        while (t < duration)
-        {
-            t += Time.unscaledDeltaTime;
-            _music.volume = Mathf.Lerp(startVolume, 0f, t / duration);
-            yield return null;
-        }
-
-        _music.Stop();
-        _music.clip = null;
+        _musicSource.volume = target;
     }
 
     private void StopFade()
     {
-        if (_musicFadeRoutine != null)
-        {
-            StopCoroutine(_musicFadeRoutine);
-            _musicFadeRoutine = null;
-        }
+        if (_musicFadeRoutine == null)
+            return;
+
+        StopCoroutine(_musicFadeRoutine);
+        _musicFadeRoutine = null;
     }
 }

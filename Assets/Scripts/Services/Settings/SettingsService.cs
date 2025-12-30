@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public sealed class SettingsService
 {
@@ -7,6 +6,10 @@ public sealed class SettingsService
     public static SettingsService I => _instance ??= new SettingsService();
 
     public static event Action<string> PlayerNameChanged;
+
+    public static event Action MusicChanged;
+
+    public static event Action SfxChanged;
 
     private SettingsService()
     { }
@@ -16,29 +19,29 @@ public sealed class SettingsService
     public void SetMusicEnabled(bool enabled)
     {
         Data.MusicEnabled = enabled;
-        ApplyMusic();
         GameDataService.I.Save();
+        MusicChanged?.Invoke();
     }
 
     public void SetMusicVolume(float value)
     {
         Data.MusicVolume = value;
-        ApplyMusic();
         GameDataService.I.Save();
+        MusicChanged?.Invoke();
     }
 
     public void SetSfxEnabled(bool enabled)
     {
         Data.SfxEnabled = enabled;
-        ApplySfx();
         GameDataService.I.Save();
+        SfxChanged?.Invoke();
     }
 
     public void SetSfxVolume(float value)
     {
         Data.SfxVolume = value;
-        ApplySfx();
         GameDataService.I.Save();
+        SfxChanged?.Invoke();
     }
 
     public void SetVibration(bool enabled)
@@ -61,15 +64,5 @@ public sealed class SettingsService
         GameDataService.I.Save();
 
         PlayerNameChanged?.Invoke(name);
-    }
-
-    private void ApplyMusic()
-    {
-        AudioListener.volume = Data.MusicEnabled ? Data.MusicVolume : 0f;
-    }
-
-    private void ApplySfx()
-    {
-        // TODO: AudioService
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,7 +35,6 @@ public sealed class SettingsPopup : PopupBase
     protected override void Awake()
     {
         base.Awake();
-
         _settings = SettingsService.I;
         _closeButton.onClick.AddListener(OnCloseClicked);
     }
@@ -59,11 +57,6 @@ public sealed class SettingsPopup : PopupBase
         base.Hide();
     }
 
-    private void OnCloseClicked()
-    {
-        PopupService.I.HideCurrent();
-    }
-
     private void Bind()
     {
         if (_bound)
@@ -71,13 +64,13 @@ public sealed class SettingsPopup : PopupBase
 
         _bound = true;
 
-        _musicButton.onClick.AddListener(MusicChanger);
-        _musicSlider.onValueChanged.AddListener(_settings.SetMusicVolume);
+        _musicButton.onClick.AddListener(OnMusicToggle);
+        _musicSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
 
-        _sfxButton.onClick.AddListener(SfxChanger);
-        _sfxSlider.onValueChanged.AddListener(_settings.SetSfxVolume);
+        _sfxButton.onClick.AddListener(OnSfxToggle);
+        _sfxSlider.onValueChanged.AddListener(OnSfxVolumeChanged);
 
-        _vibrationButton.onClick.AddListener(VibrationChanger);
+        _vibrationButton.onClick.AddListener(OnVibrationToggle);
         _playerNameInput.onEndEdit.AddListener(_settings.SetPlayerName);
     }
 
@@ -88,32 +81,49 @@ public sealed class SettingsPopup : PopupBase
 
         _bound = false;
 
-        _musicButton.onClick.RemoveListener(MusicChanger);
-        _musicSlider.onValueChanged.RemoveListener(_settings.SetMusicVolume);
+        _musicButton.onClick.RemoveListener(OnMusicToggle);
+        _musicSlider.onValueChanged.RemoveListener(OnMusicVolumeChanged);
 
-        _sfxButton.onClick.RemoveListener(SfxChanger);
-        _sfxSlider.onValueChanged.RemoveListener(_settings.SetSfxVolume);
+        _sfxButton.onClick.RemoveListener(OnSfxToggle);
+        _sfxSlider.onValueChanged.RemoveListener(OnSfxVolumeChanged);
 
-        _vibrationButton.onClick.RemoveListener(VibrationChanger);
+        _vibrationButton.onClick.RemoveListener(OnVibrationToggle);
         _playerNameInput.onEndEdit.RemoveListener(_settings.SetPlayerName);
     }
 
-    private void MusicChanger()
+    private void OnMusicToggle()
     {
         _settings.SetMusicEnabled(!_settings.Data.MusicEnabled);
+        AudioService.I.RefreshMusicVolume();
         RefreshVisuals();
     }
 
-    private void SfxChanger()
+    private void OnMusicVolumeChanged(float value)
+    {
+        _settings.SetMusicVolume(value);
+        AudioService.I.RefreshMusicVolume();
+    }
+
+    private void OnSfxToggle()
     {
         _settings.SetSfxEnabled(!_settings.Data.SfxEnabled);
         RefreshVisuals();
     }
 
-    private void VibrationChanger()
+    private void OnSfxVolumeChanged(float value)
+    {
+        _settings.SetSfxVolume(value);
+    }
+
+    private void OnVibrationToggle()
     {
         _settings.SetVibration(!_settings.Data.VibrationEnabled);
         RefreshVisuals();
+    }
+
+    private void OnCloseClicked()
+    {
+        PopupService.I.HideCurrent();
     }
 
     private void Refresh()
@@ -123,7 +133,6 @@ public sealed class SettingsPopup : PopupBase
 
         _musicSlider.SetValueWithoutNotify(data.MusicVolume);
         _sfxSlider.SetValueWithoutNotify(data.SfxVolume);
-
         _playerNameInput.SetTextWithoutNotify(player.Name);
 
         RefreshVisuals();
