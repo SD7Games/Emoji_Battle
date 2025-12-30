@@ -13,10 +13,16 @@ public abstract class PopupBase : MonoBehaviour
     [SerializeField] private Ease _showEase = Ease.OutBack;
     [SerializeField] private Ease _hideEase = Ease.InBack;
 
+    [Header("Audio")]
+    [SerializeField] private SoundDefinition _showSound;
+
+    [SerializeField] private SoundDefinition _hideSound;
+
     protected CanvasGroup CanvasGroup { get; private set; }
     protected RectTransform Rect { get; private set; }
 
     private Tween _tween;
+    private bool _wasShown;
 
     protected virtual void Awake()
     {
@@ -33,6 +39,11 @@ public abstract class PopupBase : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void OnDisable()
+    {
+        _wasShown = false;
+    }
+
     public virtual void Show()
     {
         _tween?.Kill();
@@ -44,6 +55,10 @@ public abstract class PopupBase : MonoBehaviour
         CanvasGroup.interactable = false;
         CanvasGroup.blocksRaycasts = false;
 
+        _wasShown = true;
+
+        PlayShowSound();
+
         _tween = DOTween.Sequence()
             .Append(Rect.DOScale(1f, _showDuration).SetEase(_showEase))
             .Join(CanvasGroup.DOFade(1f, _showDuration))
@@ -54,12 +69,23 @@ public abstract class PopupBase : MonoBehaviour
             });
     }
 
+    private void PlayShowSound()
+    {
+        if (_showSound == null)
+            return;
+
+        AudioService.I.Play(_showSound);
+    }
+
     public virtual void Hide()
     {
         _tween?.Kill();
 
         CanvasGroup.interactable = false;
         CanvasGroup.blocksRaycasts = false;
+
+        if (_wasShown)
+            PlayHideSound();
 
         _tween = DOTween.Sequence()
             .Append(Rect.DOScale(0.85f, _hideDuration).SetEase(_hideEase))
@@ -68,5 +94,13 @@ public abstract class PopupBase : MonoBehaviour
             {
                 gameObject.SetActive(false);
             });
+    }
+
+    private void PlayHideSound()
+    {
+        if (_hideSound == null)
+            return;
+
+        AudioService.I.Play(_hideSound);
     }
 }

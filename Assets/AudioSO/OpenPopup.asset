@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e06bd667c138974b9be20898aa237f0, type: 3}
-  m_Name: EmojiChoose
+  m_Name: OpenPopup
   m_EditorClassIdentifier: Assembly-CSharp::SoundDefinition
   Channel: 0
   Clips:
-  - {fileID: 8300000, guid: 45a68837190ea194ba53dca3eda596f4, type: 3}
-  Volume: 0.8
+  - {fileID: 8300000, guid: d948fd9eb2017f34aace9d085efd3ac6, type: 3}
+  Volume: 0.5
   PitchRange: {x: 1, y: 1}

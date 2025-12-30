@@ -144,6 +144,8 @@ MonoBehaviour:
   _mainButton: {fileID: 3941795588886978109}
   _optionButton1: {fileID: 1204353778608617005}
   _optionButton2: {fileID: 3005916078770894673}
+  _openListSound: {fileID: 11400000, guid: f0a640445bb45fc47bff07c525eb02c2, type: 2}
+  _closeListSound: {fileID: 11400000, guid: 4611cab4a1a241b45b4fe5f00164580b, type: 2}
   _animDuration: 0.25
   _appearOffset: 20
   _pulseDelay: 3
@@ -165,6 +167,7 @@ MonoBehaviour:
   _colorSwitcher: {fileID: 3842771938178923515}
   _playerDissolve: {fileID: 2624531012482013729}
   _aiDissolve: {fileID: 8870414464769296334}
+  _playerNameText: {fileID: 0}
   _aiNameText: {fileID: 0}
   _startButton: {fileID: 1707732851466890557}
   _settingsButton: {fileID: 1978764855818142961}
@@ -221,6 +224,7 @@ MonoBehaviour:
   _downButton: {fileID: 6454225850405424604}
   _step: 0.2
   _smoothTime: 0.4
+  _scrollSound: {fileID: 11400000, guid: 4611cab4a1a241b45b4fe5f00164580b, type: 2}
 --- !u!1 &494373236707075988
 GameObject:
   m_ObjectHideFlags: 0

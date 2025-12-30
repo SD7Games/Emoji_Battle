@@ -19,8 +19,11 @@ public class ArrowScrollController : MonoBehaviour
     [SerializeField, Range(0.05f, 1.5f)]
     private float _smoothTime = 0.25f;
 
+    [Header("Audio")]
+    [SerializeField] private SoundDefinition _scrollSound;
+
     private Coroutine _scrollRoutine;
-    private bool _isAnimating = false;
+    private bool _isAnimating;
 
     private void Start()
     {
@@ -37,21 +40,24 @@ public class ArrowScrollController : MonoBehaviour
         if (_isAnimating)
             return;
 
-        float target = _scrollRect.verticalNormalizedPosition + (up ? _step : -_step);
-        target = Mathf.Clamp01(target);
+        float start = _scrollRect.verticalNormalizedPosition;
+        float target = Mathf.Clamp01(start + (up ? _step : -_step));
+
+        if (Mathf.Approximately(start, target))
+            return;
 
         if (_scrollRoutine != null)
             StopCoroutine(_scrollRoutine);
 
-        _scrollRoutine = StartCoroutine(SmoothScroll(target));
+        PlayScrollSound();
+        _scrollRoutine = StartCoroutine(SmoothScroll(start, target));
     }
 
-    private IEnumerator SmoothScroll(float target)
+    private IEnumerator SmoothScroll(float start, float target)
     {
         _isAnimating = true;
         SetRaycast(false);
 
-        float start = _scrollRect.verticalNormalizedPosition;
         float time = 0f;
 
         while (time < _smoothTime)
@@ -59,7 +65,7 @@ public class ArrowScrollController : MonoBehaviour
             time += Time.deltaTime;
 
             float t = time / _smoothTime;
-            t = t * t * (3 - 2 * t);
+            t = t * t * (3f - 2f * t);
 
             _scrollRect.verticalNormalizedPosition = Mathf.Lerp(start, target, t);
             yield return null;
@@ -73,6 +79,14 @@ public class ArrowScrollController : MonoBehaviour
         UpdateArrowStates();
     }
 
+    private void PlayScrollSound()
+    {
+        if (_scrollSound == null)
+            return;
+
+        AudioService.I.Play(_scrollSound);
+    }
+
     private void OnScrollChanged(Vector2 _)
     {
         if (!_isAnimating)
@@ -84,7 +98,6 @@ public class ArrowScrollController : MonoBehaviour
         float pos = _scrollRect.verticalNormalizedPosition;
 
         _upButton.interactable = pos < 0.98f;
-
         _downButton.interactable = pos > 0.02f;
     }
 

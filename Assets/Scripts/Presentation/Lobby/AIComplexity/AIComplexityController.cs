@@ -34,7 +34,7 @@ public sealed class AIComplexityController : MonoBehaviour
         _view.SetMain(_current);
         _view.HideInstant();
 
-        _view.OnMainClick += Toggle;
+        _view.OnMainClick += ButtonList;
         _view.OnOptionClick += Select;
 
         _view.StartPulse();
@@ -43,10 +43,11 @@ public sealed class AIComplexityController : MonoBehaviour
         _initialized = true;
     }
 
-    private void Toggle()
+    private void ButtonList()
     {
         if (_opened)
         {
+            _view.PlayCloseListSound();
             _view.Collapse();
             _opened = false;
             return;
@@ -57,6 +58,7 @@ public sealed class AIComplexityController : MonoBehaviour
         _view.SetOption1(other[0]);
         _view.SetOption2(other[1]);
 
+        _view.PlayOpenListSound();
         _view.Expand();
         _opened = true;
     }
@@ -70,6 +72,8 @@ public sealed class AIComplexityController : MonoBehaviour
         AIComplexityService.Save(diff);
 
         _view.SetMain(diff);
+
+        _view.PlayCloseListSound();
         _view.Collapse();
 
         _opened = false;

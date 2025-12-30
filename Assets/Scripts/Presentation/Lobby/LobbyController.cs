@@ -7,10 +7,12 @@ public sealed class LobbyController : IDisposable
 {
     private readonly LobbyService _service;
     private readonly SoundDefinition _emojiSelectSound;
-    private readonly SoundDefinition _colorChangeSound;
+    private readonly SoundDefinition _swapSound;
 
-    private int _currentColor;
-    private int _currentEmojiId = -1;
+    private int _uiColorId = -1;
+
+    private int _selectedEmojiId = -1;
+    private int _selectedEmojiColorId = -1;
 
     public EmojiResolver Resolver { get; }
 
@@ -27,14 +29,13 @@ public sealed class LobbyController : IDisposable
     public LobbyController(
         LobbyService service,
         EmojiResolver resolver,
-        SoundDefinition emojiChooseSound,
-        SoundDefinition colorChangeSound
-    )
+        SoundDefinition emojiSelectSound,
+        SoundDefinition colorChangeSound)
     {
         _service = service;
         Resolver = resolver;
-        _emojiSelectSound = emojiChooseSound;
-        _colorChangeSound = colorChangeSound;
+        _emojiSelectSound = emojiSelectSound;
+        _swapSound = colorChangeSound;
 
         SettingsService.PlayerNameChanged += OnPlayerNameChanged;
     }
@@ -42,7 +43,9 @@ public sealed class LobbyController : IDisposable
     public void Initialize()
     {
         var player = GameDataService.I.Data.Player;
-        _currentEmojiId = player.EmojiIndex;
+
+        _selectedEmojiId = player.EmojiIndex;
+        _selectedEmojiColorId = player.EmojiColor;
 
         PlayerNameChanged?.Invoke(player.Name);
     }
@@ -52,18 +55,9 @@ public sealed class LobbyController : IDisposable
         SettingsService.PlayerNameChanged -= OnPlayerNameChanged;
     }
 
-    public void OnAIStrategyChanged(AIStrategyType type)
-    {
-        var data = GameDataService.I.Data;
-        data.AI.Strategy = type;
-        GameDataService.I.Save();
-
-        AINameChanged?.Invoke(_service.GenerateAIName());
-    }
-
     public void SetInitialColor(int colorId)
     {
-        _currentColor = colorId;
+        _uiColorId = colorId;
         UpdateEmojiList();
 
         var ai = _service.EnsureValidAIEmoji();
@@ -73,28 +67,29 @@ public sealed class LobbyController : IDisposable
         AINameChanged?.Invoke(
             string.IsNullOrEmpty(_service.GetAIName())
                 ? _service.GenerateAIName()
-                : _service.GetAIName()
-        );
+                : _service.GetAIName());
     }
 
     public void OnColorChanged(int colorId)
     {
-        if (_currentColor == colorId)
+        if (_uiColorId == colorId)
             return;
 
-        _currentColor = colorId;
+        _uiColorId = colorId;
         UpdateEmojiList();
         PlayColorChangeSound();
     }
 
     public void OnEmojiSelected(int emojiId)
     {
-        if (_currentEmojiId == emojiId)
+        if (_selectedEmojiId == emojiId &&
+            _selectedEmojiColorId == _uiColorId)
             return;
 
-        _currentEmojiId = emojiId;
+        _selectedEmojiId = emojiId;
+        _selectedEmojiColorId = _uiColorId;
 
-        var player = _service.SelectPlayerEmoji(_currentColor, emojiId);
+        var player = _service.SelectPlayerEmoji(_uiColorId, emojiId);
         if (player != null)
         {
             PlayerAvatarChanged?.Invoke(player);
@@ -108,39 +103,46 @@ public sealed class LobbyController : IDisposable
 
     private void PlayEmojiSelectSound()
     {
-        if (_emojiSelectSound == null)
-            return;
-
-        AudioService.I.Play(_emojiSelectSound);
+        if (_emojiSelectSound != null)
+            AudioService.I.Play(_emojiSelectSound);
     }
 
     private void PlayColorChangeSound()
     {
-        if (_colorChangeSound == null)
-            return;
-
-        AudioService.I.Play(_colorChangeSound);
-    }
-
-    public void OnStartPressed()
-    {
-        SceneManager.LoadScene("Main");
+        if (_swapSound != null)
+            AudioService.I.Play(_swapSound);
     }
 
     private void UpdateEmojiList()
     {
+        if (_uiColorId < 0)
+            return;
+
         var progress = GameDataService.I.Data.Progress;
-        var data = Resolver.GetData(_currentColor);
+        var data = Resolver.GetData(_uiColorId);
 
         if (data == null)
             return;
 
         EmojiListChanged?.Invoke(
             progress.GetSortedForView(
-                _currentColor,
-                data.EmojiSprites.Count
-            )
-        );
+                _uiColorId,
+                data.EmojiSprites.Count));
+    }
+
+    public void OnAIStrategyChanged(AIStrategyType type)
+    {
+        var data = GameDataService.I.Data;
+        data.AI.Strategy = type;
+        GameDataService.I.Save();
+
+        AINameChanged?.Invoke(_service.GenerateAIName());
+    }
+
+    public void OnStartPressed()
+    {
+        PlayColorChangeSound();
+        SceneManager.LoadScene("Main");
     }
 
     private void OnPlayerNameChanged(string name)

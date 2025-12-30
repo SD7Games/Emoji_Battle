@@ -6,11 +6,20 @@ using UnityEngine.UI;
 
 public sealed class AIComplexityView : MonoBehaviour
 {
+    [Header("Buttons")]
     [SerializeField] private Button _mainButton;
+
     [SerializeField] private Button _optionButton1;
     [SerializeField] private Button _optionButton2;
 
+    [Header("Audio")]
+    [SerializeField] private SoundDefinition _openListSound;
+
+    [SerializeField] private SoundDefinition _closeListSound;
+
+    [Header("Animation")]
     [SerializeField] private float _animDuration = 0.25f;
+
     [SerializeField] private float _appearOffset = 20f;
 
     [SerializeField] private float _pulseDelay = 3f;
@@ -55,6 +64,22 @@ public sealed class AIComplexityView : MonoBehaviour
         _mainButton.onClick.AddListener(() => OnMainClick?.Invoke());
         _optionButton1.onClick.AddListener(() => OnOptionClick?.Invoke(_optionButton1));
         _optionButton2.onClick.AddListener(() => OnOptionClick?.Invoke(_optionButton2));
+    }
+
+    public void PlayOpenListSound()
+    {
+        if (_openListSound == null)
+            return;
+
+        AudioService.I.Play(_openListSound);
+    }
+
+    public void PlayCloseListSound()
+    {
+        if (_closeListSound == null)
+            return;
+
+        AudioService.I.Play(_closeListSound);
     }
 
     public void SetMain(AIStrategyType type)

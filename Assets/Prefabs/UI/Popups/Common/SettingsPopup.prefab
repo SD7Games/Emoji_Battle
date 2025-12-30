@@ -1789,6 +1789,8 @@ MonoBehaviour:
   _hideDuration: 0.2
   _showEase: 27
   _hideEase: 26
+  _showSound: {fileID: 11400000, guid: f0a640445bb45fc47bff07c525eb02c2, type: 2}
+  _hideSound: {fileID: 11400000, guid: 4611cab4a1a241b45b4fe5f00164580b, type: 2}
   _musicButton: {fileID: 1375971605313813145}
   _musicOffIcon: {fileID: 6579312656671503262}
   _musicSlider: {fileID: 8723390972849223311}
