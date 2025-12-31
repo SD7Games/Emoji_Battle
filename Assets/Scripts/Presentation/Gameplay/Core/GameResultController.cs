@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public sealed class GameResultController
 
     private const float DRAW_DELAY = 0.8f;
     private const float POPUP_BLOCK_TIME = 0.3f;
+
+    public event Action<CellState, GameRewardResult> ResultReady;
 
     public GameResultController(
         WinLineView lines,
@@ -33,49 +36,23 @@ public sealed class GameResultController
         {
             _lines.ShowWinLine(
                 line.Value,
-                () => ShowResultPopup(winner, reward)
+                () => NotifyResultReady(winner, reward)
             );
+            return;
         }
-        else
-        {
-            _coroutineRunner.StartCoroutine(ShowDrawDelayed(winner, reward));
-        }
+
+        _coroutineRunner.StartCoroutine(ShowDrawDelayed(winner, reward));
     }
 
     private IEnumerator ShowDrawDelayed(CellState winner, GameRewardResult reward)
     {
         yield return new WaitForSeconds(DRAW_DELAY);
-        ShowResultPopup(winner, reward);
+        NotifyResultReady(winner, reward);
     }
 
-    private void ShowResultPopup(CellState winner, GameRewardResult reward)
+    private void NotifyResultReady(CellState winner, GameRewardResult reward)
     {
         _coroutineRunner.StartCoroutine(_input.BlockForSeconds(POPUP_BLOCK_TIME));
-
-        if (winner == CellState.Player)
-        {
-            if (reward.AllEmojisUnlocked)
-            {
-                PopupService.I.Show(PopupId.Complete);
-                return;
-            }
-
-            if (reward.EmojiUnlocked)
-            {
-                PopupService.I.Show(PopupId.Victory);
-                return;
-            }
-
-            PopupService.I.Show(PopupId.Complete);
-            return;
-        }
-
-        if (winner == CellState.AI)
-        {
-            PopupService.I.Show(PopupId.Defeat);
-            return;
-        }
-
-        PopupService.I.Show(PopupId.Draw);
+        ResultReady?.Invoke(winner, reward);
     }
 }

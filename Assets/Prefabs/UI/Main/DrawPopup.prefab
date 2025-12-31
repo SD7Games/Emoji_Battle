@@ -448,6 +448,8 @@ MonoBehaviour:
   _hideDuration: 0.2
   _showEase: 27
   _hideEase: 26
+  _showSound: {fileID: 0}
+  _hideSound: {fileID: 11400000, guid: 4611cab4a1a241b45b4fe5f00164580b, type: 2}
   _messageText: {fileID: 7045792416927424487}
 --- !u!114 &6610059146333490148
 MonoBehaviour:

@@ -768,10 +768,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WinPopup
       objectReference: {fileID: 0}
-    - target: {fileID: 342970678341212339, guid: cae53194831f0f240a3693774804f551, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1053903576227645791, guid: cae53194831f0f240a3693774804f551, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -868,10 +864,6 @@ PrefabInstance:
     - target: {fileID: 5285153729432599346, guid: 8d51acce32b584941aa6982dd6c89b7f, type: 3}
       propertyPath: m_Name
       value: DrawPopup
-      objectReference: {fileID: 0}
-    - target: {fileID: 5285153729432599346, guid: 8d51acce32b584941aa6982dd6c89b7f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5902559282769479278, guid: 8d51acce32b584941aa6982dd6c89b7f, type: 3}
       propertyPath: m_Pivot.x
@@ -1070,10 +1062,6 @@ PrefabInstance:
     - target: {fileID: 2354045176569108075, guid: 21b8354114613564c8de70e2fca84cfd, type: 3}
       propertyPath: m_Name
       value: CompletePopup
-      objectReference: {fileID: 0}
-    - target: {fileID: 2354045176569108075, guid: 21b8354114613564c8de70e2fca84cfd, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4461899700238295016, guid: 21b8354114613564c8de70e2fca84cfd, type: 3}
       propertyPath: m_Pivot.x
@@ -1370,10 +1358,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: DefeatPopup
       objectReference: {fileID: 0}
-    - target: {fileID: 7790561140288734837, guid: 2ae4e8d1af966ee45aacaf4405ee5c46, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1518,10 +1502,6 @@ PrefabInstance:
     - target: {fileID: 6808280089196757596, guid: e4462175366860d46922d77a42883c53, type: 3}
       propertyPath: m_Name
       value: LootBoxPopup
-      objectReference: {fileID: 0}
-    - target: {fileID: 6808280089196757596, guid: e4462175366860d46922d77a42883c53, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

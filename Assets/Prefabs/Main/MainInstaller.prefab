@@ -51,6 +51,9 @@ MonoBehaviour:
   _turnState: {fileID: 316598601210307784}
   _aiController: {fileID: 6340134050003887928}
   _winLines: {fileID: 0}
+  _playerMoveSfx: {fileID: 11400000, guid: b706a8674245d3a4db055bdd063a3fc0, type: 2}
+  _aiMoveSfx: {fileID: 11400000, guid: c95705a42400af1448ce68716de82589, type: 2}
+  _backToLobbySfx: {fileID: 11400000, guid: 4611cab4a1a241b45b4fe5f00164580b, type: 2}
   _popupCanvas: {fileID: 0}
   _scenePopups:
   - {fileID: 0}

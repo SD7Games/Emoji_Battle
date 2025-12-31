@@ -5395,6 +5395,8 @@ MonoBehaviour:
   _hideDuration: 0.2
   _showEase: 27
   _hideEase: 26
+  _showSound: {fileID: 0}
+  _hideSound: {fileID: 11400000, guid: 4611cab4a1a241b45b4fe5f00164580b, type: 2}
   _emojiImage: {fileID: 3895258472869842881}
   _previewColorId: 0
   _poofFx: {fileID: 4637548021520323772}

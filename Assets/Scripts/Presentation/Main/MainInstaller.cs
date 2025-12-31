@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 public sealed class MainInstaller : MonoBehaviour
 {
@@ -12,6 +10,12 @@ public sealed class MainInstaller : MonoBehaviour
     [SerializeField] private TurnState _turnState;
     [SerializeField] private AIMoveController _aiController;
     [SerializeField] private WinLineView _winLines;
+
+    [Header("SFX")]
+    [SerializeField] private SoundDefinition _playerMoveSfx;
+
+    [SerializeField] private SoundDefinition _aiMoveSfx;
+    [SerializeField] private SoundDefinition _backToLobbySfx;
 
     [Header("Popups")]
     [SerializeField] private PopupCanvasController _popupCanvas;
@@ -31,74 +35,51 @@ public sealed class MainInstaller : MonoBehaviour
     private GameRewardService _rewardService;
     private GameResultController _resultController;
 
+    private MainController _mainController;
+
     private void Awake()
     {
         _resolver = new EmojiResolver(_emojiSets);
 
         InitPopups();
-        InitHeaderSigns();
-        InitGameFlow();
         InjectPopupDependencies();
-        BindUI();
-        BindResultPopups();
-        SubscribeNameUpdates();
-    }
 
-    private void InjectPopupDependencies()
-    {
-        foreach (var popup in _scenePopups)
-        {
-            if (popup is IEmojiResolverConsumer consumer)
-                consumer.Construct(_resolver);
-        }
+        InitGameFlow();
+
+        _rewardService = new GameRewardService(_emojiSets);
+        _resultController = new GameResultController(_winLines, _rewardService, this, _input);
+        _session = new GameSession(_flow, _turnState, _winLines, _uiView.BoardView);
+
+        _mainController = new MainController(
+            _flow,
+            _session,
+            _board,
+            _uiView,
+            _signView,
+            _aiController,
+            _input,
+            _resultController,
+            _rewardService,
+            _resolver,
+            PopupService.I,
+            AudioService.I,
+            _scenePopups,
+            _playerMoveSfx,
+            _aiMoveSfx,
+            _backToLobbySfx
+        );
+
+        _mainController.Initialize();
     }
 
     private void Start()
     {
-        _signView.PlayIntroDissolve();
+        _mainController.PlayIntro();
     }
-
-    public void OpenLootBox()
-    {
-        var result = _rewardService.OnLootBoxOpened();
-
-        if (result.AllEmojisUnlocked)
-            PopupService.I.Show(PopupId.Complete);
-        else if (result.EmojiUnlocked)
-            PopupService.I.Show(PopupId.LootBox);
-        else
-            PopupService.I.Show(PopupId.Complete);
-    }
-
-#if UNITY_EDITOR
-
-    private void Update()
-    {
-        if (Keyboard.current == null)
-            return;
-
-        if (Keyboard.current.lKey.wasPressedThisFrame)
-            OpenLootBox();
-    }
-
-#endif
 
     private void OnDestroy()
     {
-        UnsubscribeNameUpdates();
-        UnbindResultPopups();
-
-        if (_uiView != null)
-        {
-            _uiView.OnBackClicked -= OnBackToLobby;
-            _uiView.OnSettingsClicked -= OnOpenSettings;
-        }
-
-        if (_input != null)
-            _input.OnCellClicked -= OnCellClicked;
-
-        if (_flow != null)
-            _flow.OnGameOver -= OnGameOver;
+        _mainController?.Dispose();
     }
 
     private void InitPopups()
@@ -112,26 +93,25 @@ public sealed class MainInstaller : MonoBehaviour
         PopupService.I.SetContext(_popupCanvas, _scenePopups);
     }
 
-    private void InitHeaderSigns()
+    private void InjectPopupDependencies()
     {
-        var save = GameDataService.I.Data;
-
-        Sprite player = _resolver.Get(save.Player.EmojiColor, save.Player.EmojiIndex);
-        Sprite ai = _resolver.Get(save.AI.EmojiColor, save.AI.EmojiIndex);
-
-        _signView.SetPlayer(player, save.Player.Name);
-        _signView.SetAI(ai, save.AI.Name);
+        foreach (var popup in _scenePopups)
+        {
+            if (popup is IEmojiResolverConsumer consumer)
+                consumer.Construct(_resolver);
+        }
     }
 
     private void InitGameFlow()
     {
+#if UNITY_EDITOR
         PlayerPrefs.DeleteAll();
+#endif
         _board = new BoardState();
         _checker = new WinChecker();
         _flow = new GameFlow(_board, _turnState, _checker);
 
         _input = new InputController(_uiView.BoardView.Buttons);
-        _input.OnCellClicked += OnCellClicked;
 
         var save = GameDataService.I.Data;
 
@@ -145,93 +125,5 @@ public sealed class MainInstaller : MonoBehaviour
         _flow.OnMoveApplied += _uiView.BoardView.OnMoveApplied;
 
         _aiController.Init(_flow);
-
-        _flow.OnTurnChanged += isPlayerTurn =>
-        {
-            _uiView.BoardView.SetInteractable(isPlayerTurn);
-
-            if (!isPlayerTurn)
-                _aiController.MakeMove(_board.AsIntArray());
-        };
-
-        _rewardService = new GameRewardService(_emojiSets);
-        _resultController = new GameResultController(_winLines, _rewardService, this, _input);
-
-        _flow.OnGameOver += OnGameOver;
-
-        _session = new GameSession(_flow, _turnState, _winLines, _uiView.BoardView);
-    }
-
-    private void BindUI()
-    {
-        _uiView.OnBackClicked += OnBackToLobby;
-        _uiView.OnSettingsClicked += OnOpenSettings;
-    }
-
-    private void BindResultPopups()
-    {
-        foreach (var popup in _scenePopups)
-        {
-            if (popup is ResultPopup resultPopup)
-            {
-                resultPopup.Closed += OnResultPopupClosed;
-            }
-        }
-    }
-
-    private void UnbindResultPopups()
-    {
-        foreach (var popup in _scenePopups)
-        {
-            if (popup is ResultPopup resultPopup)
-            {
-                resultPopup.Closed -= OnResultPopupClosed;
-            }
-        }
-    }
-
-    private void OnCellClicked(int index)
-    {
-        _flow.ProcessMove(index);
-    }
-
-    private void OnGameOver(
-        CellState winner,
-        WinLineView.WinLineType? line,
-        CellState[,] finalBoard
-    )
-    {
-        _uiView.BoardView.DisableAfterGameOver(finalBoard);
-        _resultController.HandleGameOver(winner, line);
-    }
-
-    private void OnResultPopupClosed()
-    {
-        _session.Restart();
-    }
-
-    private void OnBackToLobby()
-    {
-        SceneManager.LoadScene("Lobby");
-    }
-
-    private void OnOpenSettings()
-    {
-        PopupService.I.Show(PopupId.Settings);
-    }
-
-    private void SubscribeNameUpdates()
-    {
-        SettingsService.PlayerNameChanged += OnPlayerNameChanged;
-    }
-
-    private void UnsubscribeNameUpdates()
-    {
-        SettingsService.PlayerNameChanged -= OnPlayerNameChanged;
-    }
-
-    private void OnPlayerNameChanged(string name)
-    {
-        _signView.SetPlayerName(name);
     }
 }
