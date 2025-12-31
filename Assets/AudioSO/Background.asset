@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f95e8ea0e3acadc4a99a630f73ae0c66, type: 3}
   m_Name: Background
   m_EditorClassIdentifier: Assembly-CSharp::MusicDefinition
-  Clip: {fileID: 8300000, guid: 2547ea80c9340764e86c813003bf3de8, type: 3}
-  Volume: 0.2
-  Loop: 1
+  Tracks:
+  - {fileID: 8300000, guid: 2547ea80c9340764e86c813003bf3de8, type: 3}
+  - {fileID: 8300000, guid: 6b05b5918a996b54c81534250dc41cbd, type: 3}
+  - {fileID: 8300000, guid: ceaa9abaf0dce9f4d9f1814419829c4f, type: 3}
+  - {fileID: 8300000, guid: 059dcd4f4cacfa64fa40c4299ac2a913, type: 3}
+  - {fileID: 8300000, guid: 2133102d7b0ef4f47ba9faf249112e02, type: 3}
+  - {fileID: 8300000, guid: e7663ba579abc7c43a56ed08c24a9283, type: 3}
+  Volume: 0.4

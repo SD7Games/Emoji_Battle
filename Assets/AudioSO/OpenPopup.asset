@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e06bd667c138974b9be20898aa237f0, type: 3}
   m_Name: OpenPopup
   m_EditorClassIdentifier: Assembly-CSharp::SoundDefinition
-  Channel: 0
   Clips:
   - {fileID: 8300000, guid: d948fd9eb2017f34aace9d085efd3ac6, type: 3}
-  Volume: 0.5
+  Volume: 0.8
   PitchRange: {x: 1, y: 1}
