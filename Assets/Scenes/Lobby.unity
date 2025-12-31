@@ -380,6 +380,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3626655335479171743, guid: a9cbfe9e886e2484c9f8b1f34f574d02, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3669215009840419140, guid: a9cbfe9e886e2484c9f8b1f34f574d02, type: 3}
       propertyPath: m_Name
       value: PopupCanvas
@@ -728,7 +732,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6106036781743056636, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 1600
+      value: 1400
       objectReference: {fileID: 0}
     - target: {fileID: 6106036781743056636, guid: 243529d1f6e6edf4db6300a517ef9c11, type: 3}
       propertyPath: m_LocalPosition.x
