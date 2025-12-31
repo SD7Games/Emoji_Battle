@@ -39,13 +39,15 @@ public abstract class PopupBase : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnDisable()
+    protected virtual void OnDestroy()
     {
-        _wasShown = false;
+        DOTween.Kill(this);
+        _tween?.Kill();
     }
 
     public virtual void Show()
     {
+        DOTween.Kill(this);
         _tween?.Kill();
 
         gameObject.SetActive(true);
@@ -56,14 +58,16 @@ public abstract class PopupBase : MonoBehaviour
         CanvasGroup.blocksRaycasts = false;
 
         _wasShown = true;
-
         PlayShowSound();
 
         _tween = DOTween.Sequence()
+            .SetTarget(this)
             .Append(Rect.DOScale(1f, _showDuration).SetEase(_showEase))
             .Join(CanvasGroup.DOFade(1f, _showDuration))
             .OnComplete(() =>
             {
+                if (!this) return;
+
                 CanvasGroup.interactable = true;
                 CanvasGroup.blocksRaycasts = true;
             });
@@ -79,6 +83,7 @@ public abstract class PopupBase : MonoBehaviour
 
     public virtual void Hide()
     {
+        DOTween.Kill(this);
         _tween?.Kill();
 
         CanvasGroup.interactable = false;
@@ -88,12 +93,16 @@ public abstract class PopupBase : MonoBehaviour
             PlayHideSound();
 
         _tween = DOTween.Sequence()
+            .SetTarget(this)
             .Append(Rect.DOScale(0.85f, _hideDuration).SetEase(_hideEase))
             .Join(CanvasGroup.DOFade(0f, _hideDuration))
             .OnComplete(() =>
             {
+                if (!this) return;
                 gameObject.SetActive(false);
             });
+
+        _wasShown = false;
     }
 
     private void PlayHideSound()
