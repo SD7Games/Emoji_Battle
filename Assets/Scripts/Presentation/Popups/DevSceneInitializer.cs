@@ -21,6 +21,6 @@ public sealed class DevSceneInitializer : MonoBehaviour
     private void Start()
     {
         if (_devMusic != null)
-            AudioService.I.PlayMusic(_devMusic);
+            AudioService.I.PlayMusicIfDifferent(_devMusic);
     }
 }

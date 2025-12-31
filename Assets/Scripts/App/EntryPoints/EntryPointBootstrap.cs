@@ -15,8 +15,6 @@ public sealed class EntryPointBootstrap : MonoBehaviour
     [Header("Background Music")]
     [SerializeField] private MusicDefinition _backgroundMusic;
 
-    [SerializeField] private float _musicFadeIn = 0.5f;
-
     private BootstrapController _controller;
 
     private void Awake()
@@ -35,7 +33,6 @@ public sealed class EntryPointBootstrap : MonoBehaviour
         try
         {
             await _controller.StartAsync();
-
             StartBackgroundMusic();
         }
         catch (Exception e)
@@ -58,6 +55,6 @@ public sealed class EntryPointBootstrap : MonoBehaviour
         if (_backgroundMusic == null)
             return;
 
-        AudioService.I.FadeToMusic(_backgroundMusic, _musicFadeIn);
+        AudioService.I.PlayMusicIfDifferent(_backgroundMusic);
     }
 }

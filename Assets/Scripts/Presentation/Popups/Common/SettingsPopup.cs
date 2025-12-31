@@ -39,8 +39,10 @@ public sealed class SettingsPopup : PopupBase
         _closeButton.onClick.AddListener(OnCloseClicked);
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         _closeButton.onClick.RemoveListener(OnCloseClicked);
     }
 
