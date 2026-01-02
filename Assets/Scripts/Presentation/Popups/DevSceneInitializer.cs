@@ -2,6 +2,7 @@ using UnityEngine;
 
 public sealed class DevSceneInitializer : MonoBehaviour
 {
+    [SerializeField] private VibrationService _vibrationServicePrefab;
     [SerializeField] private PopupService _popupServicePrefab;
     [SerializeField] private AudioService _audioServicePrefab;
     [SerializeField] private MusicDefinition _devMusic;
@@ -9,6 +10,9 @@ public sealed class DevSceneInitializer : MonoBehaviour
 
     private void Awake()
     {
+        if (_vibrationServicePrefab != null)
+            Instantiate(_vibrationServicePrefab);
+
         if (PopupService.I == null)
             Instantiate(_popupServicePrefab);
 

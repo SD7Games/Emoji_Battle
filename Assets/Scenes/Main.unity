@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1659e1f3285c9c8489d711fdca907c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DevSceneInitializer
+  _vibrationServicePrefab: {fileID: 1999717452850729198, guid: bed8bb9fa85eb14409b5f8dcdb81c70e, type: 3}
   _popupServicePrefab: {fileID: 4238455430526825372, guid: 6b262bf4aad934045a78b24e6ffef95c, type: 3}
   _audioServicePrefab: {fileID: 5800229258008177918, guid: 1d67fdf4083cd7d49a4e33a2e1bb4a34, type: 3}
   _devMusic: {fileID: 11400000, guid: 277e23531812fc64fa0a52ad44512637, type: 2}
@@ -852,10 +853,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8428447655186529409, guid: cae53194831f0f240a3693774804f551, type: 3}
-      propertyPath: _showSound
-      value: 
-      objectReference: {fileID: 11400000, guid: 4795d06391aa1b4419e4e8976d6510d9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -869,10 +866,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1191838077}
     m_Modifications:
-    - target: {fileID: 1944558576838276734, guid: 8d51acce32b584941aa6982dd6c89b7f, type: 3}
-      propertyPath: _showSound
-      value: 
-      objectReference: {fileID: 11400000, guid: 13d5574d8367892458d3817f6ca035c5, type: 2}
     - target: {fileID: 5285153729432599346, guid: 8d51acce32b584941aa6982dd6c89b7f, type: 3}
       propertyPath: m_Name
       value: DrawPopup
@@ -1155,10 +1148,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5771381557959394780, guid: 21b8354114613564c8de70e2fca84cfd, type: 3}
-      propertyPath: _showSound
-      value: 
-      objectReference: {fileID: 11400000, guid: 4795d06391aa1b4419e4e8976d6510d9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1290,10 +1279,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1191838077}
     m_Modifications:
-    - target: {fileID: 4458575297361459887, guid: 2ae4e8d1af966ee45aacaf4405ee5c46, type: 3}
-      propertyPath: _showSound
-      value: 
-      objectReference: {fileID: 11400000, guid: 09df19ff49206ac4d8710d2989d58e5d, type: 2}
     - target: {fileID: 6912828974956409749, guid: 2ae4e8d1af966ee45aacaf4405ee5c46, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1439,10 +1424,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1191838077}
     m_Modifications:
-    - target: {fileID: 2668358804338352665, guid: e4462175366860d46922d77a42883c53, type: 3}
-      propertyPath: _showSound
-      value: 
-      objectReference: {fileID: 11400000, guid: d89f2533e5ff595469267a7f31e8af39, type: 2}
     - target: {fileID: 4055067458765112678, guid: e4462175366860d46922d77a42883c53, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -86,7 +86,6 @@ public sealed class MainInstaller : MonoBehaviour
     {
         if (PopupService.I == null)
         {
-            Debug.LogError("PopupService not initialized");
             return;
         }
 
@@ -104,9 +103,6 @@ public sealed class MainInstaller : MonoBehaviour
 
     private void InitGameFlow()
     {
-#if UNITY_EDITOR
-        PlayerPrefs.DeleteAll();
-#endif
         _board = new BoardState();
         _checker = new WinChecker();
         _flow = new GameFlow(_board, _turnState, _checker);

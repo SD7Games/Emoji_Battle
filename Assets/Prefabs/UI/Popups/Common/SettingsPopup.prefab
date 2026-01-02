@@ -1701,6 +1701,7 @@ GameObject:
   - component: {fileID: 4297389400333885706}
   - component: {fileID: 2337173926646868474}
   - component: {fileID: 879253989797440037}
+  - component: {fileID: 5327961152463119099}
   m_Layer: 5
   m_Name: SettingsPopup
   m_TagString: Untagged
@@ -1791,6 +1792,7 @@ MonoBehaviour:
   _hideEase: 26
   _showSound: {fileID: 11400000, guid: f0a640445bb45fc47bff07c525eb02c2, type: 2}
   _hideSound: {fileID: 11400000, guid: 4611cab4a1a241b45b4fe5f00164580b, type: 2}
+  _showVibration: 0
   _musicButton: {fileID: 1375971605313813145}
   _musicOffIcon: {fileID: 6579312656671503262}
   _musicSlider: {fileID: 8723390972849223311}
@@ -1801,6 +1803,18 @@ MonoBehaviour:
   _vibrationOffIcon: {fileID: 4152425596351926082}
   _playerNameInput: {fileID: 2017120141185165520}
   _closeButton: {fileID: 1110148714075049683}
+--- !u!225 &5327961152463119099
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5809461802969278626}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5944543688779080016
 GameObject:
   m_ObjectHideFlags: 0

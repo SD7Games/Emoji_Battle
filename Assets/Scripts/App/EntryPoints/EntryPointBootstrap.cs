@@ -8,8 +8,9 @@ public sealed class EntryPointBootstrap : MonoBehaviour
     [SerializeField] private BootstrapView _bootstrapView;
 
     [Header("Service Prefabs")]
-    [SerializeField] private PopupService _popupServicePrefab;
+    [SerializeField] private VibrationService _vibrationServicePrefab;
 
+    [SerializeField] private PopupService _popupServicePrefab;
     [SerializeField] private AudioService _audioServicePrefab;
 
     [Header("Background Music")]
@@ -43,6 +44,9 @@ public sealed class EntryPointBootstrap : MonoBehaviour
 
     private void EnsureServices()
     {
+        if (VibrationService.I == null)
+            Instantiate(_vibrationServicePrefab);
+
         if (PopupService.I == null)
             Instantiate(_popupServicePrefab);
 

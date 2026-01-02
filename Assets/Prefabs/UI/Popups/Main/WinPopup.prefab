@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7662645012769610222}
   - component: {fileID: 8428447655186529409}
   - component: {fileID: 1648576762189444133}
+  - component: {fileID: 4220794706323396800}
   m_Layer: 5
   m_Name: WinPopup
   m_TagString: Untagged
@@ -99,8 +100,9 @@ MonoBehaviour:
   _hideDuration: 0.2
   _showEase: 27
   _hideEase: 26
-  _showSound: {fileID: 0}
+  _showSound: {fileID: 11400000, guid: 4795d06391aa1b4419e4e8976d6510d9, type: 2}
   _hideSound: {fileID: 11400000, guid: 4611cab4a1a241b45b4fe5f00164580b, type: 2}
+  _showVibration: 3
   _emojiImage: {fileID: 7569229890805802850}
   _previewColorId: 0
   _poofFx: {fileID: 2467380461281183159}
@@ -118,6 +120,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PopupCloseButton
   _button: {fileID: 1136822989732320560}
   _delay: 1
+--- !u!225 &4220794706323396800
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342970678341212339}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &466043886983319335
 GameObject:
   m_ObjectHideFlags: 0

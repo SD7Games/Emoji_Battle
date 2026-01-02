@@ -1,6 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
+[RequireComponent(typeof(CanvasGroup))]
 public abstract class PopupBase : MonoBehaviour
 {
     public abstract PopupId Id { get; }
@@ -18,6 +19,9 @@ public abstract class PopupBase : MonoBehaviour
 
     [SerializeField] private SoundDefinition _hideSound;
 
+    [Header("Vibration")]
+    [SerializeField] private VibrationType _showVibration = VibrationType.None;
+
     protected CanvasGroup CanvasGroup { get; private set; }
     protected RectTransform Rect { get; private set; }
 
@@ -27,10 +31,7 @@ public abstract class PopupBase : MonoBehaviour
     protected virtual void Awake()
     {
         Rect = transform as RectTransform;
-
         CanvasGroup = GetComponent<CanvasGroup>();
-        if (CanvasGroup == null)
-            CanvasGroup = gameObject.AddComponent<CanvasGroup>();
 
         CanvasGroup.alpha = 0f;
         CanvasGroup.interactable = false;
@@ -58,7 +59,9 @@ public abstract class PopupBase : MonoBehaviour
         CanvasGroup.blocksRaycasts = false;
 
         _wasShown = true;
+
         PlayShowSound();
+        PlayVibration(_showVibration);
 
         _tween = DOTween.Sequence()
             .SetTarget(this)
@@ -73,14 +76,6 @@ public abstract class PopupBase : MonoBehaviour
             });
     }
 
-    private void PlayShowSound()
-    {
-        if (_showSound == null)
-            return;
-
-        AudioService.I.PlaySFX(_showSound);
-    }
-
     public virtual void Hide()
     {
         DOTween.Kill(this);
@@ -90,7 +85,9 @@ public abstract class PopupBase : MonoBehaviour
         CanvasGroup.blocksRaycasts = false;
 
         if (_wasShown)
+        {
             PlayHideSound();
+        }
 
         _tween = DOTween.Sequence()
             .SetTarget(this)
@@ -105,11 +102,39 @@ public abstract class PopupBase : MonoBehaviour
         _wasShown = false;
     }
 
+    private void PlayShowSound()
+    {
+        if (_showSound != null)
+            AudioService.I.PlaySFX(_showSound);
+    }
+
     private void PlayHideSound()
     {
-        if (_hideSound == null)
+        if (_hideSound != null)
+            AudioService.I.PlaySFX(_hideSound);
+    }
+
+    private void PlayVibration(VibrationType type)
+    {
+        if (type == VibrationType.None)
             return;
 
-        AudioService.I.PlaySFX(_hideSound);
+        if (VibrationService.I == null)
+            return;
+
+        switch (type)
+        {
+            case VibrationType.Light:
+                VibrationService.I.Light();
+                break;
+
+            case VibrationType.Medium:
+                VibrationService.I.Medium();
+                break;
+
+            case VibrationType.Heavy:
+                VibrationService.I.Heavy();
+                break;
+        }
     }
 }

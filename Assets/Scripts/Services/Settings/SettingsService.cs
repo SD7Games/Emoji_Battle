@@ -11,6 +11,8 @@ public sealed class SettingsService
 
     public static event Action SfxChanged;
 
+    public static event Action VibrationChanged;
+
     private SettingsService()
     { }
 
@@ -48,6 +50,7 @@ public sealed class SettingsService
     {
         Data.VibrationEnabled = enabled;
         GameDataService.I.Save();
+        VibrationChanged?.Invoke();
     }
 
     public void SetPlayerName(string name)

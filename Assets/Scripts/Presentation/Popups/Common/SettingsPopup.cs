@@ -119,7 +119,14 @@ public sealed class SettingsPopup : PopupBase
 
     private void OnVibrationToggle()
     {
-        _settings.SetVibration(!_settings.Data.VibrationEnabled);
+        bool newValue = !_settings.Data.VibrationEnabled;
+        _settings.SetVibration(newValue);
+
+        if (newValue && VibrationService.I != null)
+        {
+            VibrationService.I.Light();
+        }
+
         RefreshVisuals();
     }
 

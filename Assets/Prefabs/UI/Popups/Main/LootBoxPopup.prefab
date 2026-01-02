@@ -5296,6 +5296,7 @@ GameObject:
   - component: {fileID: 2879175364697053392}
   - component: {fileID: 6282757691134051642}
   - component: {fileID: 2668358804338352665}
+  - component: {fileID: 5197858822673235961}
   m_Layer: 5
   m_Name: LootBoxPopup
   m_TagString: Untagged
@@ -5395,11 +5396,24 @@ MonoBehaviour:
   _hideDuration: 0.2
   _showEase: 27
   _hideEase: 26
-  _showSound: {fileID: 0}
+  _showSound: {fileID: 11400000, guid: d89f2533e5ff595469267a7f31e8af39, type: 2}
   _hideSound: {fileID: 11400000, guid: 4611cab4a1a241b45b4fe5f00164580b, type: 2}
+  _showVibration: 3
   _emojiImage: {fileID: 3895258472869842881}
   _previewColorId: 0
   _poofFx: {fileID: 4637548021520323772}
+--- !u!225 &5197858822673235961
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6808280089196757596}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7121035048792501864
 GameObject:
   m_ObjectHideFlags: 0
