@@ -929,10 +929,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: c5c04611-7695-4e17-91c8-2f5ddecf40b2
+  cloudProjectId: e97e3bbd-84aa-4b63-998f-036a42425396
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Emoji_Battle_Clean
+  projectName: Emoji Battle
   organizationId: unity_bbbce41447a78610638b
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
