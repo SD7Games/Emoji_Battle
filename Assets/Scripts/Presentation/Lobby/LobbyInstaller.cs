@@ -31,7 +31,7 @@ public sealed class LobbyInstaller : MonoBehaviour
         var context = CreateContext();
         _controller = context.Controller;
 
-        InitPopups();
+        InitPopups(context.Resolver);
         InitAIComplexity();
         InitView(context);
         InitPlayerAvatar(context.Resolver);
@@ -59,9 +59,12 @@ public sealed class LobbyInstaller : MonoBehaviour
         var aiService = new AISelectionService(dataService, _emojiSets);
         var lobbyService = new LobbyService(emojiService, aiService);
 
+        var rewards = new GameRewardService(_emojiSets);
+
         var controller = new LobbyController(
             lobbyService,
             resolver,
+            rewards,
             _emojiChooseSound,
             _colorSelectSound
         );
@@ -96,9 +99,15 @@ public sealed class LobbyInstaller : MonoBehaviour
         dataService.Save();
     }
 
-    private void InitPopups()
+    private void InitPopups(EmojiResolver resolver)
     {
         PopupService.I.SetContext(_popupCanvas, _scenePopups);
+
+        foreach (var popup in _scenePopups)
+        {
+            if (popup is IEmojiResolverConsumer consumer)
+                consumer.Construct(resolver);
+        }
     }
 
     private void InitAIComplexity()

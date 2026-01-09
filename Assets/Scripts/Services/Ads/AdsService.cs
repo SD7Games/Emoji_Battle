@@ -58,7 +58,7 @@ public sealed class AdsService :
         return IsRewardedReady();
     }
 
-    public void ShowRewardedForLootbox(Action onReward)
+    public void ShowRewardedForRewarded(Action onReward)
     {
         if (!IsRewardedReady())
             return;
@@ -87,6 +87,9 @@ public sealed class AdsService :
             return false;
 
         if (!Advertisement.isInitialized)
+            return false;
+
+        if (Advertisement.isShowing)
             return false;
 
         return _rewardedReady;

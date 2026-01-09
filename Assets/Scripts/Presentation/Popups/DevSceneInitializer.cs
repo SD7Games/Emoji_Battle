@@ -5,6 +5,7 @@ public sealed class DevSceneInitializer : MonoBehaviour
     [SerializeField] private VibrationService _vibrationServicePrefab;
     [SerializeField] private PopupService _popupServicePrefab;
     [SerializeField] private AudioService _audioServicePrefab;
+    [SerializeField] private AdsService _adsServicePrefab;
     [SerializeField] private MusicDefinition _devMusic;
 #if UNITY_EDITOR
 
@@ -18,6 +19,9 @@ public sealed class DevSceneInitializer : MonoBehaviour
 
         if (AudioService.I == null)
             Instantiate(_audioServicePrefab);
+
+        if (AdsService.I == null)
+            Instantiate(_adsServicePrefab);
     }
 
 #endif

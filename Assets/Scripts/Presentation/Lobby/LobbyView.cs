@@ -13,6 +13,7 @@ public sealed class LobbyView : MonoBehaviour
     [SerializeField] private TMP_Text _aiNameText;
     [SerializeField] private Button _startButton;
     [SerializeField] private Button _settingsButton;
+    [SerializeField] private Button _adsButton;
 
     private LobbyController _controller;
 
@@ -27,6 +28,7 @@ public sealed class LobbyView : MonoBehaviour
         _colorSwitcher.OnColorSelected += _controller.OnColorChanged;
         _startButton.onClick.AddListener(OnStartButton);
         _settingsButton.onClick.AddListener(OnSettingsButton);
+        _adsButton.onClick.AddListener(OnAdsButton);
 
         _controller.PlayerAvatarChanged += UpdatePlayerAvatar;
         _controller.AIAvatarChanged += UpdateAIAvatar;
@@ -43,6 +45,7 @@ public sealed class LobbyView : MonoBehaviour
         _colorSwitcher.OnColorSelected -= _controller.OnColorChanged;
         _startButton.onClick.RemoveListener(OnStartButton);
         _settingsButton.onClick.RemoveListener(OnSettingsButton);
+        _adsButton.onClick.RemoveListener(OnAdsButton);
 
         _controller.PlayerAvatarChanged -= UpdatePlayerAvatar;
         _controller.AIAvatarChanged -= UpdateAIAvatar;
@@ -61,6 +64,11 @@ public sealed class LobbyView : MonoBehaviour
     private void OnSettingsButton()
     {
         PopupService.I.Show(PopupId.Settings);
+    }
+
+    private void OnAdsButton()
+    {
+        _controller.OnAdsPressed();
     }
 
     private void UpdatePlayerName(string name)

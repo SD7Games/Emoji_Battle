@@ -1,9 +1,10 @@
 public enum PopupId
 {
+    None,
     Settings,
     Victory,
     Defeat,
     Draw,
-    LootBox,
+    Reward,
     Complete
 }

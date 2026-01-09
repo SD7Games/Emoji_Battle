@@ -8,6 +8,7 @@ public sealed class LobbyController : IDisposable
     private readonly LobbyService _service;
     private readonly SoundDefinition _emojiSelectSound;
     private readonly SoundDefinition _swapSound;
+    private readonly GameRewardService _rewards;
 
     private int _uiColorId = -1;
 
@@ -29,11 +30,13 @@ public sealed class LobbyController : IDisposable
     public LobbyController(
         LobbyService service,
         EmojiResolver resolver,
+        GameRewardService rewards,
         SoundDefinition emojiSelectSound,
         SoundDefinition colorChangeSound)
     {
         _service = service;
         Resolver = resolver;
+        _rewards = rewards;
         _emojiSelectSound = emojiSelectSound;
         _swapSound = colorChangeSound;
 
@@ -53,6 +56,15 @@ public sealed class LobbyController : IDisposable
     public void Dispose()
     {
         SettingsService.PlayerNameChanged -= OnPlayerNameChanged;
+    }
+
+    public void OnAdsPressed()
+    {
+        if (AdsService.I == null) return;
+
+        if (!AdsService.I.CanShowRewardedForLootbox()) return;
+
+        AdsService.I.ShowRewardedForRewarded(OnRewarded);
     }
 
     public void SetInitialColor(int colorId)
@@ -99,6 +111,18 @@ public sealed class LobbyController : IDisposable
         var ai = _service.EnsureValidAIEmoji();
         if (ai != null)
             AIAvatarChanged?.Invoke(ai);
+    }
+
+    private void OnRewarded()
+    {
+        var result = _rewards.RewardedOpened();
+
+        UpdateEmojiList();
+
+        if (result.EmojiUnlocked)
+            PopupService.I.Show(PopupId.Reward);
+        else
+            PopupService.I.Show(PopupId.Complete);
     }
 
     private void PlayEmojiSelectSound()

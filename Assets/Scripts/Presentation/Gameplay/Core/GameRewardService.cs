@@ -28,7 +28,7 @@ public sealed class GameRewardService
         return new GameRewardResult(unlocked, allUnlockedAfter);
     }
 
-    public GameRewardResult OnLootBoxOpened()
+    public GameRewardResult RewardedOpened()
     {
         var progress = GameDataService.I.Data.Progress;
 

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public sealed class LootBoxPopup : ResultPopup, IEmojiResolverConsumer
 {
-    public override PopupId Id => PopupId.LootBox;
+    public override PopupId Id => PopupId.Reward;
 
     [SerializeField] private Image _emojiImage;
     [SerializeField] private int _previewColorId = 0;
@@ -26,6 +26,9 @@ public sealed class LootBoxPopup : ResultPopup, IEmojiResolverConsumer
 
     private void UpdateEmojiPreview()
     {
+        if (_emojiImage == null || _resolver == null)
+            return;
+
         var progress = GameDataService.I.Data.Progress;
         int index = progress.LastUnlockedGlobalIndex;
 
@@ -35,7 +38,8 @@ public sealed class LootBoxPopup : ResultPopup, IEmojiResolverConsumer
             return;
         }
 
-        _emojiImage.sprite = _resolver.Get(_previewColorId, index);
-        _emojiImage.enabled = _emojiImage.sprite != null;
+        var sprite = _resolver.Get(_previewColorId, index);
+        _emojiImage.sprite = sprite;
+        _emojiImage.enabled = sprite != null;
     }
 }
