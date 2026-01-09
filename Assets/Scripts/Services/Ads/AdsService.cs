@@ -53,7 +53,7 @@ public sealed class AdsService :
         TryShowAutoAd();
     }
 
-    public bool CanShowRewardedForLootbox()
+    public bool CanShowRewarded()
     {
         return IsRewardedReady();
     }

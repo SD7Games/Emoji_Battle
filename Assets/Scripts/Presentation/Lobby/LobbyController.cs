@@ -46,6 +46,7 @@ public sealed class LobbyController : IDisposable
     public void Initialize()
     {
         var player = GameDataService.I.Data.Player;
+        // PlayerPrefs.DeleteAll();// Delete after relise!
 
         _selectedEmojiId = player.EmojiIndex;
         _selectedEmojiColorId = player.EmojiColor;
@@ -62,7 +63,7 @@ public sealed class LobbyController : IDisposable
     {
         if (AdsService.I == null) return;
 
-        if (!AdsService.I.CanShowRewardedForLootbox()) return;
+        if (!AdsService.I.CanShowRewarded()) return;
 
         AdsService.I.ShowRewardedForRewarded(OnRewarded);
     }

@@ -10,7 +10,7 @@ public class GameProgress
     [NonSerialized]
     private Dictionary<(int, int), EmojiProgress> _cache;
 
-    private int _unlockCounter = 0;
+    public int UnlockCounter;
 
     public int LastUnlockedGlobalIndex { get; private set; } = -1;
 
@@ -24,11 +24,14 @@ public class GameProgress
 
     public void UnlockEmoji(int colorId, int emojiId)
     {
-        var p = GetOrCreate(colorId, emojiId);
-        if (p.IsUnlocked) return;
+        var progress = GetOrCreate(colorId, emojiId);
+        if (progress.IsUnlocked)
+            return;
 
-        p.IsUnlocked = true;
-        p.UnlockOrder = _unlockCounter++;
+        progress.IsUnlocked = true;
+        progress.UnlockOrder = UnlockCounter++;
+
+        LastUnlockedGlobalIndex = emojiId;
     }
 
     public void UnlockFirstNAllColors(
@@ -53,7 +56,7 @@ public class GameProgress
                     continue;
 
                 progress.IsUnlocked = true;
-                progress.UnlockOrder = _unlockCounter++;
+                progress.UnlockOrder = UnlockCounter++;
             }
         }
     }
@@ -158,20 +161,20 @@ public class GameProgress
         if (_cache != null) return;
 
         _cache = new();
-        foreach (var e in AllEmoji)
-            _cache[(e.ColorId, e.EmojiId)] = e;
+        foreach (var progress in AllEmoji)
+            _cache[(progress.ColorId, progress.EmojiId)] = progress;
     }
 
     private EmojiProgress GetOrCreate(int colorId, int emojiId)
     {
         EnsureCache();
 
-        if (_cache.TryGetValue((colorId, emojiId), out var p))
-            return p;
+        if (_cache.TryGetValue((colorId, emojiId), out var progress))
+            return progress;
 
-        p = new EmojiProgress(colorId, emojiId);
-        _cache[(colorId, emojiId)] = p;
-        AllEmoji.Add(p);
-        return p;
+        progress = new EmojiProgress(colorId, emojiId);
+        _cache[(colorId, emojiId)] = progress;
+        AllEmoji.Add(progress);
+        return progress;
     }
 }
