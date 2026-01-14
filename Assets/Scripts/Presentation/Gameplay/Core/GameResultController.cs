@@ -30,7 +30,8 @@ public sealed class GameResultController
     {
         _input.Block();
 
-        GameRewardResult reward = _rewards.OnWin(winner);
+        GameRewardResult reward =
+            _rewards.OnWin(winner, InternetService.IsOnline);
 
         if (line.HasValue)
         {
@@ -52,7 +53,10 @@ public sealed class GameResultController
 
     private void NotifyResultReady(CellState winner, GameRewardResult reward)
     {
-        _coroutineRunner.StartCoroutine(_input.BlockForSeconds(POPUP_BLOCK_TIME));
+        _coroutineRunner.StartCoroutine(
+            _input.BlockForSeconds(POPUP_BLOCK_TIME)
+        );
+
         ResultReady?.Invoke(winner, reward);
     }
 }

@@ -176,13 +176,25 @@ public sealed class LobbyController : IDisposable
     {
         _rewardedInProgress = false;
 
-        var result = _rewards.RewardedOpened();
+        bool hasInternet = InternetService.IsOnline;
+        var result = _rewards.RewardedOpened(hasInternet);
+
         UpdateEmojiList();
 
-        PopupService.I.Show
-        (
-            result.EmojiUnlocked ? PopupId.Reward : PopupId.Complete
-        );
+        PopupService.I.Show(GetRewardPopup(result));
+    }
+
+    private PopupId GetRewardPopup(GameRewardResult result)
+    {
+        if (result.EmojiUnlocked)
+            return PopupId.Reward;
+
+        return result.BlockReason switch
+        {
+            RewardBlockReason.NoInternet => PopupId.NoInternet,
+            RewardBlockReason.AllUnlocked => PopupId.Complete,
+            _ => PopupId.Complete
+        };
     }
 
     private void PlayEmojiSelectSound()

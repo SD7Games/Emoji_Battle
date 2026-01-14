@@ -9,7 +9,7 @@ public sealed class GameRewardService
         _sets = sets;
     }
 
-    public GameRewardResult OnWin(CellState winner)
+    public GameRewardResult OnWin(CellState winner, bool hasInternet)
     {
         if (winner != CellState.Player)
             return GameRewardResult.None;
@@ -17,31 +17,39 @@ public sealed class GameRewardService
         var progress = GameDataService.I.Data.Progress;
 
         if (IsAllUnlocked(progress))
-            return new GameRewardResult(false, true);
+            return new GameRewardResult(false, RewardBlockReason.AllUnlocked);
+
+        if (!hasInternet)
+            return new GameRewardResult(false, RewardBlockReason.NoInternet);
 
         bool unlocked = progress.UnlockNextGlobal(_sets);
-        bool allUnlockedAfter = IsAllUnlocked(progress);
 
         if (unlocked)
             GameDataService.I.Save();
 
-        return new GameRewardResult(unlocked, allUnlockedAfter);
+        return unlocked
+            ? new GameRewardResult(true, RewardBlockReason.None)
+            : new GameRewardResult(false, RewardBlockReason.AllUnlocked);
     }
 
-    public GameRewardResult RewardedOpened()
+    public GameRewardResult RewardedOpened(bool hasInternet)
     {
+        if (!hasInternet)
+            return new GameRewardResult(false, RewardBlockReason.NoInternet);
+
         var progress = GameDataService.I.Data.Progress;
 
         if (IsAllUnlocked(progress))
-            return new GameRewardResult(false, true);
+            return new GameRewardResult(false, RewardBlockReason.AllUnlocked);
 
         bool unlocked = progress.UnlockRandomLocked(_sets);
-        bool allUnlockedAfter = IsAllUnlocked(progress);
 
         if (unlocked)
             GameDataService.I.Save();
 
-        return new GameRewardResult(unlocked, allUnlockedAfter);
+        return unlocked
+            ? new GameRewardResult(true, RewardBlockReason.None)
+            : new GameRewardResult(false, RewardBlockReason.AllUnlocked);
     }
 
     private bool IsAllUnlocked(GameProgress progress)
@@ -54,6 +62,7 @@ public sealed class GameRewardService
                     return false;
             }
         }
+
         return true;
     }
 }

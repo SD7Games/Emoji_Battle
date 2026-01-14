@@ -154,17 +154,28 @@ public sealed class MainController : IDisposable
 
     private void OnResultReady(CellState winner, GameRewardResult reward)
     {
-        if (winner == CellState.Player)
+        if (winner != CellState.Player)
         {
             _popups.Show(
-                reward.EmojiUnlocked ? PopupId.Victory : PopupId.Complete
+                winner == CellState.AI ? PopupId.Defeat : PopupId.Draw
             );
             return;
         }
 
-        _popups.Show(
-            winner == CellState.AI ? PopupId.Defeat : PopupId.Draw
-        );
+        _popups.Show(GetPopupId(reward));
+    }
+
+    private PopupId GetPopupId(GameRewardResult reward)
+    {
+        if (reward.EmojiUnlocked)
+            return PopupId.Victory;
+
+        return reward.BlockReason switch
+        {
+            RewardBlockReason.AllUnlocked => PopupId.Complete,
+            RewardBlockReason.NoInternet => PopupId.VictoryNotInternet,
+            _ => PopupId.Complete
+        };
     }
 
     private void BindResultPopups()

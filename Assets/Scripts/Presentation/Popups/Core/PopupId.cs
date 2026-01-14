@@ -4,6 +4,7 @@ public enum PopupId
     NoInternet,
     ComplexityInfo,
     Settings,
+    VictoryNotInternet,
     Victory,
     Defeat,
     Draw,
