@@ -30,8 +30,10 @@ public sealed class GameResultController
     {
         _input.Block();
 
+        var diff = GameDataService.I.Data.AI.Strategy;
+
         GameRewardResult reward =
-            _rewards.OnWin(winner, InternetService.IsOnline);
+            _rewards.OnWin(winner, diff, InternetService.IsOnline);
 
         if (line.HasValue)
         {

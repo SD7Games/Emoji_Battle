@@ -56,7 +56,6 @@ public sealed class PopupService : MonoBehaviour
     {
         if (!_popups.TryGetValue(id, out var popup) || popup == null)
         {
-            Debug.LogWarning($"Popup '{id}' not registered in current scene context.");
             return;
         }
 

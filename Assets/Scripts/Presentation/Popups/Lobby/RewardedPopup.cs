@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class LootBoxPopup : ResultPopup, IEmojiResolverConsumer
+public sealed class RewardedPopup : ResultPopup, IEmojiResolverConsumer
 {
     public override PopupId Id => PopupId.Reward;
 
@@ -30,15 +30,14 @@ public sealed class LootBoxPopup : ResultPopup, IEmojiResolverConsumer
             return;
 
         var progress = GameDataService.I.Data.Progress;
-        int index = progress.LastUnlockedGlobalIndex;
 
-        if (index < 0)
+        if (!progress.TryGetLastUnlockedEmoji(out var emojiId))
         {
             _emojiImage.enabled = false;
             return;
         }
 
-        var sprite = _resolver.Get(_previewColorId, index);
+        var sprite = _resolver.Get(_previewColorId, emojiId);
         _emojiImage.sprite = sprite;
         _emojiImage.enabled = sprite != null;
     }

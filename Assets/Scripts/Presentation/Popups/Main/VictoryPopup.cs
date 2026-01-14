@@ -26,16 +26,19 @@ public sealed class VictoryPopup : ResultPopup, IEmojiResolverConsumer
 
     private void UpdateEmojiPreview()
     {
-        var progress = GameDataService.I.Data.Progress;
-        int index = progress.LastUnlockedGlobalIndex;
+        if (_emojiImage == null || _resolver == null)
+            return;
 
-        if (index < 0)
+        var progress = GameDataService.I.Data.Progress;
+
+        if (!progress.TryGetLastUnlockedEmoji(out var emojiId))
         {
             _emojiImage.enabled = false;
             return;
         }
 
-        _emojiImage.sprite = _resolver.Get(_previewColorId, index);
-        _emojiImage.enabled = true;
+        var sprite = _resolver.Get(_previewColorId, emojiId);
+        _emojiImage.sprite = sprite;
+        _emojiImage.enabled = sprite != null;
     }
 }
