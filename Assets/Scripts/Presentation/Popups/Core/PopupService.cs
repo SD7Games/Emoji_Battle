@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class PopupService : MonoBehaviour
 {
     public static PopupService I { get; private set; }
+
+    public event Action AnyPopupShown;
 
     private readonly Dictionary<PopupId, PopupBase> _popups = new();
     private PopupBase _current;
@@ -54,6 +57,8 @@ public sealed class PopupService : MonoBehaviour
 
     public void Show(PopupId id)
     {
+        AnyPopupShown?.Invoke();
+
         if (!_popups.TryGetValue(id, out var popup) || popup == null)
         {
             return;

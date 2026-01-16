@@ -4,9 +4,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum AIComplexityCloseReason
+{
+    UserToggle,
+    OptionSelected,
+    ExternalEvent
+}
+
 public sealed class AIComplexityController : MonoBehaviour
 {
-
     public event Action<AIStrategyType> OnDifficultyChanged;
 
     private AIComplexityView _view;
@@ -27,6 +33,23 @@ public sealed class AIComplexityController : MonoBehaviour
         InternalInit();
     }
 
+    public void CloseIfOpened()
+    {
+        Close(AIComplexityCloseReason.ExternalEvent);
+    }
+
+    public void Close(AIComplexityCloseReason reason)
+    {
+        if (!_opened)
+            return;
+
+        if (reason != AIComplexityCloseReason.ExternalEvent)
+            _view.PlayCloseListSound();
+
+        _view.Collapse();
+        _opened = false;
+    }
+
     private void InternalInit()
     {
         _current = AIComplexityService.Load();
@@ -34,7 +57,7 @@ public sealed class AIComplexityController : MonoBehaviour
         _view.SetMain(_current);
         _view.HideInstant();
 
-        _view.OnMainClick += ButtonList;
+        _view.OnMainClick += Toggle;
         _view.OnOptionClick += Select;
 
         _view.StartPulse();
@@ -43,13 +66,11 @@ public sealed class AIComplexityController : MonoBehaviour
         _initialized = true;
     }
 
-    private void ButtonList()
+    private void Toggle()
     {
         if (_opened)
         {
-            _view.PlayCloseListSound();
-            _view.Collapse();
-            _opened = false;
+            Close(AIComplexityCloseReason.UserToggle);
             return;
         }
 
@@ -66,17 +87,14 @@ public sealed class AIComplexityController : MonoBehaviour
     private void Select(Button btn)
     {
         var label = btn.GetComponentInChildren<TMP_Text>().text;
-        if (!Enum.TryParse(label, out AIStrategyType diff)) return;
+        if (!Enum.TryParse(label, out AIStrategyType diff))
+            return;
 
         _current = diff;
         AIComplexityService.Save(diff);
-
         _view.SetMain(diff);
 
-        _view.PlayCloseListSound();
-        _view.Collapse();
-
-        _opened = false;
+        Close(AIComplexityCloseReason.OptionSelected);
         OnDifficultyChanged?.Invoke(diff);
     }
 
@@ -91,5 +109,13 @@ public sealed class AIComplexityController : MonoBehaviour
 
         all.Remove(current);
         return all;
+    }
+
+    private void OnDestroy()
+    {
+        if (_view == null) return;
+
+        _view.OnMainClick -= Toggle;
+        _view.OnOptionClick -= Select;
     }
 }

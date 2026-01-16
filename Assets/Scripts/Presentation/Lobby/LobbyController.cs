@@ -5,17 +5,31 @@ using UnityEngine.SceneManagement;
 
 public sealed class LobbyController : IDisposable
 {
+    public readonly struct AdsUiModel
+    {
+        public readonly bool Interactable;
+        public readonly float Alpha;
+        public readonly bool ShowLoading;
+        public readonly bool ShowConnecting;
+
+        public AdsUiModel(bool interactable, float alpha, bool showLoading, bool showConnecting)
+        {
+            Interactable = interactable;
+            Alpha = alpha;
+            ShowLoading = showLoading;
+            ShowConnecting = showConnecting;
+        }
+    }
+
     private readonly LobbyService _service;
     private readonly SoundDefinition _emojiSelectSound;
     private readonly SoundDefinition _swapSound;
     private readonly GameRewardService _rewards;
 
     private bool _rewardedInProgress;
-    private bool _rewardedAvailable;
-    private bool _noInternetPopupShown;
+    private bool _wasOffline;
 
     private int _uiColorId = -1;
-
     private int _selectedEmojiId = -1;
     private int _selectedEmojiColorId = -1;
 
@@ -31,7 +45,9 @@ public sealed class LobbyController : IDisposable
 
     public event Action<string> AINameChanged;
 
-    public event Action<bool> RewardedAvailabilityChanged;
+    public event Action AnyUserInteraction;
+
+    public event Action<AdsUiModel> AdsUiChanged;
 
     public LobbyController(
         LobbyService service,
@@ -53,63 +69,123 @@ public sealed class LobbyController : IDisposable
     {
         if (AdsService.I != null)
         {
-            AdsService.I.RewardedReady += OnRewardedReady;
-            AdsService.I.RewardedFailed += OnRewardedFailed;
+            AdsService.I.RewardedStateChanged += OnRewardedStateChanged;
         }
 
-        var player = GameDataService.I.Data.Player;
+        InternetService.OnlineStateChanged += OnInternetStateChanged;
 
+        var player = GameDataService.I.Data.Player;
         _selectedEmojiId = player.EmojiIndex;
         _selectedEmojiColorId = player.EmojiColor;
 
         PlayerNameChanged?.Invoke(player.Name);
+
+        UpdateAdsUi();
     }
 
     public void Dispose()
     {
         SettingsService.PlayerNameChanged -= OnPlayerNameChanged;
+        InternetService.OnlineStateChanged -= OnInternetStateChanged;
 
         if (AdsService.I != null)
-        {
-            AdsService.I.RewardedReady -= OnRewardedReady;
-            AdsService.I.RewardedFailed -= OnRewardedFailed;
-        }
+            AdsService.I.RewardedStateChanged -= OnRewardedStateChanged;
     }
 
     public void OnAdsPressed()
     {
+        AnyUserInteraction?.Invoke();
         if (_rewardedInProgress)
             return;
 
-        if (!_rewardedAvailable)
-        {
-            if (!_noInternetPopupShown)
-            {
-                _noInternetPopupShown = true;
-                PopupService.I.Show(PopupId.NoInternet);
-            }
-
-            return;
-        }
-
-        if (AdsService.I == null)
-            return;
-
-        if (!AdsService.I.HasInternet())
+        if (!InternetService.IsOnline)
         {
             PopupService.I.Show(PopupId.NoInternet);
             return;
         }
 
-        if (!AdsService.I.CanShowRewarded())
+        if (AdsService.I == null || !AdsService.I.CanShowRewarded())
             return;
 
         _rewardedInProgress = true;
 
         if (!AdsService.I.ShowRewarded(OnRewarded))
-        {
             _rewardedInProgress = false;
+
+        UpdateAdsUi();
+    }
+
+    private void OnRewarded()
+    {
+        _rewardedInProgress = false;
+
+        bool hasInternet = InternetService.IsOnline;
+        var result = _rewards.RewardedOpened(hasInternet);
+
+        UpdateEmojiList();
+        PopupService.I.Show(GetRewardPopup(result));
+
+        UpdateAdsUi();
+    }
+
+    private PopupId GetRewardPopup(GameRewardResult result)
+    {
+        if (result.EmojiUnlocked)
+            return PopupId.Reward;
+
+        return result.BlockReason switch
+        {
+            RewardBlockReason.NoInternet => PopupId.NoInternet,
+            RewardBlockReason.AllUnlocked => PopupId.Complete,
+            _ => PopupId.Complete
+        };
+    }
+
+    private void OnRewardedStateChanged(AdsService.RewardedState state)
+    {
+        UpdateAdsUi();
+    }
+
+    private void OnInternetStateChanged(bool isOnline)
+    {
+        if (!isOnline)
+            _wasOffline = true;
+
+        UpdateAdsUi();
+    }
+
+    private void UpdateAdsUi()
+    {
+        if (AdsService.I == null)
+        {
+            AdsUiChanged?.Invoke(new AdsUiModel(true, 0.3f, false, false));
+            return;
         }
+
+        bool online = InternetService.IsOnline;
+        var state = AdsService.I.GetRewardedState();
+
+        if (!online)
+        {
+            AdsUiChanged?.Invoke(new AdsUiModel(true, 0.3f, false, false));
+            return;
+        }
+
+        if (_wasOffline && online && state != AdsService.RewardedState.Ready)
+        {
+            AdsUiChanged?.Invoke(new AdsUiModel(false, 0.1f, false, true));
+            return;
+        }
+
+        _wasOffline = false;
+
+        if (state == AdsService.RewardedState.Ready && !_rewardedInProgress)
+        {
+            AdsUiChanged?.Invoke(new AdsUiModel(true, 1f, false, false));
+            return;
+        }
+
+        AdsUiChanged?.Invoke(new AdsUiModel(false, 0.1f, true, false));
     }
 
     public void SetInitialColor(int colorId)
@@ -129,6 +205,8 @@ public sealed class LobbyController : IDisposable
 
     public void OnColorChanged(int colorId)
     {
+        AnyUserInteraction?.Invoke();
+
         if (_uiColorId == colorId)
             return;
 
@@ -139,6 +217,8 @@ public sealed class LobbyController : IDisposable
 
     public void OnEmojiSelected(int emojiId)
     {
+        AnyUserInteraction?.Invoke();
+
         if (_selectedEmojiId == emojiId &&
             _selectedEmojiColorId == _uiColorId)
             return;
@@ -158,55 +238,19 @@ public sealed class LobbyController : IDisposable
             AIAvatarChanged?.Invoke(ai);
     }
 
-    private void OnRewardedReady()
+    public void OnAIStrategyChanged(AIStrategyType type)
     {
-        _rewardedAvailable = true;
-        RewardedAvailabilityChanged?.Invoke(true);
+        var data = GameDataService.I.Data;
+        data.AI.Strategy = type;
+        GameDataService.I.Save();
+
+        AINameChanged?.Invoke(_service.GenerateAIName());
     }
 
-    private void OnRewardedFailed()
+    public void OnStartPressed()
     {
-        _rewardedAvailable = false;
-        _rewardedInProgress = false;
-        RewardedAvailabilityChanged?.Invoke(false);
-        _noInternetPopupShown = false;
-    }
-
-    private void OnRewarded()
-    {
-        _rewardedInProgress = false;
-
-        bool hasInternet = InternetService.IsOnline;
-        var result = _rewards.RewardedOpened(hasInternet);
-
-        UpdateEmojiList();
-
-        PopupService.I.Show(GetRewardPopup(result));
-    }
-
-    private PopupId GetRewardPopup(GameRewardResult result)
-    {
-        if (result.EmojiUnlocked)
-            return PopupId.Reward;
-
-        return result.BlockReason switch
-        {
-            RewardBlockReason.NoInternet => PopupId.NoInternet,
-            RewardBlockReason.AllUnlocked => PopupId.Complete,
-            _ => PopupId.Complete
-        };
-    }
-
-    private void PlayEmojiSelectSound()
-    {
-        if (_emojiSelectSound != null)
-            AudioService.I.PlaySFX(_emojiSelectSound);
-    }
-
-    private void PlayColorChangeSound()
-    {
-        if (_swapSound != null)
-            AudioService.I.PlaySFX(_swapSound);
+        PlayColorChangeSound();
+        SceneManager.LoadScene("Main");
     }
 
     private void UpdateEmojiList()
@@ -221,24 +265,19 @@ public sealed class LobbyController : IDisposable
             return;
 
         EmojiListChanged?.Invoke(
-            progress.GetSortedForView(
-                _uiColorId,
-                data.EmojiSprites.Count));
+            progress.GetSortedForView(_uiColorId, data.EmojiSprites.Count));
     }
 
-    public void OnAIStrategyChanged(AIStrategyType type)
+    private void PlayEmojiSelectSound()
     {
-        var data = GameDataService.I.Data;
-        data.AI.Strategy = type;
-        GameDataService.I.Save();
-
-        AINameChanged?.Invoke(_service.GenerateAIName());
+        if (_emojiSelectSound != null)
+            AudioService.I.PlaySFX(_emojiSelectSound);
     }
 
-    public void OnStartPressed()
+    private void PlayColorChangeSound()
     {
-        PlayColorChangeSound();
-        SceneManager.LoadScene("Main");
+        if (_swapSound != null)
+            AudioService.I.PlaySFX(_swapSound);
     }
 
     private void OnPlayerNameChanged(string name)

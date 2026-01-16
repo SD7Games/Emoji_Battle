@@ -40,12 +40,29 @@ public sealed class LobbyInstaller : MonoBehaviour
         _controller.SetInitialColor(context.SavedColor);
     }
 
+    private void InitAIComplexity()
+    {
+        _aiComplexityController =
+            _aiComplexityView.gameObject.AddComponent<AIComplexityController>();
+
+        _aiComplexityController.Initialize(_aiComplexityView);
+        _aiComplexityController.OnDifficultyChanged += _controller.OnAIStrategyChanged;
+
+        _controller.AnyUserInteraction += _aiComplexityController.CloseIfOpened;
+        PopupService.I.AnyPopupShown += _aiComplexityController.CloseIfOpened;
+    }
+
     private void OnDestroy()
     {
         _controller?.Dispose();
 
         if (_aiComplexityController != null)
             _aiComplexityController.OnDifficultyChanged -= _controller.OnAIStrategyChanged;
+        if (_controller != null)
+            _controller.AnyUserInteraction -= _aiComplexityController.CloseIfOpened;
+
+        if (PopupService.I != null)
+            PopupService.I.AnyPopupShown -= _aiComplexityController.CloseIfOpened;
     }
 
     private LobbyContext CreateContext()
@@ -109,15 +126,6 @@ public sealed class LobbyInstaller : MonoBehaviour
             if (popup is IEmojiResolverConsumer consumer)
                 consumer.Construct(resolver);
         }
-    }
-
-    private void InitAIComplexity()
-    {
-        _aiComplexityController =
-            _aiComplexityView.gameObject.AddComponent<AIComplexityController>();
-
-        _aiComplexityController.Initialize(_aiComplexityView);
-        _aiComplexityController.OnDifficultyChanged += _controller.OnAIStrategyChanged;
     }
 
     private void InitView(LobbyContext context)
