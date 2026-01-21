@@ -135,56 +135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98deb8b819cf40a4bbcadd858fe17c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingsPopup
---- !u!1 &255760713
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 255760715}
-  - component: {fileID: 255760714}
-  m_Layer: 0
-  m_Name: DevSceneInitializer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &255760714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 255760713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1659e1f3285c9c8489d711fdca907c1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DevSceneInitializer
-  _vibrationServicePrefab: {fileID: 1999717452850729198, guid: bed8bb9fa85eb14409b5f8dcdb81c70e, type: 3}
-  _popupServicePrefab: {fileID: 4238455430526825372, guid: 6b262bf4aad934045a78b24e6ffef95c, type: 3}
-  _audioServicePrefab: {fileID: 5800229258008177918, guid: 1d67fdf4083cd7d49a4e33a2e1bb4a34, type: 3}
-  _adsServicePrefab: {fileID: 5201165585823438907, guid: 9c433705b61a48d4bbe878aee5fa69e5, type: 3}
-  _devMusic: {fileID: 11400000, guid: 277e23531812fc64fa0a52ad44512637, type: 2}
-  _internetServicePrefab: {fileID: 2553438077622219546, guid: 8b83a7e637955d34aaccdd2ad5f7163b, type: 3}
---- !u!4 &255760715
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 255760713}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1808,5 +1758,4 @@ SceneRoots:
   - {fileID: 1400098208}
   - {fileID: 2396086917688603840}
   - {fileID: 3649802540879025274}
-  - {fileID: 255760715}
   - {fileID: 1191838076}
