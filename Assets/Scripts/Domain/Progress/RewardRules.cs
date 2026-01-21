@@ -16,10 +16,10 @@ public static class RewardRules
     {
         return diff switch
         {
-            AIStrategyType.Easy => new RewardRule(5, 20),
-            AIStrategyType.Norm => new RewardRule(21, 40),
-            AIStrategyType.Hard => new RewardRule(41, 87),
-            _ => new RewardRule(0, 0)
+            AIStrategyType.Easy => new RewardRule(3, 19),
+            AIStrategyType.Norm => new RewardRule(20, 39),
+            AIStrategyType.Hard => new RewardRule(40, 86),
+            _ => new RewardRule(0, -1)
         };
     }
 }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: OpenPopup
   m_EditorClassIdentifier: Assembly-CSharp::SoundDefinition
   Clips:
-  - {fileID: 8300000, guid: d948fd9eb2017f34aace9d085efd3ac6, type: 3}
+  - {fileID: 8300000, guid: cd48adcc38ab78e4a8f2e818fc2d5041, type: 3}
   Volume: 0.6
   PitchRange: {x: 1, y: 1}

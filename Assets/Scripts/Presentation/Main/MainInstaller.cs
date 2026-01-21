@@ -110,7 +110,6 @@ public sealed class MainInstaller : MonoBehaviour
         _input = new InputController(_uiView.BoardView.Buttons);
 
         var save = GameDataService.I.Data;
-
         Sprite player = _resolver.Get(save.Player.EmojiColor, save.Player.EmojiIndex);
         Sprite ai = _resolver.Get(save.AI.EmojiColor, save.AI.EmojiIndex);
 

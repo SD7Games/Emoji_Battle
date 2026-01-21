@@ -172,6 +172,7 @@ public sealed class MainController : IDisposable
 
         return reward.BlockReason switch
         {
+            RewardBlockReason.DifficultyCompleted => PopupId.ChangeDifficulty,
             RewardBlockReason.AllUnlocked => PopupId.Complete,
             RewardBlockReason.NoInternet => PopupId.VictoryNotInternet,
             _ => PopupId.Complete
@@ -194,6 +195,8 @@ public sealed class MainController : IDisposable
 
     private void OnResultPopupClosed()
     {
+        if (_disposed) return;
+
         AdsService.I?.NotifyMatchFinished();
         _session.Restart();
     }

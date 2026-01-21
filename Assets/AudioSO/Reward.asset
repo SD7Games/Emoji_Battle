@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Reward
   m_EditorClassIdentifier: Assembly-CSharp::SoundDefinition
   Clips:
-  - {fileID: 8300000, guid: 1d3a0659005e1ab46820389b9fec916c, type: 3}
+  - {fileID: 8300000, guid: 32b3dbc54731fc842b0f2872b60a5b3b, type: 3}
   Volume: 0.8
   PitchRange: {x: 1, y: 1}

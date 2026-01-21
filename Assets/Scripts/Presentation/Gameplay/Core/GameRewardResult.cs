@@ -2,7 +2,8 @@ public enum RewardBlockReason
 {
     None,
     NoInternet,
-    AllUnlocked
+    AllUnlocked,
+    DifficultyCompleted
 }
 
 public readonly struct GameRewardResult

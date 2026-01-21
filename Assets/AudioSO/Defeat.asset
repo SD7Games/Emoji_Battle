@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Defeat
   m_EditorClassIdentifier: Assembly-CSharp::SoundDefinition
   Clips:
-  - {fileID: 8300000, guid: 45c5de8fc81306c48ae8e07f6877f05e, type: 3}
+  - {fileID: 8300000, guid: 75b0a342a7b0bd243ad0b38a0e8cc67a, type: 3}
   Volume: 0.8
   PitchRange: {x: 1, y: 1}

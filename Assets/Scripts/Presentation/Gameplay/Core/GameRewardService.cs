@@ -19,30 +19,30 @@ public sealed class GameRewardService
 
         var progress = GameDataService.I.Data.Progress;
 
-        var rule = RewardRules.ByDifficulty(difficulty);
-
-        if (progress.IsRangeFullyUnlocked(_sets, rule))
+        if (progress.IsAllUnlocked(_sets))
             return new(false, RewardBlockReason.AllUnlocked);
 
-        bool unlocked = progress.UnlockNextInRange(_sets, rule);
+        var rule = RewardRules.ByDifficulty(difficulty);
 
-        if (unlocked)
-            GameDataService.I.Save();
+        bool unlocked = progress.UnlockNextWinByDifficulty(
+            difficulty, _sets, rule);
 
-        return unlocked
-            ? new(true, RewardBlockReason.None)
-            : new(false, RewardBlockReason.AllUnlocked);
+        if (!unlocked)
+            return new(false, RewardBlockReason.DifficultyCompleted);
+
+        GameDataService.I.Save();
+        return new(true, RewardBlockReason.None);
     }
 
     public GameRewardResult RewardedOpened(bool hasInternet)
     {
         if (!hasInternet)
-            return new GameRewardResult(false, RewardBlockReason.NoInternet);
+            return new(false, RewardBlockReason.NoInternet);
 
         var progress = GameDataService.I.Data.Progress;
 
-        if (IsAllUnlocked(progress))
-            return new GameRewardResult(false, RewardBlockReason.AllUnlocked);
+        if (progress.IsAllUnlocked(_sets))
+            return new(false, RewardBlockReason.AllUnlocked);
 
         bool unlocked = progress.UnlockRandomLocked(_sets);
 
@@ -50,21 +50,7 @@ public sealed class GameRewardService
             GameDataService.I.Save();
 
         return unlocked
-            ? new GameRewardResult(true, RewardBlockReason.None)
-            : new GameRewardResult(false, RewardBlockReason.AllUnlocked);
-    }
-
-    private bool IsAllUnlocked(GameProgress progress)
-    {
-        foreach (var set in _sets)
-        {
-            for (int i = 0; i < set.EmojiSprites.Count; i++)
-            {
-                if (!progress.IsEmojiUnlocked(set.ColorId, i))
-                    return false;
-            }
-        }
-
-        return true;
+            ? new(true, RewardBlockReason.None)
+            : new(false, RewardBlockReason.AllUnlocked);
     }
 }

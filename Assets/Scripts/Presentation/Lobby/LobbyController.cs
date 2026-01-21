@@ -8,13 +8,15 @@ public sealed class LobbyController : IDisposable
     public readonly struct AdsUiModel
     {
         public readonly bool Interactable;
+        public readonly bool CanClick;
         public readonly float Alpha;
         public readonly bool ShowLoading;
         public readonly bool ShowConnecting;
 
-        public AdsUiModel(bool interactable, float alpha, bool showLoading, bool showConnecting)
+        public AdsUiModel(bool interactable, bool canClick, float alpha, bool showLoading, bool showConnecting)
         {
             Interactable = interactable;
+            CanClick = canClick;
             Alpha = alpha;
             ShowLoading = showLoading;
             ShowConnecting = showConnecting;
@@ -32,6 +34,8 @@ public sealed class LobbyController : IDisposable
     private int _uiColorId = -1;
     private int _selectedEmojiId = -1;
     private int _selectedEmojiColorId = -1;
+
+    private bool _disposed;
 
     public EmojiResolver Resolver { get; }
 
@@ -68,9 +72,7 @@ public sealed class LobbyController : IDisposable
     public void Initialize()
     {
         if (AdsService.I != null)
-        {
             AdsService.I.RewardedStateChanged += OnRewardedStateChanged;
-        }
 
         InternetService.OnlineStateChanged += OnInternetStateChanged;
 
@@ -85,27 +87,41 @@ public sealed class LobbyController : IDisposable
 
     public void Dispose()
     {
+        if (_disposed) return;
+        _disposed = true;
+
         SettingsService.PlayerNameChanged -= OnPlayerNameChanged;
         InternetService.OnlineStateChanged -= OnInternetStateChanged;
 
         if (AdsService.I != null)
             AdsService.I.RewardedStateChanged -= OnRewardedStateChanged;
+
+        _rewardedInProgress = false;
     }
 
     public void OnAdsPressed()
     {
+        if (_disposed) return;
+
         AnyUserInteraction?.Invoke();
+
         if (_rewardedInProgress)
             return;
 
         if (!InternetService.IsOnline)
         {
-            PopupService.I.Show(PopupId.NoInternet);
+            PopupService.I?.Show(PopupId.NoInternet);
             return;
         }
 
-        if (AdsService.I == null || !AdsService.I.CanShowRewarded())
+        if (AdsService.I == null)
             return;
+
+        if (!AdsService.I.CanShowRewarded())
+        {
+            PopupService.I?.Show(PopupId.NoInternet);
+            return;
+        }
 
         _rewardedInProgress = true;
 
@@ -117,13 +133,17 @@ public sealed class LobbyController : IDisposable
 
     private void OnRewarded()
     {
+        if (_disposed)
+            return;
+
         _rewardedInProgress = false;
 
         bool hasInternet = InternetService.IsOnline;
         var result = _rewards.RewardedOpened(hasInternet);
 
         UpdateEmojiList();
-        PopupService.I.Show(GetRewardPopup(result));
+
+        PopupService.I?.Show(GetRewardPopup(result));
 
         UpdateAdsUi();
     }
@@ -143,11 +163,14 @@ public sealed class LobbyController : IDisposable
 
     private void OnRewardedStateChanged(AdsService.RewardedState state)
     {
+        if (_disposed) return;
         UpdateAdsUi();
     }
 
     private void OnInternetStateChanged(bool isOnline)
     {
+        if (_disposed) return;
+
         if (!isOnline)
             _wasOffline = true;
 
@@ -156,9 +179,16 @@ public sealed class LobbyController : IDisposable
 
     private void UpdateAdsUi()
     {
+        if (_disposed) return;
+
         if (AdsService.I == null)
         {
-            AdsUiChanged?.Invoke(new AdsUiModel(true, 0.3f, false, false));
+            AdsUiChanged?.Invoke(new AdsUiModel(
+                interactable: false,
+                canClick: false,
+                alpha: 0.3f,
+                showLoading: false,
+                showConnecting: false));
             return;
         }
 
@@ -167,13 +197,23 @@ public sealed class LobbyController : IDisposable
 
         if (!online)
         {
-            AdsUiChanged?.Invoke(new AdsUiModel(true, 0.3f, false, false));
+            AdsUiChanged?.Invoke(new AdsUiModel(
+                interactable: true,
+                canClick: true,
+                alpha: 0.3f,
+                showLoading: false,
+                showConnecting: false));
             return;
         }
 
-        if (_wasOffline && online && state != AdsService.RewardedState.Ready)
+        if (_wasOffline && state != AdsService.RewardedState.Ready)
         {
-            AdsUiChanged?.Invoke(new AdsUiModel(false, 0.1f, false, true));
+            AdsUiChanged?.Invoke(new AdsUiModel(
+                interactable: false,
+                canClick: false,
+                alpha: 0.1f,
+                showLoading: false,
+                showConnecting: true));
             return;
         }
 
@@ -181,15 +221,27 @@ public sealed class LobbyController : IDisposable
 
         if (state == AdsService.RewardedState.Ready && !_rewardedInProgress)
         {
-            AdsUiChanged?.Invoke(new AdsUiModel(true, 1f, false, false));
+            AdsUiChanged?.Invoke(new AdsUiModel(
+                interactable: true,
+                canClick: true,
+                alpha: 1f,
+                showLoading: false,
+                showConnecting: false));
             return;
         }
 
-        AdsUiChanged?.Invoke(new AdsUiModel(false, 0.1f, true, false));
+        AdsUiChanged?.Invoke(new AdsUiModel(
+            interactable: false,
+            canClick: false,
+            alpha: 0.1f,
+            showLoading: true,
+            showConnecting: false));
     }
 
     public void SetInitialColor(int colorId)
     {
+        if (_disposed) return;
+
         _uiColorId = colorId;
         UpdateEmojiList();
 
@@ -205,6 +257,8 @@ public sealed class LobbyController : IDisposable
 
     public void OnColorChanged(int colorId)
     {
+        if (_disposed) return;
+
         AnyUserInteraction?.Invoke();
 
         if (_uiColorId == colorId)
@@ -217,6 +271,8 @@ public sealed class LobbyController : IDisposable
 
     public void OnEmojiSelected(int emojiId)
     {
+        if (_disposed) return;
+
         AnyUserInteraction?.Invoke();
 
         if (_selectedEmojiId == emojiId &&
@@ -240,6 +296,8 @@ public sealed class LobbyController : IDisposable
 
     public void OnAIStrategyChanged(AIStrategyType type)
     {
+        if (_disposed) return;
+
         var data = GameDataService.I.Data;
         data.AI.Strategy = type;
         GameDataService.I.Save();
@@ -249,12 +307,16 @@ public sealed class LobbyController : IDisposable
 
     public void OnStartPressed()
     {
+        if (_disposed) return;
+
         PlayColorChangeSound();
         SceneManager.LoadScene("Main");
     }
 
     private void UpdateEmojiList()
     {
+        if (_disposed) return;
+
         if (_uiColorId < 0)
             return;
 
@@ -270,18 +332,23 @@ public sealed class LobbyController : IDisposable
 
     private void PlayEmojiSelectSound()
     {
-        if (_emojiSelectSound != null)
+        if (_disposed) return;
+
+        if (_emojiSelectSound != null && AudioService.I != null)
             AudioService.I.PlaySFX(_emojiSelectSound);
     }
 
     private void PlayColorChangeSound()
     {
-        if (_swapSound != null)
+        if (_disposed) return;
+
+        if (_swapSound != null && AudioService.I != null)
             AudioService.I.PlaySFX(_swapSound);
     }
 
     private void OnPlayerNameChanged(string name)
     {
+        if (_disposed) return;
         PlayerNameChanged?.Invoke(name);
     }
 }

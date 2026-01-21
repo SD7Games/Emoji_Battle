@@ -46,23 +46,29 @@ public sealed class LobbyInstaller : MonoBehaviour
             _aiComplexityView.gameObject.AddComponent<AIComplexityController>();
 
         _aiComplexityController.Initialize(_aiComplexityView);
-        _aiComplexityController.OnDifficultyChanged += _controller.OnAIStrategyChanged;
 
-        _controller.AnyUserInteraction += _aiComplexityController.CloseIfOpened;
-        PopupService.I.AnyPopupShown += _aiComplexityController.CloseIfOpened;
+        if (_controller != null)
+            _aiComplexityController.OnDifficultyChanged += _controller.OnAIStrategyChanged;
+
+        if (_controller != null)
+            _controller.AnyUserInteraction += _aiComplexityController.CloseIfOpened;
+
+        if (PopupService.I != null)
+            PopupService.I.AnyPopupShown += _aiComplexityController.CloseIfOpened;
     }
 
     private void OnDestroy()
     {
-        _controller?.Dispose();
-
-        if (_aiComplexityController != null)
+        if (_aiComplexityController != null && _controller != null)
             _aiComplexityController.OnDifficultyChanged -= _controller.OnAIStrategyChanged;
-        if (_controller != null)
+
+        if (_controller != null && _aiComplexityController != null)
             _controller.AnyUserInteraction -= _aiComplexityController.CloseIfOpened;
 
-        if (PopupService.I != null)
+        if (PopupService.I != null && _aiComplexityController != null)
             PopupService.I.AnyPopupShown -= _aiComplexityController.CloseIfOpened;
+
+        _controller?.Dispose();
     }
 
     private LobbyContext CreateContext()
@@ -119,6 +125,9 @@ public sealed class LobbyInstaller : MonoBehaviour
 
     private void InitPopups(EmojiResolver resolver)
     {
+        if (PopupService.I == null)
+            return;
+
         PopupService.I.SetContext(_popupCanvas, _scenePopups);
 
         foreach (var popup in _scenePopups)

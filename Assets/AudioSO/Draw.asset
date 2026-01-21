@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Draw
   m_EditorClassIdentifier: Assembly-CSharp::SoundDefinition
   Clips:
-  - {fileID: 8300000, guid: 76bc96631f7272844925767b39d253f9, type: 3}
+  - {fileID: 8300000, guid: 270b59b81c9a3b246bbe58156e8b85f8, type: 3}
   Volume: 0.8
   PitchRange: {x: 1, y: 1}
