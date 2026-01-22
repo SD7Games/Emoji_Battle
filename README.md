@@ -146,3 +146,12 @@ Assets/
 ## 👨‍💻 Developer  
 **Oleksandr Tokarev** — Unity & C# Game Developer based in Finland.  
 Open to work and collaboration.  
+
+## License
+
+This project is licensed under the MIT License.
+
+⚠️ Note:
+- The license applies to the source code only.
+- Game assets (art, audio, icons, branding) are NOT included in the license.
+- Publishing this project as-is or with the same branding is not allowed.
