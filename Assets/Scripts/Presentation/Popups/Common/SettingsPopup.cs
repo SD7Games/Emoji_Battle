@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +29,8 @@ public sealed class SettingsPopup : PopupBase
 
     [Header("Buttons")]
     [SerializeField] private Button _closeButton;
+
+    [SerializeField] private Button _aboutInfoButton;
 
     private SettingsService _settings;
     private bool _bound;
@@ -74,6 +77,8 @@ public sealed class SettingsPopup : PopupBase
 
         _vibrationButton.onClick.AddListener(OnVibrationToggle);
         _playerNameInput.onEndEdit.AddListener(_settings.SetPlayerName);
+
+        _aboutInfoButton.onClick.AddListener(OnAboutCkliked);
     }
 
     private void Unbind()
@@ -91,6 +96,13 @@ public sealed class SettingsPopup : PopupBase
 
         _vibrationButton.onClick.RemoveListener(OnVibrationToggle);
         _playerNameInput.onEndEdit.RemoveListener(_settings.SetPlayerName);
+
+        _aboutInfoButton.onClick.RemoveListener(OnAboutCkliked);
+    }
+
+    private void OnAboutCkliked()
+    {
+        PopupService.I.Show(PopupId.About);
     }
 
     private void OnMusicToggle()

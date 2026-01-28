@@ -10,5 +10,6 @@ public enum PopupId
     Defeat,
     Draw,
     Reward,
-    Complete
+    Complete,
+    About
 }

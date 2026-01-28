@@ -61,3 +61,8 @@ MonoBehaviour:
   _popupCanvas: {fileID: 0}
   _scenePopups:
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

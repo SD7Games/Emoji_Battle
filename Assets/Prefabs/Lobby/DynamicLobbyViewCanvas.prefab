@@ -174,7 +174,6 @@ MonoBehaviour:
   _settingsButton: {fileID: 1978764855818142961}
   _adsButton: {fileID: 0}
   _complexityInfoButton: {fileID: 4355208681755448279}
-  _aiComplexityController: {fileID: 0}
   _adsLoadingText: {fileID: 0}
   _adsConnectingText: {fileID: 0}
 --- !u!114 &2416285859226741587
