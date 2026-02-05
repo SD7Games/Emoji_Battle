@@ -118,7 +118,6 @@ Assets/
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="SpleshScene.png" width="260" />
   <img src="BootstrapScene.png" width="260" />  
 </p>
 
