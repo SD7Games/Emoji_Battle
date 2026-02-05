@@ -875,6 +875,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: AdsService
       objectReference: {fileID: 0}
+    - target: {fileID: 5201165585823438907, guid: 9c433705b61a48d4bbe878aee5fa69e5, type: 3}
+      propertyPath: _matchesPerAdMax
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5201165585823438907, guid: 9c433705b61a48d4bbe878aee5fa69e5, type: 3}
+      propertyPath: _matchesPerAdMin
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

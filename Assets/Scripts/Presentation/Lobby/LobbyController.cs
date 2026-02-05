@@ -131,6 +131,81 @@ public sealed class LobbyController : IDisposable
         UpdateAdsUi();
     }
 
+    public void SetInitialColor(int colorId)
+    {
+        if (_disposed) return;
+
+        _uiColorId = colorId;
+        UpdateEmojiList();
+
+        var ai = _service.EnsureValidAIEmoji();
+        if (ai != null)
+            AIAvatarChanged?.Invoke(ai);
+
+        AINameChanged?.Invoke(
+            string.IsNullOrEmpty(_service.GetAIName())
+                ? _service.GenerateAIName()
+                : _service.GetAIName());
+    }
+
+    public void OnColorChanged(int colorId)
+    {
+        if (_disposed) return;
+
+        AnyUserInteraction?.Invoke();
+
+        if (_uiColorId == colorId)
+            return;
+
+        _uiColorId = colorId;
+        UpdateEmojiList();
+        PlayColorChangeSound();
+    }
+
+    public void OnEmojiSelected(int emojiId)
+    {
+        if (_disposed) return;
+
+        AnyUserInteraction?.Invoke();
+
+        if (_selectedEmojiId == emojiId &&
+            _selectedEmojiColorId == _uiColorId)
+            return;
+
+        _selectedEmojiId = emojiId;
+        _selectedEmojiColorId = _uiColorId;
+
+        var player = _service.SelectPlayerEmoji(_uiColorId, emojiId);
+        if (player != null)
+        {
+            PlayerAvatarChanged?.Invoke(player);
+            PlayEmojiSelectSound();
+        }
+
+        var ai = _service.EnsureValidAIEmoji();
+        if (ai != null)
+            AIAvatarChanged?.Invoke(ai);
+    }
+
+    public void OnAIStrategyChanged(AIStrategyType type)
+    {
+        if (_disposed) return;
+
+        var data = GameDataService.I.Data;
+        data.AI.Strategy = type;
+        GameDataService.I.Save();
+
+        AINameChanged?.Invoke(_service.GenerateAIName());
+    }
+
+    public void OnStartPressed()
+    {
+        if (_disposed) return;
+
+        PlayColorChangeSound();
+        SceneManager.LoadScene("Main");
+    }
+
     private void OnRewarded()
     {
         if (_disposed)
@@ -236,81 +311,6 @@ public sealed class LobbyController : IDisposable
             alpha: 0.1f,
             showLoading: true,
             showConnecting: false));
-    }
-
-    public void SetInitialColor(int colorId)
-    {
-        if (_disposed) return;
-
-        _uiColorId = colorId;
-        UpdateEmojiList();
-
-        var ai = _service.EnsureValidAIEmoji();
-        if (ai != null)
-            AIAvatarChanged?.Invoke(ai);
-
-        AINameChanged?.Invoke(
-            string.IsNullOrEmpty(_service.GetAIName())
-                ? _service.GenerateAIName()
-                : _service.GetAIName());
-    }
-
-    public void OnColorChanged(int colorId)
-    {
-        if (_disposed) return;
-
-        AnyUserInteraction?.Invoke();
-
-        if (_uiColorId == colorId)
-            return;
-
-        _uiColorId = colorId;
-        UpdateEmojiList();
-        PlayColorChangeSound();
-    }
-
-    public void OnEmojiSelected(int emojiId)
-    {
-        if (_disposed) return;
-
-        AnyUserInteraction?.Invoke();
-
-        if (_selectedEmojiId == emojiId &&
-            _selectedEmojiColorId == _uiColorId)
-            return;
-
-        _selectedEmojiId = emojiId;
-        _selectedEmojiColorId = _uiColorId;
-
-        var player = _service.SelectPlayerEmoji(_uiColorId, emojiId);
-        if (player != null)
-        {
-            PlayerAvatarChanged?.Invoke(player);
-            PlayEmojiSelectSound();
-        }
-
-        var ai = _service.EnsureValidAIEmoji();
-        if (ai != null)
-            AIAvatarChanged?.Invoke(ai);
-    }
-
-    public void OnAIStrategyChanged(AIStrategyType type)
-    {
-        if (_disposed) return;
-
-        var data = GameDataService.I.Data;
-        data.AI.Strategy = type;
-        GameDataService.I.Save();
-
-        AINameChanged?.Invoke(_service.GenerateAIName());
-    }
-
-    public void OnStartPressed()
-    {
-        if (_disposed) return;
-
-        PlayColorChangeSound();
-        SceneManager.LoadScene("Main");
     }
 
     private void UpdateEmojiList()

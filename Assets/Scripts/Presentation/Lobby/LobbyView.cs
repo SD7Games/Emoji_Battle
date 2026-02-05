@@ -103,6 +103,13 @@ public sealed class LobbyView : MonoBehaviour
         _controller.AdsUiChanged -= ApplyAdsUi;
     }
 
+    public void ForceSetPlayerAvatar(Sprite sprite)
+    {
+        _lastPlayerSprite = sprite;
+        _playerDissolve.SetSprite(sprite);
+        _playerDissolve.PlayForOwner(AvatarOwner.Player);
+    }
+
     private void ApplyAdsUi(LobbyController.AdsUiModel model)
     {
         if (_adsButton != null)
@@ -189,12 +196,5 @@ public sealed class LobbyView : MonoBehaviour
 
         if (changed)
             _aiDissolve.PlayForOwner(AvatarOwner.AI);
-    }
-
-    public void ForceSetPlayerAvatar(Sprite sprite)
-    {
-        _lastPlayerSprite = sprite;
-        _playerDissolve.SetSprite(sprite);
-        _playerDissolve.PlayForOwner(AvatarOwner.Player);
     }
 }

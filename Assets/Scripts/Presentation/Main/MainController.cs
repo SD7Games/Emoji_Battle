@@ -81,14 +81,6 @@ public sealed class MainController : IDisposable
         SettingsService.PlayerNameChanged += OnPlayerNameChanged;
     }
 
-    private void OnMoveApplied(int index, CellState state)
-    {
-        if (state == CellState.Player)
-            _audio.PlaySFX(_playerMoveSfx);
-        else if (state == CellState.AI)
-            _audio.PlaySFX(_aiMoveSfx);
-    }
-
     public void PlayIntro()
     {
         _signView.PlayIntroDissolve();
@@ -111,6 +103,14 @@ public sealed class MainController : IDisposable
 
         _ui.OnBackClicked -= OnBackToLobby;
         _ui.OnSettingsClicked -= OnOpenSettings;
+    }
+
+    private void OnMoveApplied(int index, CellState state)
+    {
+        if (state == CellState.Player)
+            _audio.PlaySFX(_playerMoveSfx);
+        else if (state == CellState.AI)
+            _audio.PlaySFX(_aiMoveSfx);
     }
 
     private void InitHeaderSigns()
