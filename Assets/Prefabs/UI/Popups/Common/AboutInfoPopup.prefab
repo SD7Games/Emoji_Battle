@@ -260,7 +260,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Emoji Battle\r\nVersion: 1.0.1\r\n\r\nEmoji Battle is a casual turn-based
+  m_text: "Emoji Battle\r\nVersion: 1.0.5\r\n\r\nEmoji Battle is a casual turn-based
     puzzle game inspired by classic Tic-Tac-Toe mechanics, designed for quick and
     fun matches.\r\n\r\nDeveloped by: SD7 Games\r\nBuilt with Unity 6\r\n\r\nContact:
     sd7games.dev@gmail.com\r\n\r\n\xA9 2026 SD7 Games. All rights reserved.\r\n"
@@ -348,6 +348,7 @@ GameObject:
   - component: {fileID: 1760539153436761951}
   - component: {fileID: 5262793414961522474}
   - component: {fileID: 6053110520345719562}
+  - component: {fileID: 2931239945666621239}
   m_Layer: 5
   m_Name: AboutInfoPopup
   m_TagString: Untagged
@@ -368,8 +369,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4235298434776863629}
-  - {fileID: 1510700876934412886}
   - {fileID: 7344711949491179248}
+  - {fileID: 1510700876934412886}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -460,3 +461,17 @@ MonoBehaviour:
   _showSound: {fileID: 11400000, guid: f0a640445bb45fc47bff07c525eb02c2, type: 2}
   _hideSound: {fileID: 11400000, guid: 4611cab4a1a241b45b4fe5f00164580b, type: 2}
   _showVibration: 0
+--- !u!114 &2931239945666621239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8828126869773379204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b7811cb1816a624d89533b062ce64d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PopupCloseButton
+  _button: {fileID: 5390817140214995262}
+  _delay: 0.8
