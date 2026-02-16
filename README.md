@@ -129,7 +129,7 @@ Assets/
 </p>
 
 <p align="center">
-  <b>Splash → Loading → Lobby → Gameplay</b>
+  <b>Loading → Lobby → Gameplay</b>
 </p>
 
 ---
