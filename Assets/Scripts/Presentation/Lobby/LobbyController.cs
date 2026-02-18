@@ -29,7 +29,6 @@ public sealed class LobbyController : IDisposable
     private readonly GameRewardService _rewards;
 
     private bool _rewardedInProgress;
-    private bool _wasOffline;
 
     private int _uiColorId = -1;
     private int _selectedEmojiId = -1;
@@ -246,9 +245,6 @@ public sealed class LobbyController : IDisposable
     {
         if (_disposed) return;
 
-        if (!isOnline)
-            _wasOffline = true;
-
         UpdateAdsUi();
     }
 
@@ -275,13 +271,13 @@ public sealed class LobbyController : IDisposable
             AdsUiChanged?.Invoke(new AdsUiModel(
                 interactable: true,
                 canClick: true,
-                alpha: 0.3f,
+                alpha: 0.8f,
                 showLoading: false,
                 showConnecting: false));
             return;
         }
 
-        if (_wasOffline && state != AdsService.RewardedState.Ready)
+        if (state == AdsService.RewardedState.Loading || state == AdsService.RewardedState.Initializing)
         {
             AdsUiChanged?.Invoke(new AdsUiModel(
                 interactable: false,
@@ -291,8 +287,6 @@ public sealed class LobbyController : IDisposable
                 showConnecting: true));
             return;
         }
-
-        _wasOffline = false;
 
         if (state == AdsService.RewardedState.Ready && !_rewardedInProgress)
         {

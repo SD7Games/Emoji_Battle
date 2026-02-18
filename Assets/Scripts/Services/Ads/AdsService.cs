@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -32,6 +33,8 @@ public sealed class AdsService :
 
     [SerializeField] private int _matchesPerAdMax = 4;
 
+    private const float LOAD_TIMEOUT = 10f;
+
     private int _matchesSinceLastAd;
     private int _currentMatchesThreshold;
 
@@ -47,9 +50,7 @@ public sealed class AdsService :
     private Action _rewardCallback;
     private RewardedState _rewardedState = RewardedState.Offline;
 
-    public event Action RewardedFailed;
-
-    public event Action RewardedReady;
+    private Coroutine _rewardedTimeoutRoutine;
 
     public event Action<RewardedState> RewardedStateChanged;
 
@@ -134,22 +135,30 @@ public sealed class AdsService :
         if (!InternetService.IsOnline || Advertisement.isShowing)
             return;
 
+        StopRewardedTimeout();
+
+        _rewardedReady = false;
         _rewardedLoading = false;
+
+        _interstitialReady = false;
         _interstitialLoading = false;
 
         if (!Advertisement.isInitialized)
-            InitializeAds();
-        else
         {
-            RequestRewarded();
-            RequestInterstitial();
+            InitializeAds();
+            return;
         }
+
+        RequestRewarded();
+        RequestInterstitial();
     }
 
     private void OnInternetChanged(bool online)
     {
         if (!online)
         {
+            StopRewardedTimeout();
+
             _initializing = false;
 
             _rewardedReady = false;
@@ -157,8 +166,6 @@ public sealed class AdsService :
 
             _rewardedLoading = false;
             _interstitialLoading = false;
-
-            _lastResumeFrame = -1;
 
             SetRewardedState(RewardedState.Offline, true);
             return;
@@ -203,32 +210,67 @@ public sealed class AdsService :
 
     private void RequestRewarded()
     {
-        if (_rewardedLoading || _rewardedReady)
+        if (_rewardedLoading)
             return;
 
+        _rewardedReady = false;
         _rewardedLoading = true;
+
         SetRewardedState(RewardedState.Loading);
 
         Advertisement.Load(_rewardedPlacementId, this);
+
+        StartRewardedTimeout();
     }
 
     private void RequestInterstitial()
     {
-        if (_interstitialLoading || _interstitialReady)
+        if (_interstitialLoading)
             return;
 
+        _interstitialReady = false;
         _interstitialLoading = true;
+
         Advertisement.Load(_interstitialPlacementId, this);
+    }
+
+    private void StartRewardedTimeout()
+    {
+        StopRewardedTimeout();
+        _rewardedTimeoutRoutine = StartCoroutine(RewardedTimeout());
+    }
+
+    private void StopRewardedTimeout()
+    {
+        if (_rewardedTimeoutRoutine != null)
+        {
+            StopCoroutine(_rewardedTimeoutRoutine);
+            _rewardedTimeoutRoutine = null;
+        }
+    }
+
+    private IEnumerator RewardedTimeout()
+    {
+        yield return new WaitForSecondsRealtime(LOAD_TIMEOUT);
+
+        if (_rewardedLoading)
+        {
+            _rewardedLoading = false;
+            _rewardedReady = false;
+            SetRewardedState(RewardedState.Failed);
+        }
     }
 
     public void OnUnityAdsAdLoaded(string placementId)
     {
         if (placementId == _rewardedPlacementId)
         {
+            StopRewardedTimeout();
+
             _rewardedLoading = false;
             _rewardedReady = true;
+
             SetRewardedState(RewardedState.Ready);
-            RewardedReady?.Invoke();
         }
         else if (placementId == _interstitialPlacementId)
         {
@@ -241,8 +283,11 @@ public sealed class AdsService :
     {
         if (placementId == _rewardedPlacementId)
         {
+            StopRewardedTimeout();
+
             _rewardedLoading = false;
             _rewardedReady = false;
+
             SetRewardedState(RewardedState.Failed);
         }
         else if (placementId == _interstitialPlacementId)
@@ -281,6 +326,7 @@ public sealed class AdsService :
                 _rewardCallback?.Invoke();
 
             _rewardCallback = null;
+
             _rewardedReady = false;
             RequestRewarded();
         }
@@ -295,14 +341,19 @@ public sealed class AdsService :
     {
         if (placementId == _rewardedPlacementId)
         {
+            StopRewardedTimeout();
+
             _rewardCallback = null;
-            RewardedFailed?.Invoke();
             _rewardedReady = false;
+            _rewardedLoading = false;
+
+            SetRewardedState(RewardedState.Failed);
             RequestRewarded();
         }
         else if (placementId == _interstitialPlacementId)
         {
             _interstitialReady = false;
+            _interstitialLoading = false;
             RequestInterstitial();
         }
     }
