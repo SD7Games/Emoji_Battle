@@ -18,10 +18,15 @@ This project represents a complete gameplay system implementation with a focus o
 ## 🧩 Key Features
 
 • Turn-based gameplay loop and game state management
+
 • Modular AI system using Strategy pattern (multiple difficulty levels)
+
 • UI-driven architecture with clear separation from gameplay logic
+
 • Progression system with persistent data (JSON / PlayerPrefs)
+
 • Mobile optimization and stable runtime performance
+
 • Ads monetization (rewarded, interstitial)
 
 ---
@@ -29,8 +34,11 @@ This project represents a complete gameplay system implementation with a focus o
 ## 🧠 Architecture
 
 • MVC-style separation (gameplay, UI, data)
+
 • Event-driven communication between systems
+
 • Gameplay logic independent from UI
+
 • SRP applied across gameplay and AI systems
 
 ---
