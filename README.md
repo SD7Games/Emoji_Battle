@@ -1,7 +1,6 @@
 # Emoji Battle
 
-Shipped mobile puzzle-battle game built in Unity (C#).
-Released on Google Play.
+Mobile game built in Unity (C#) and released on Google Play.
 
 🔗 https://play.google.com/store/apps/details?id=com.sd7gamestudio.emojibattle
 
@@ -9,47 +8,87 @@ Released on Google Play.
 
 ## 🚀 Overview
 
-Emoji Battle is a turn-based game inspired by tic-tac-toe, expanded with AI opponents, progression, and a mobile-focused UI.
+This project focuses on building a complete gameplay loop with stable architecture, predictable state management, and reliable performance for mobile devices.
 
-This project represents a complete gameplay system implementation with a focus on clean architecture and performance.
+The main challenge was to structure gameplay, UI, and data in a way that avoids tight coupling and allows safe feature extension.
 
 ---
 
-## 🧩 Key Features
+## 🧩 Key Systems
 
-• Turn-based gameplay loop and game state management
+### Turn-based Gameplay System
 
-• Modular AI system using Strategy pattern (multiple difficulty levels)
+• Implemented full game loop with clear state management  
+• Ensures predictable game flow and easy debugging  
+• Designed for maintainability and future feature expansion  
 
-• UI-driven architecture with clear separation from gameplay logic
+---
 
-• Progression system with persistent data (JSON / PlayerPrefs)
+### Modular AI System
 
-• Mobile optimization and stable runtime performance
+• Built using Strategy pattern  
+• Supports multiple difficulty levels  
+• Enables reusable and extendable decision logic  
 
-• Ads monetization (rewarded, interstitial)
+---
+
+### UI-driven Architecture
+
+• Refactored UI into a separate layer from gameplay logic  
+• Implemented event-based interactions  
+• Reduced coupling between UI and core systems  
+
+---
+
+### Progression & Persistence
+
+• Implemented progression system with persistent data  
+• Used JSON and PlayerPrefs for save/load  
+• Ensures reliable state restoration between sessions  
+
+---
+
+### Performance Optimization
+
+• Reduced runtime overhead for mobile devices  
+• Ensured stable gameplay performance during real usage  
+
+---
+
+### Ads Integration
+
+• Integrated rewarded and interstitial ads  
+• Embedded into gameplay flow without breaking user experience  
 
 ---
 
 ## 🧠 Architecture
 
-• MVC-style separation (gameplay, UI, data)
+The project follows clean architecture principles:
 
-• Event-driven communication between systems
+• MVC-style separation (gameplay, UI, data)  
+• Event-driven communication between systems  
+• Gameplay logic independent from UI  
+• Systems designed for maintainability and extension  
 
-• Gameplay logic independent from UI
+---
 
-• SRP applied across gameplay and AI systems
+## 📈 Results
+
+• Stable and predictable gameplay loop  
+• Maintainable and extendable code structure  
+• Reduced coupling between systems  
+• Reliable performance on mobile devices  
 
 ---
 
 ## 🛠 Tech
 
-Unity, C#, ScriptableObjects, UI (UGUI), JSON, PlayerPrefs
+Unity, C#, MVC, Event-driven Architecture, AI (Strategy Pattern), UI (UGUI), JSON Persistence
 
 ---
 
 ## 👨‍💻 Author
 
-Oleksandr Tokarev
+Oleksandr Tokarev  
 Unity Gameplay Developer
